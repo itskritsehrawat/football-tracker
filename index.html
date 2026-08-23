@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRO FOOTBALL TRACKER</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR / HEADER -->
+    <header class="player-header">
+        <div class="brand">
+            <span class="pro-tag">PRO ATHLETE</span>
+            <h1 id="headerName">⚽ FOOTBALL TRACKER</h1>
+            <p class="subtitle">Elite Performance & Training Hub</p>
+        </div>
+        <div class="header-status">
+            <div class="player-badge" id="playerLevel">⚡ LEVEL 1</div>
+            <div class="rank-badge" id="rankTitle">Rookie</div>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <!-- XP & LEVEL PROGRESS -->
+        <div class="xp-card">
+            <div class="xp-info">
+                <span>SEASON XP PROGRESS</span>
+                <span id="xpText">0 / 100 XP</span>
+            </div>
+            <div class="xp-bar">
+                <div id="xpFill"></div>
+            </div>
+        </div>
+
+        <!-- QUICK STATS DASHBOARD -->
+        <div class="dashboard">
+            <div class="card">
+                <div class="card-icon">⏱️</div>
+                <div>
+                    <h2>TOTAL TRAINING</h2>
+                    <p id="total">0 mins</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">🔥</div>
+                <div>
+                    <h2>ACTIVE STREAK</h2>
+                    <p id="streak">0 days</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">⚽</div>
+                <div>
+                    <h2>MATCHES PLAYED</h2>
+                    <p id="totalMatches">0 played</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">🎯</div>
+                <div>
+                    <h2>GOALS & ASSISTS</h2>
+                    <p id="totalG_A">0 G / 0 A</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- GRID SECTION -->
+        <div class="grid-3col">
+            
+            <!-- FIFA FUT CARD -->
+            <div class="section fut-card-section">
+                <h2>🎴 Live FUT Card</h2>
+                <div class="fut-card" id="futCard">
+                    <div class="fut-top">
+                        <div class="fut-rating" id="futOvr">50</div>
+                        <div class="fut-pos" id="futPos">ST</div>
+                    </div>
+                    <div class="fut-img-container">
+                        <span class="fut-avatar">⚽</span>
+                    </div>
+                    <div class="fut-name" id="futName">PRO PLAYER</div>
+                    <div class="fut-stats">
+                        <div class="stat-col">
+                            <div><span id="futPace">50</span> PAC</div>
+                            <div><span id="futSho">50</span> SHO</div>
+                            <div><span id="futPas">50</span> PAS</div>
+                        </div>
+                        <div class="stat-col">
+                            <div><span id="futDri">50</span> DRI</div>
+                            <div><span id="futPhy">50</span> PHY</div>
+                            <div><span id="futDef">50</span> DEF</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SKILL RADAR CHART -->
+            <div class="section chart-section">
+                <h2>🕸️ Skill Matrix</h2>
+                <div class="radar-container">
+                    <canvas id="skillRadar"></canvas>
+                </div>
+            </div>
+
+            <!-- TRAINING & MATCH LOG FORM -->
+            <div class="section form-section">
+                <div class="tab-buttons">
+                    <button id="tabTrainingBtn" class="tab-btn active">⏱️ Training</button>
+                    <button id="tabMatchBtn" class="tab-btn">⚽ Match</button>
+                </div>
+
+                <!-- TRAINING FORM -->
+                <div id="trainingForm">
+                    <label for="trainingType">Focus Area:</label>
+                    <select id="trainingType">
+                        <option value="Shooting">Shooting (+Skills)</option>
+                        <option value="Passing">Passing (+Skills)</option>
+                        <option value="Dribbling">Dribbling (+Skills)</option>
+                        <option value="Speed">Pace & Speed (+Skills)</option>
+                        <option value="Fitness">Physical & Fitness (+Skills)</option>
+                    </select>
+
+                    <label for="minutes">Session Duration (Mins):</label>
+                    <input id="minutes" type="number" placeholder="e.g. 60" min="1">
+
+                    <button id="addButton" class="btn-primary">⚡ Log Session (+20 XP)</button>
+                </div>
+
+                <!-- MATCH FORM -->
+                <div id="matchForm" class="hidden">
+                    <div class="match-inputs">
+                        <div>
+                            <label for="matchGoals">Goals:</label>
+                            <input id="matchGoals" type="number" value="0" min="0">
+                        </div>
+                        <div>
+                            <label for="matchAssists">Assists:</label>
+                            <input id="matchAssists" type="number" value="0" min="0">
+                        </div>
+                    </div>
+
+                    <button id="addMatchButton" class="btn-success">🏆 Log Match (+50 XP)</button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- WEEKLY GOAL -->
+        <div class="section">
+            <div class="section-header">
+                <h2>🎯 Weekly Target</h2>
+                <button id="exportBtn" class="btn-secondary">📥 Export PDF Summary</button>
+            </div>
+
+            <div class="goal-input-group">
+                <input id="goalInput" type="number" placeholder="Set Weekly Goal (Mins)" min="1">
+                <button id="saveGoalButton" class="btn-dark">Set Target</button>
+            </div>
+
+            <p id="goalText" class="goal-status">Target: Not Set</p>
+            <p id="goalProgress">0 / 0 minutes completed</p>
+
+            <div id="goalBar">
+                <div id="goalFill"></div>
+            </div>
+        </div>
+
+        <!-- WEEKLY ACTIVITY BAR CHART -->
+        <div class="section">
+            <h2>📈 Weekly Activity Breakdown</h2>
+            <div id="weeklyChart"></div>
+        </div>
+
+        <!-- ACHIEVEMENTS -->
+        <div class="section">
+            <h2>🏆 Trophies & Badges</h2>
+            <div id="achievements">
+                <div class="achievement locked">🥉 First Session</div>
+                <div class="achievement locked">🥈 100 Mins Grind</div>
+                <div class="achievement locked">🥇 500 Mins Master</div>
+                <div class="achievement locked">🔥 7-Day Streak</div>
+                <div class="achievement locked">⚽ Debut Match</div>
+                <div class="achievement locked">👑 1000 Mins Legend</div>
+            </div>
+        </div>
+
+        <!-- HISTORY LOG -->
+        <div class="section">
+            <div class="section-header">
+                <h2>📋 Recent Activity Log</h2>
+                <button id="resetButton" class="btn-danger">Reset All Data</button>
+            </div>
+            <ul id="history"></ul>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
