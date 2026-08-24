@@ -1,204 +1,518 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProFootball OS | God-Level Dashboard</title>
+    <title>PRO-TRAIN FC | Player Dashboard</title>
+    <!-- Chart.js CDN for Analytics Graph -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --bg-color: #0b0f19;
-            --card-bg: #131b2e;
+            --bg-dark: #080b11;
+            --card-bg: #0f1623;
+            --card-border: #1e293b;
             --accent-green: #10b981;
-            --accent-cyan: #38bdf8;
-            --accent-orange: #f59e0b;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
+            --accent-blue: #38bdf8;
+            --accent-yellow: #eab308;
+            --accent-orange: #f97316;
+            --text-white: #f8fafc;
+            --text-dim: #94a3b8;
         }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-white);
             margin: 0;
             padding: 20px;
-        }
-        .dashboard-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        header {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
+        }
+
+        .dashboard {
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Common Card Style */
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        /* 1. Header Profile Section */
+        .profile-card {
+            display: flex;
             align-items: center;
-            background: var(--card-bg);
-            padding: 20px 30px;
-            border-radius: 16px;
-            margin-bottom: 25px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-        }
-        .player-info h1 {
-            margin: 0;
-            color: var(--accent-cyan);
-            font-size: 1.8rem;
-        }
-        .player-info p {
-            margin: 5px 0 0;
-            color: var(--text-muted);
-        }
-        .intel-score {
-            text-align: right;
-        }
-        .intel-score .score {
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--accent-green);
-        }
-        
-        .grid-layout {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 20px;
         }
-        .card {
-            background: var(--card-bg);
-            padding: 25px;
-            border-radius: 16px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+
+        .fut-card {
+            background: linear-gradient(135deg, #2b2206, #000);
+            border: 2px solid #eab308;
+            border-radius: 10px;
+            width: 110px;
+            height: 140px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 0 15px rgba(234, 179, 8, 0.2);
+            flex-shrink: 0;
         }
-        .card h3 {
-            margin-top: 0;
-            border-bottom: 2px solid #1e293b;
-            padding-bottom: 10px;
-            color: var(--accent-orange);
+
+        .fut-card .rating {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #eab308;
+            line-height: 1;
+        }
+
+        .fut-card .pos {
+            font-size: 0.8rem;
+            color: #eab308;
+            font-weight: 600;
+            position: absolute;
+            top: 10px;
+            right: 12px;
+        }
+
+        .fut-card .icon {
+            font-size: 2.2rem;
+            margin: 8px 0 4px;
+        }
+
+        .fut-card .name {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-align: center;
+            color: #fff;
+        }
+
+        .profile-info {
+            flex-grow: 1;
+        }
+
+        .player-title {
             display: flex;
             align-items: center;
             gap: 10px;
+            margin-bottom: 6px;
         }
-        
-        /* Stats Ratings */
-        .stat-row {
-            display: flex;
-            justify-content: space-between;
-            margin: 12px 0;
+
+        .player-title h2 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .badge {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-green);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
             font-weight: 600;
         }
-        .stat-bar {
-            background: #1e293b;
-            border-radius: 4px;
-            height: 8px;
-            width: 100%;
-            margin-top: 5px;
-            overflow: hidden;
-        }
-        .stat-fill {
-            background: var(--accent-cyan);
-            height: 100%;
+
+        .subtitle {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            margin: 0 0 16px 0;
         }
 
-        /* Streak Badges */
-        .badge-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
+        .quick-metrics {
+            display: flex;
+            gap: 10px;
         }
-        .badge {
-            background: #1e293b;
-            padding: 12px;
-            border-radius: 10px;
+
+        .metric-box {
+            background: #080c14;
+            border: 1px solid var(--card-border);
+            padding: 10px 14px;
+            border-radius: 8px;
+            flex: 1;
             text-align: center;
-            font-size: 0.9rem;
-            border: 1px solid #334155;
         }
 
-        /* Tasks */
-        ul.task-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
+        .metric-box label {
+            display: block;
+            font-size: 0.65rem;
+            color: var(--text-dim);
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
         }
-        ul.task-list li {
-            background: #1e293b;
-            padding: 12px 15px;
-            margin-bottom: 10px;
+
+        .metric-box val {
+            font-size: 0.95rem;
+            font-weight: 700;
+        }
+
+        /* 2. Today's Football Report */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .section-header h3 {
+            margin: 0;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent-green);
+        }
+
+        .live-sync {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+        }
+
+        .sum-item {
+            background: #080c14;
+            padding: 12px 8px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .sum-item div {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            margin-bottom: 6px;
+        }
+
+        .sum-item span {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        /* 3. Smart Training Plan */
+        .plan-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .plan-item {
+            background: #080c14;
+            padding: 12px 16px;
             border-radius: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            font-size: 0.9rem;
         }
-        .task-status {
-            font-size: 0.8rem;
-            padding: 4px 8px;
-            border-radius: 4px;
-            background: #0f172a;
-            color: var(--accent-orange);
+
+        .status-btn {
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .status-completed { background: rgba(16, 185, 129, 0.2); color: var(--accent-green); }
+        .status-progress { background: rgba(234, 179, 8, 0.2); color: var(--accent-yellow); }
+        .status-notstarted { background: rgba(148, 163, 184, 0.1); color: var(--text-dim); }
+
+        /* 4. Analytics Graph */
+        .chart-tabs {
+            display: flex;
+            gap: 6px;
+        }
+
+        .tab-btn {
+            background: #080c14;
+            border: 1px solid var(--card-border);
+            color: var(--text-dim);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+
+        .tab-btn.active {
+            background: var(--accent-blue);
+            color: #000;
+            border-color: var(--accent-blue);
+            font-weight: 600;
+        }
+
+        .stats-cards-mini {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* 5. Calendar */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            text-align: center;
+        }
+
+        .day-box {
+            background: #080c14;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--card-border);
+        }
+
+        .day-box div {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            margin-bottom: 8px;
+        }
+
+        .check-icon { color: var(--accent-green); }
+        .cross-icon { color: #ef4444; }
+
+        /* 6. Drill Library */
+        .drills-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .drill-card {
+            background: #080c14;
+            border: 1px solid var(--card-border);
+            padding: 14px;
+            border-radius: 8px;
+        }
+
+        .drill-tag {
+            font-size: 0.65rem;
+            color: var(--accent-yellow);
+            font-weight: 700;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .drill-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .drill-desc {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+        }
+
+        /* 7. Gear Hub */
+        .gear-card {
+            background: linear-gradient(90deg, #0f1623 0%, #064e3b 100%);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .shop-btn {
+            background: var(--accent-green);
+            color: #000;
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 700;
         }
     </style>
 </head>
 <body>
 
-    <div class="dashboard-container">
-        <!-- Header / Profile Section -->
-        <header>
-            <div class="player-info">
-                <h1>👤 Kridarth #10</h1>
-                <p>Position: CAM / CM | Preferred Foot: Right | Academy: Elite FC</p>
-            </div>
-            <div class="intel-score">
-                <div class="score">87 / 100 <span>↑</span></div>
-                <div style="font-size: 0.85rem; color: var(--text-muted);">Football Intelligence Score</div>
-            </div>
-        </header>
+    <div class="dashboard">
 
-        <div class="grid-layout">
-            <!-- FIFA Style Ratings -->
-            <div class="card">
-                <h3>⚡ Player Ratings (100-Point)</h3>
-                <div class="stat-row"><span>PACE</span> <span>84</span></div>
-                <div class="stat-bar"><div class="stat-fill" style="width: 84%;"></div></div>
-                
-                <div class="stat-row"><span>PASSING</span> <span>78</span></div>
-                <div class="stat-bar"><div class="stat-fill" style="width: 78%;"></div></div>
-                
-                <div class="stat-row"><span>DRIBBLING</span> <span>91</span></div>
-                <div class="stat-bar"><div class="stat-fill" style="width: 91%;"></div></div>
-                
-                <div class="stat-row"><span>SHOOTING</span> <span>82</span></div>
-                <div class="stat-bar"><div class="stat-fill" style="width: 82%;"></div></div>
-                
-                <div class="stat-row"><span>FITNESS</span> <span>88</span></div>
-                <div class="stat-bar"><div class="stat-fill" style="width: 88%;"></div></div>
+        <!-- 1. HEADER PROFILE -->
+        <div class="card profile-card">
+            <div class="fut-card">
+                <span class="pos">LW</span>
+                <span class="rating">88</span>
+                <div class="icon">👤</div>
+                <div class="name">Krit Sehrawat</div>
             </div>
-
-            <!-- Streak System & Badges -->
-            <div class="card">
-                <h3>🔥 Streaks & Records</h3>
-                <div class="badge-grid">
-                    <div class="badge">🏅 7-Day Streak</div>
-                    <div class="badge">⚡ 50 Sprints</div>
-                    <div class="badge">🎯 100 Shots</div>
-                    <div class="badge">🏃 25 km Run</div>
+            <div class="profile-info">
+                <div class="player-title">
+                    <h2>Krit Sehrawat</h2>
+                    <span class="badge">Right Foot</span>
+                    <span style="font-size: 0.75rem; color: var(--text-dim); margin-left: auto;">Academy XI</span>
+                </div>
+                <p class="subtitle">Elite training consistency builds champions. Complete your daily tasks, log match stats, and elevate your game metrics!</p>
+                <div class="quick-metrics">
+                    <div class="metric-box">
+                        <label>READINESS</label>
+                        <val style="color: var(--accent-green);">Optimal 🟢</val>
+                    </div>
+                    <div class="metric-box">
+                        <label>CONSISTENCY</label>
+                        <val style="color: var(--accent-yellow);">85% 🔥</val>
+                    </div>
+                    <div class="metric-box">
+                        <label>TOP SPEED</label>
+                        <val style="color: var(--accent-orange);">29.4 km/h ⚡</val>
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Smart Daily Planner -->
-            <div class="card" style="grid-column: span 1;">
-                <h3>📅 Today's Training Tasks</h3>
-                <ul class="task-list">
-                    <li>
-                        <span>20 min Weak-foot Passing</span>
-                        <span class="task-status" style="color: var(--accent-green);">Completed</span>
-                    </li>
-                    <li>
-                        <span>High-intensity Sprints (x10)</span>
-                        <span class="task-status">In Progress</span>
-                    </li>
-                    <li>
-                        <span>Agility Cone Drills</span>
-                        <span class="task-status" style="color: var(--text-muted);">Not Started</span>
-                    </li>
-                </ul>
+        <!-- 2. TODAY'S FOOTBALL REPORT -->
+        <div class="card">
+            <div class="section-header">
+                <h3>⚡ TODAY'S FOOTBALL REPORT (USP Summary)</h3>
+                <span class="live-sync">Live Sync</span>
+            </div>
+            <div class="summary-grid">
+                <div class="sum-item"><div>👟 Steps</div><span>8,420</span></div>
+                <div class="sum-item"><div>📍 Distance</div><span>4.7 km</span></div>
+                <div class="sum-item"><div>⚡ Sprints</div><span>14</span></div>
+                <div class="sum-item"><div>⏱️ Active Time</div><span>75 min</span></div>
+                <div class="sum-item"><div>⚽ Drills</div><span>1/4</span></div>
+                <div class="sum-item"><div>🔥 Streak</div><span>7 Days</span></div>
             </div>
         </div>
+
+        <!-- 3. SMART TRAINING PLAN -->
+        <div class="card">
+            <div class="section-header">
+                <h3 style="color: var(--text-white);">📋 Smart Training Plan — LW</h3>
+                <span class="badge" style="background: rgba(255,255,255,0.05); color: var(--text-dim);">1/4 Completed</span>
+            </div>
+            <div class="plan-list">
+                <div class="plan-item">
+                    <span>Ball Mastery — 20 min</span>
+                    <span class="status-btn status-completed">Completed 🗹</span>
+                </div>
+                <div class="plan-item">
+                    <span>Passing Drills — 15 min</span>
+                    <span class="status-btn status-progress">In Progress ⏳</span>
+                </div>
+                <div class="plan-item">
+                    <span>Dribbling & Agility — 15 min</span>
+                    <span class="status-btn status-notstarted">Not Started ⏳</span>
+                </div>
+                <div class="plan-item">
+                    <span>Finishing & Shooting — 20 min</span>
+                    <span class="status-btn status-notstarted">Not Started ⏳</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. ANALYTICS & GRAPH -->
+        <div class="card">
+            <div class="section-header">
+                <h3 style="color: var(--accent-blue);">📊 Performance Centre & Analytics</h3>
+                <div class="chart-tabs">
+                    <button class="tab-btn active">Weekly</button>
+                    <button class="tab-btn">Monthly</button>
+                    <button class="tab-btn">Yearly</button>
+                    <button class="tab-btn" style="border-color: var(--accent-blue); color: var(--accent-blue);">🛡️ Log Stats</button>
+                </div>
+            </div>
+            <div class="stats-cards-mini">
+                <div class="sum-item"><div>Training Minutes</div><span>75 min</span></div>
+                <div class="sum-item"><div>Daily Steps</div><span>8,420</span></div>
+                <div class="sum-item"><div>Sprint Count</div><span>14 Sprints</span></div>
+                <div class="sum-item"><div>Match Goals</div><span style="color: #f43f5e;">12 Goals</span></div>
+            </div>
+            <!-- Canvas for Graph -->
+            <div style="height: 220px; width: 100%;">
+                <canvas id="performanceChart"></canvas>
+            </div>
+        </div>
+
+        <!-- 5. STREAK CALENDAR -->
+        <div class="card">
+            <div class="section-header">
+                <h3 style="color: var(--accent-yellow);">📅 Training History & Streak Calendar</h3>
+            </div>
+            <div class="calendar-grid">
+                <div class="day-box"><div>Mon</div><span class="check-icon">✔</span></div>
+                <div class="day-box"><div>Tue</div><span class="check-icon">✔</span></div>
+                <div class="day-box"><div>Wed</div><span class="check-icon">✔</span></div>
+                <div class="day-box"><div>Thu</div><span class="check-icon">✔</span></div>
+                <div class="day-box"><div>Fri</div><span class="cross-icon">✖</span></div>
+                <div class="day-box"><div>Sat</div><span class="check-icon">✔</span></div>
+                <div class="day-box"><div>Sun</div><span style="color: var(--text-dim);">🔵</span></div>
+            </div>
+        </div>
+
+        <!-- 6. DRILL LIBRARY -->
+        <div class="card">
+            <div class="section-header">
+                <h3 style="color: var(--text-white);">📖 Pro Drill Library</h3>
+                <span style="font-size: 0.75rem; color: var(--text-dim);">Elite Standards</span>
+            </div>
+            <div class="drills-grid">
+                <div class="drill-card">
+                    <div class="drill-tag"><span>Difficulty: Pro</span> <span>15 min</span></div>
+                    <div class="drill-title">Cone Weaving & Agility</div>
+                    <div class="drill-desc">Tight space control and quick foot frequency.</div>
+                </div>
+                <div class="drill-card">
+                    <div class="drill-tag" style="color: var(--accent-orange);"><span>Difficulty: Intermediate</span> <span>20 min</span></div>
+                    <div class="drill-title">Box Finishing & Volleys</div>
+                    <div class="drill-desc">One-touch powerful strikes under pressure.</div>
+                </div>
+                <div class="drill-card">
+                    <div class="drill-tag" style="color: var(--accent-blue);"><span>Difficulty: Advanced</span> <span>10 min</span></div>
+                    <div class="drill-title">Explosive 30m Sprints</div>
+                    <div class="drill-desc">Max velocity acceleration drills for wingers.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7. GEAR HUB -->
+        <div class="card gear-card">
+            <div>
+                <div style="font-size: 0.75rem; color: var(--accent-green); font-weight: 700; margin-bottom: 4px;">🛍️ Pro Recommendation Hub</div>
+                <h3 style="margin: 0 0 4px 0; font-size: 1.1rem;">Upgrade Your Matchday Gear</h3>
+                <p style="margin: 0; font-size: 0.8rem; color: var(--text-dim);">Explore premium football boots, grip socks, and GPS trackers on Amazon.</p>
+            </div>
+            <a href="#" class="shop-btn">Shop Amazon Store ↗</a>
+        </div>
+
     </div>
 
+    <!-- Chart JS Code -->
+    <script>
+        const ctx = document.getElementById('performanceChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Training Load / Minutes',
+                    data: [45, 60, 30, 75, 50, 90, 40],
+                    backgroundColor: '#38bdf8',
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { display: false }, ticks: { color: '#94a3b8' } },
+                    y: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } }
+                }
+            }
+        });
+    </script>
 </body>
 </html>
