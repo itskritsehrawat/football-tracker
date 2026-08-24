@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,7 +6,76 @@
     <title>PRO FOOTBALL TRACKER</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .player-header {
+            background: #1e293b;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #334155;
+        }
+        .brand h1 { margin: 0; font-size: 24px; }
+        .subtitle { margin: 5px 0 0; color: #94a3b8; font-size: 14px; }
+        .pro-tag { background: #3b82f6; color: white; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; }
+        .header-status { display: flex; gap: 10px; }
+        .player-badge, .rank-badge { background: #334155; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+        .section { background: #1e293b; border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 1px solid #334155; }
+        .section h2 { margin-top: 0; font-size: 18px; }
+        .dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .card { background: #1e293b; padding: 20px; border-radius: 12px; display: flex; align-items: center; gap: 15px; border: 1px solid #334155; }
+        .card-icon { font-size: 28px; }
+        .card h2 { font-size: 12px; color: #94a3b8; margin: 0; }
+        .card p { font-size: 20px; font-weight: bold; margin: 5px 0 0; }
+        .xp-card { background: #1e293b; padding: 15px 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #334155; }
+        .xp-info { display: flex; justify-content: space-between; font-size: 12px; font-weight: bold; margin-bottom: 8px; color: #94a3b8; }
+        .xp-bar { background: #334155; height: 10px; border-radius: 5px; overflow: hidden; }
+        #xpFill { background: #3b82f6; height: 100%; width: 0%; transition: width 0.3s ease; }
+        .grid-3col { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 20px; }
+        .fut-card { background: linear-gradient(135deg, #f59e0b, #d97706); color: #111; width: 220px; margin: 0 auto; border-radius: 15px; padding: 15px; text-align: center; font-weight: bold; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        .fut-top { display: flex; flex-direction: column; align-items: flex-start; font-size: 20px; line-height: 1; }
+        .fut-img-container { font-size: 45px; margin: 10px 0; }
+        .fut-name { font-size: 18px; border-bottom: 1px solid rgba(0,0,0,0.2); padding-bottom: 5px; margin-bottom: 8px; }
+        .fut-stats { display: flex; justify-content: space-around; font-size: 13px; }
+        .stat-col { text-align: left; }
+        .radar-container { position: relative; height: 220px; display: flex; justify-content: center; align-items: center; }
+        .tab-buttons { display: flex; gap: 10px; margin-bottom: 15px; }
+        .tab-btn { flex: 1; background: #334155; border: none; padding: 10px; color: #fff; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .tab-btn.active { background: #3b82f6; }
+        .hidden { display: none; }
+        label { display: block; font-size: 13px; color: #94a3b8; margin-bottom: 5px; }
+        input, select { width: 100%; padding: 10px; background: #0f172a; border: 1px solid #334155; color: #fff; border-radius: 6px; margin-bottom: 12px; box-sizing: border-box; }
+        .btn-primary, .btn-success, .btn-secondary, .btn-dark, .btn-danger { width: 100%; padding: 12px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; color: #fff; }
+        .btn-primary { background: #3b82f6; }
+        .btn-success { background: #10b981; }
+        .btn-secondary { background: #64748b; width: auto; padding: 6px 12px; font-size: 12px; }
+        .btn-dark { background: #334155; }
+        .btn-danger { background: #ef4444; width: auto; padding: 6px 12px; font-size: 12px; }
+        .match-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .section-header { display: flex; justify-content: space-between; align-items: center; }
+        .goal-input-group { display: flex; gap: 10px; margin-top: 10px; }
+        .goal-status { margin: 10px 0 5px; font-weight: bold; }
+        #goalBar { background: #334155; height: 8px; border-radius: 4px; overflow: hidden; margin-top: 8px; }
+        #goalFill { background: #10b981; height: 100%; width: 0%; }
+        #achievements { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-top: 10px; }
+        .achievement { background: #0f172a; padding: 10px; border-radius: 6px; text-align: center; font-size: 12px; border: 1px solid #334155; }
+        .achievement.locked { opacity: 0.4; }
+        #history { list-style: none; padding: 0; margin-top: 10px; }
+        #history li { background: #0f172a; padding: 10px; border-radius: 6px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #334155; font-size: 13px; }
+        .delete-btn { background: #ef4444; border: none; color: white; padding: 2px 8px; border-radius: 4px; cursor: pointer; }
+    </style>
 </head>
 <body>
     <header class="player-header">
@@ -25,15 +94,15 @@
         <div class="section">
             <h2>⚙️ Player Profile & Preferences</h2>
             <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;">
-                <input type="text" id="playerNameInput" placeholder="Player Name" style="flex: 1; padding: 10px; border-radius: 5px; border: 1px solid #444; background: #222; color: #fff;">
-                <select id="playerPositionInput" style="flex: 1; padding: 10px; border-radius: 5px; border: 1px solid #444; background: #222; color: #fff;">
+                <input type="text" id="playerNameInput" placeholder="Player Name" style="flex: 1;">
+                <select id="playerPositionInput" style="flex: 1;">
                     <option value="ST">Striker (ST)</option>
                     <option value="WINGER">Winger</option>
                     <option value="MIDFIELDER">Midfielder</option>
                     <option value="DEFENDER">Defender</option>
                     <option value="GK">Goalkeeper</option>
                 </select>
-                <select id="playerFootInput" style="flex: 1; padding: 10px; border-radius: 5px; border: 1px solid #444; background: #222; color: #fff;">
+                <select id="playerFootInput" style="flex: 1;">
                     <option value="Right Foot">Right Footed</option>
                     <option value="Left Foot">Left Footed</option>
                     <option value="Both">Both Feet</option>
@@ -45,8 +114,8 @@
         <div class="section">
             <h2>📝 Daily Training Tasks</h2>
             <div style="display: flex; gap: 10px; margin-top: 10px;">
-                <input type="text" id="taskInput" placeholder="Add a daily task (e.g. 50 juggles)" style="flex: 1; padding: 10px; border-radius: 5px; border: 1px solid #444; background: #222; color: #fff;">
-                <button id="addTaskBtn" class="btn-success" style="padding: 10px 20px; cursor: pointer;">Add Task</button>
+                <input type="text" id="taskInput" placeholder="Add a daily task (e.g. 50 juggles)" style="flex: 1;">
+                <button id="addTaskBtn" class="btn-success" style="padding: 10px 20px; cursor: pointer; width: auto;">Add Task</button>
             </div>
             <ul id="taskList" style="list-style: none; padding: 0; margin-top: 15px;"></ul>
         </div>
@@ -160,10 +229,10 @@
             </div>
             <div class="goal-input-group">
                 <input id="goalInput" type="number" placeholder="Set Weekly Goal (Mins)" min="1">
-                <button id="saveGoalButton" class="btn-dark">Set Target</button>
+                <button id="saveGoalButton" class="btn-dark" style="width: auto; padding: 10px 20px;">Set Target</button>
             </div>
             <p id="goalText" class="goal-status">Target: Not Set</p>
-            <p id="goalProgress">0 / 0 minutes completed</p>
+            <p id="goalProgress" style="font-size: 13px; color: #94a3b8;">0 / 0 minutes completed</p>
             <div id="goalBar"><div id="goalFill"></div></div>
         </div>
 
@@ -192,6 +261,318 @@
             <ul id="history"></ul>
         </div>
     </div>
-    <script src="script.js"></script>
+
+    <script>
+        let totalMinutes = parseInt(localStorage.getItem('totalMinutes')) || 0;
+        let streak = parseInt(localStorage.getItem('streak')) || 0;
+        let totalMatches = parseInt(localStorage.getItem('totalMatches')) || 0;
+        let totalGoals = parseInt(localStorage.getItem('totalGoals')) || 0;
+        let totalAssists = parseInt(localStorage.getItem('totalAssists')) || 0;
+        let xp = parseInt(localStorage.getItem('xp')) || 0;
+        let weeklyGoal = parseInt(localStorage.getItem('weeklyGoal')) || 0;
+
+        let playerName = localStorage.getItem('playerName') || "PRO PLAYER";
+        let playerPosition = localStorage.getItem('playerPosition') || "ST";
+        let playerFoot = localStorage.getItem('playerFoot') || "Right Foot";
+
+        if (document.getElementById('playerNameInput')) {
+            document.getElementById('playerNameInput').value = playerName !== "PRO PLAYER" ? playerName : "";
+            document.getElementById('playerPositionInput').value = playerPosition;
+            document.getElementById('playerFootInput').value = playerFoot;
+        }
+        document.getElementById('futName').innerText = playerName;
+        document.getElementById('futPos').innerText = playerPosition;
+
+        document.getElementById('saveProfileBtn').addEventListener('click', function() {
+            const nameInput = document.getElementById('playerNameInput').value.trim();
+            const posInput = document.getElementById('playerPositionInput').value;
+            const footInput = document.getElementById('playerFootInput').value;
+
+            if (nameInput) {
+                playerName = nameInput;
+                playerPosition = posInput;
+                playerFoot = footInput;
+
+                localStorage.setItem('playerName', playerName);
+                localStorage.setItem('playerPosition', playerPosition);
+                localStorage.setItem('playerFoot', playerFoot);
+
+                document.getElementById('futName').innerText = playerName;
+                document.getElementById('futPos').innerText = playerPosition;
+                alert('Profile Saved Successfully!');
+            } else {
+                alert('Please enter a player name.');
+            }
+        });
+
+        let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+        function renderTasks() {
+            const taskList = document.getElementById('taskList');
+            if (!taskList) return;
+            taskList.innerHTML = '';
+            tasks.forEach((task, index) => {
+                const li = document.createElement('li');
+                li.style.cssText = "display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); padding: 10px; margin-top: 8px; border-radius: 5px;";
+                li.innerHTML = `
+                    <span style="${task.completed ? 'text-decoration: line-through; opacity: 0.6;' : ''}; color: #fff;">${task.text}</span>
+                    <div>
+                        <button onclick="toggleTask(${index})" style="background: ${task.completed ? '#f39c12' : '#2ecc71'}; border: none; padding: 5px 10px; border-radius: 4px; color: #fff; cursor: pointer; margin-right: 5px;">${task.completed ? 'Undo' : 'Done'}</button>
+                        <button onclick="deleteTask(${index})" style="background: #e74c3c; border: none; padding: 5px 10px; border-radius: 4px; color: #fff; cursor: pointer;">Delete</button>
+                    </div>
+                `;
+                taskList.appendChild(li);
+            });
+        }
+
+        const addTaskBtn = document.getElementById('addTaskBtn');
+        if (addTaskBtn) {
+            addTaskBtn.addEventListener('click', function() {
+                const taskText = document.getElementById('taskInput').value.trim();
+                if (taskText) {
+                    tasks.push({ text: taskText, completed: false });
+                    localStorage.setItem('tasks', JSON.stringify(tasks));
+                    document.getElementById('taskInput').value = '';
+                    renderTasks();
+                }
+            });
+        }
+
+        window.toggleTask = function(index) {
+            tasks[index].completed = !tasks[index].completed;
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            renderTasks();
+        };
+
+        window.deleteTask = function(index) {
+            tasks.splice(index, 1);
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            renderTasks();
+        };
+
+        const tabTrainingBtn = document.getElementById('tabTrainingBtn');
+        const tabMatchBtn = document.getElementById('tabMatchBtn');
+        const trainingForm = document.getElementById('trainingForm');
+        const matchForm = document.getElementById('matchForm');
+
+        if (tabTrainingBtn && tabMatchBtn) {
+            tabTrainingBtn.addEventListener('click', () => {
+                tabTrainingBtn.classList.add('active');
+                tabMatchBtn.classList.remove('active');
+                trainingForm.classList.remove('hidden');
+                matchForm.classList.add('hidden');
+            });
+
+            tabMatchBtn.addEventListener('click', () => {
+                tabMatchBtn.classList.add('active');
+                tabTrainingBtn.classList.remove('active');
+                matchForm.classList.remove('hidden');
+                trainingForm.classList.add('hidden');
+            });
+        }
+
+        let skillRadarChart = null;
+        function initRadarChart() {
+            const ctx = document.getElementById('skillRadar');
+            if (!ctx) return;
+            let baseVal = Math.min(95, 50 + Math.floor(totalMinutes / 30));
+            if (skillRadarChart) {
+                skillRadarChart.data.datasets[0].data = [baseVal, baseVal, baseVal, baseVal, baseVal, baseVal];
+                skillRadarChart.update();
+                return;
+            }
+            skillRadarChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Shooting', 'Passing', 'Dribbling', 'Pace', 'Physical', 'Defending'],
+                    datasets: [{
+                        label: 'Player Attributes',
+                        data: [baseVal, baseVal, baseVal, baseVal, baseVal, baseVal],
+                        backgroundColor: 'rgba(52, 152, 219, 0.2)',
+                        borderColor: '#3498db',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#3498db'
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            pointLabels: { color: '#fff', font: { size: 11 } },
+                            ticks: { display: false, max: 99, min: 40 }
+                        }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        let historyLog = JSON.parse(localStorage.getItem('historyLog')) || [];
+
+        function updateUI() {
+            document.getElementById('total').innerText = totalMinutes + " mins";
+            document.getElementById('streak').innerText = streak + " days";
+            document.getElementById('totalMatches').innerText = totalMatches + " played";
+            document.getElementById('totalG_A').innerText = `${totalGoals} G / ${totalAssists} A`;
+
+            let currentLevelXP = xp % 100;
+            let currentLevel = Math.floor(xp / 100) + 1;
+            document.getElementById('xpText').innerText = `${currentLevelXP} / 100 XP`;
+            document.getElementById('xpFill').style.width = `${currentLevelXP}%`;
+            document.getElementById('playerLevel').innerText = `⚡ LEVEL ${currentLevel}`;
+
+            let calculatedOvr = Math.min(99, 50 + Math.floor(totalMinutes / 40) + Math.floor(totalGoals * 2));
+            document.getElementById('futOvr').innerText = calculatedOvr;
+            document.getElementById('futPace').innerText = calculatedOvr;
+            document.getElementById('futSho').innerText = calculatedOvr;
+            document.getElementById('futPas').innerText = calculatedOvr;
+            document.getElementById('futDri').innerText = calculatedOvr;
+            document.getElementById('futPhy').innerText = calculatedOvr;
+            document.getElementById('futDef').innerText = Math.max(40, calculatedOvr - 10);
+
+            const historyEl = document.getElementById('history');
+            if (historyEl) {
+                historyEl.innerHTML = '';
+                historyLog.forEach((item, index) => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<span>${item.text}</span> <button onclick="deleteLog(${index})" class="delete-btn">×</button>`;
+                    historyEl.appendChild(li);
+                });
+            }
+
+            const weeklyChartEl = document.getElementById('weeklyChart');
+            if (weeklyChartEl) {
+                const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                let dayMinutes = [0, 0, 0, 0, 0, 0, 0];
+
+                historyLog.forEach(item => {
+                    if (item.type === 'training' && item.date) {
+                        let d = new Date(item.date);
+                        let dayIndex = d.getDay();
+                        let adjustedIndex = dayIndex === 0 ? 6 : dayIndex - 1;
+                        dayMinutes[adjustedIndex] += item.mins || 0;
+                    }
+                });
+
+                let barsHTML = days.map((day, index) => {
+                    let mins = dayMinutes[index];
+                    let height = Math.min(100, mins);
+                    return `
+                        <div style="text-align:center; flex: 1;">
+                            <div style="height: ${height}px; background: #3b82f6; width: 20px; border-radius: 4px; margin: 0 auto; display: flex; align-items: flex-end; justify-content: center;">
+                                <span style="font-size: 9px; color: #fff; padding-bottom: 2px;">${mins > 0 ? mins : ''}</span>
+                            </div>
+                            <small style="color:#94a3b8; font-size: 11px; display: block; margin-top: 5px;">${day}</small>
+                        </div>
+                    `;
+                }).join('');
+
+                weeklyChartEl.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: flex-end; height: 130px; padding-top: 15px; padding-bottom: 5px;">
+                        ${barsHTML}
+                    </div>
+                `;
+            }
+
+            localStorage.setItem('totalMinutes', totalMinutes);
+            localStorage.setItem('streak', streak);
+            localStorage.setItem('totalMatches', totalMatches);
+            localStorage.setItem('totalGoals', totalGoals);
+            localStorage.setItem('totalAssists', totalAssists);
+            localStorage.setItem('xp', xp);
+            localStorage.setItem('historyLog', JSON.stringify(historyLog));
+
+            initRadarChart();
+            updateWeeklyGoalUI();
+        }
+
+        const addButton = document.getElementById('addButton');
+        if (addButton) {
+            addButton.addEventListener('click', function() {
+                const type = document.getElementById('trainingType').value;
+                const mins = parseInt(document.getElementById('minutes').value);
+
+                if (!mins || mins <= 0) {
+                    alert('Please enter valid training minutes.');
+                    return;
+                }
+
+                totalMinutes += mins;
+                xp += 20;
+                streak += 1;
+
+                let currentDate = new Date().toISOString().split('T')[0];
+                historyLog.unshift({ text: `${type} — ${mins} mins (${currentDate})`, type: 'training', mins: mins, date: currentDate });
+
+                document.getElementById('minutes').value = '';
+                updateUI();
+                alert('Training Session Logged Successfully! (+20 XP)');
+            });
+        }
+
+        const addMatchButton = document.getElementById('addMatchButton');
+        if (addMatchButton) {
+            addMatchButton.addEventListener('click', function() {
+                const goals = parseInt(document.getElementById('matchGoals').value) || 0;
+                const assists = parseInt(document.getElementById('matchAssists').value) || 0;
+                const rating = document.getElementById('matchRating').value;
+
+                totalMatches += 1;
+                totalGoals += goals;
+                totalAssists += assists;
+                xp += 50;
+
+                let motmText = rating == "10" ? " ⭐ [MOTM]" : "";
+                let currentDate = new Date().toISOString().split('T')[0];
+                historyLog.unshift({ text: `Match — ${goals} Goals, ${assists} Assists, Rating: ${rating}/10${motmText} (${currentDate})`, type: 'match' });
+
+                document.getElementById('matchGoals').value = 0;
+                document.getElementById('matchAssists').value = 0;
+                updateUI();
+                alert(`Match Logged Successfully! Rating: ${rating}/10 (+50 XP)`);
+            });
+        }
+
+        const saveGoalButton = document.getElementById('saveGoalButton');
+        if (saveGoalButton) {
+            saveGoalButton.addEventListener('click', function() {
+                const goalVal = parseInt(document.getElementById('goalInput').value);
+                if (goalVal > 0) {
+                    weeklyGoal = goalVal;
+                    localStorage.setItem('weeklyGoal', weeklyGoal);
+                    updateWeeklyGoalUI();
+                    alert('Weekly Target Set Successfully!');
+                }
+            });
+        }
+
+        function updateWeeklyGoalUI() {
+            if (weeklyGoal > 0) {
+                document.getElementById('goalText').innerText = `Target: ${weeklyGoal} mins`;
+                document.getElementById('goalProgress').innerText = `${totalMinutes} / ${weeklyGoal} minutes completed`;
+                let percent = Math.min(100, (totalMinutes / weeklyGoal) * 100);
+                document.getElementById('goalFill').style.width = `${percent}%`;
+            }
+        }
+
+        const resetButton = document.getElementById('resetButton');
+        if (resetButton) {
+            resetButton.addEventListener('click', function() {
+                if (confirm('Are you sure you want to reset all data?')) {
+                    localStorage.clear();
+                    location.reload();
+                }
+            });
+        }
+
+        window.deleteLog = function(index) {
+            historyLog.splice(index, 1);
+            updateUI();
+        };
+
+        renderTasks();
+        updateUI();
+    </script>
 </body>
 </html>
