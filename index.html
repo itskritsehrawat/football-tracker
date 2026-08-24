@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PRO-TRAIN FC | Live Interactive Dashboard</title>
+    <title>PRO-TRAIN FC | Ultimate Player Ecosystem & Analytics</title>
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -15,6 +15,7 @@
             --accent-blue: #38bdf8;
             --accent-yellow: #eab308;
             --accent-orange: #f97316;
+            --accent-purple: #8b5cf6;
             --text-white: #f8fafc;
             --text-dim: #94a3b8;
         }
@@ -31,10 +32,10 @@
 
         .dashboard {
             width: 100%;
-            max-width: 900px;
+            max-width: 950px;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 18px;
         }
 
         .card {
@@ -42,6 +43,60 @@
             border: 1px solid var(--card-border);
             border-radius: 12px;
             padding: 20px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .section-header h3 {
+            margin: 0;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Navigation Tabs for Pages */
+        .page-nav {
+            display: flex;
+            gap: 10px;
+            background: #080c14;
+            padding: 8px;
+            border-radius: 10px;
+            border: 1px solid var(--card-border);
+        }
+
+        .nav-tab {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-dim);
+            padding: 10px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-align: center;
+        }
+
+        .nav-tab.active {
+            background: var(--accent-blue);
+            color: #000;
+        }
+
+        .page-section {
+            display: none;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .page-section.active {
+            display: flex;
         }
 
         /* Profile Section */
@@ -82,34 +137,6 @@
             right: 12px;
         }
 
-        .fut-card .icon {
-            font-size: 2.2rem;
-            margin: 8px 0 4px;
-        }
-
-        .fut-card .name {
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-align: center;
-            color: #fff;
-        }
-
-        .profile-info {
-            flex-grow: 1;
-        }
-
-        .player-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 6px;
-        }
-
-        .player-title h2 {
-            margin: 0;
-            font-size: 1.5rem;
-        }
-
         .badge {
             background: rgba(16, 185, 129, 0.15);
             color: var(--accent-green);
@@ -119,61 +146,34 @@
             font-weight: 600;
         }
 
-        .subtitle {
-            color: var(--text-dim);
-            font-size: 0.85rem;
-            margin: 0 0 16px 0;
-        }
-
-        .quick-metrics {
-            display: flex;
-            gap: 10px;
-        }
-
-        .metric-box {
-            background: #080c14;
-            border: 1px solid var(--card-border);
-            padding: 10px 14px;
-            border-radius: 8px;
-            flex: 1;
-            text-align: center;
-        }
-
-        .metric-box label {
-            display: block;
-            font-size: 0.65rem;
-            color: var(--text-dim);
-            letter-spacing: 0.5px;
-            margin-bottom: 4px;
-        }
-
-        .metric-box val {
-            font-size: 0.95rem;
-            font-weight: 700;
-        }
-
-        /* Reports */
-        .section-header {
+        /* Live Training Stopwatch Widget */
+        .stopwatch-box {
+            background: linear-gradient(135deg, #080c14, #06241b);
+            border: 1px solid var(--accent-green);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
         }
 
-        .section-header h3 {
-            margin: 0;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        .timer-display {
+            font-size: 2rem;
+            font-weight: 800;
             color: var(--accent-green);
+            font-family: monospace;
         }
 
-        .live-sync {
-            font-size: 0.75rem;
-            color: var(--text-dim);
+        .timer-btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
         }
 
+        .btn-start { background: var(--accent-green); color: #000; }
+        .btn-stop { background: #ef4444; color: #fff; }
+
+        /* Summary Grid */
         .summary-grid {
             display: grid;
             grid-template-columns: repeat(6, 1fr);
@@ -199,7 +199,70 @@
             font-size: 1.1rem;
         }
 
-        /* Smart Training Plan */
+        /* Diet Section Tabs */
+        .diet-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .diet-btn {
+            background: #080c14;
+            border: 1px solid var(--card-border);
+            color: var(--text-dim);
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .diet-btn.active {
+            background: var(--accent-orange);
+            color: #000;
+            border-color: var(--accent-orange);
+        }
+
+        .diet-content {
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .diet-content.active {
+            display: flex;
+        }
+
+        .diet-item {
+            background: #080c14;
+            padding: 12px 16px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid var(--accent-orange);
+        }
+
+        /* Calendar & History Grid */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            text-align: center;
+        }
+
+        .day-box {
+            background: #080c14;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--card-border);
+            cursor: pointer;
+        }
+
+        .check-icon { color: var(--accent-green); font-weight: bold; }
+        .cross-icon { color: #ef4444; font-weight: bold; }
+
+        /* Drills & Tasks */
         .plan-list {
             display: flex;
             flex-direction: column;
@@ -223,105 +286,11 @@
             font-weight: 600;
             cursor: pointer;
             border: none;
-            transition: 0.2s;
         }
 
         .status-completed { background: rgba(16, 185, 129, 0.2); color: var(--accent-green); }
         .status-progress { background: rgba(234, 179, 8, 0.2); color: var(--accent-yellow); }
         .status-notstarted { background: rgba(148, 163, 184, 0.1); color: var(--text-dim); }
-
-        /* Analytics */
-        .chart-tabs {
-            display: flex;
-            gap: 6px;
-        }
-
-        .tab-btn {
-            background: #080c14;
-            border: 1px solid var(--card-border);
-            color: var(--text-dim);
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            cursor: pointer;
-        }
-
-        .tab-btn.active {
-            background: var(--accent-blue);
-            color: #000;
-            border-color: var(--accent-blue);
-            font-weight: 600;
-        }
-
-        .stats-cards-mini {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        /* Calendar */
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 10px;
-            text-align: center;
-        }
-
-        .day-box {
-            background: #080c14;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid var(--card-border);
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .day-box:hover {
-            border-color: var(--accent-yellow);
-        }
-
-        .day-box div {
-            font-size: 0.75rem;
-            color: var(--text-dim);
-            margin-bottom: 8px;
-        }
-
-        .check-icon { color: var(--accent-green); font-weight: bold; }
-        .cross-icon { color: #ef4444; font-weight: bold; }
-
-        /* Drill Library */
-        .drills-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-        }
-
-        .drill-card {
-            background: #080c14;
-            border: 1px solid var(--card-border);
-            padding: 14px;
-            border-radius: 8px;
-        }
-
-        .drill-tag {
-            font-size: 0.65rem;
-            color: var(--accent-yellow);
-            font-weight: 700;
-            margin-bottom: 6px;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .drill-title {
-            font-size: 0.85rem;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .drill-desc {
-            font-size: 0.7rem;
-            color: var(--text-dim);
-        }
 
         /* Gear Hub */
         .gear-card {
@@ -340,184 +309,183 @@
             font-size: 0.85rem;
             font-weight: 700;
         }
-
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .modal-content {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            padding: 24px;
-            border-radius: 12px;
-            width: 320px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .modal-content input {
-            background: #080c14;
-            border: 1px solid var(--card-border);
-            color: #fff;
-            padding: 10px;
-            border-radius: 6px;
-        }
-        .modal-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
     </style>
 </head>
 <body>
 
     <div class="dashboard">
 
-        <!-- 1. HEADER PROFILE -->
-        <div class="card profile-card">
-            <div class="fut-card">
-                <span class="pos">LW</span>
-                <span class="rating">88</span>
-                <div class="icon">👤</div>
-                <div class="name">Krit Sehrawat</div>
-            </div>
-            <div class="profile-info">
-                <div class="player-title">
-                    <h2>Krit Sehrawat</h2>
-                    <span class="badge">Right Foot</span>
-                    <span style="font-size: 0.75rem; color: var(--text-dim); margin-left: auto;">Academy XI</span>
+        <!-- PAGE SWITCHER NAVIGATION -->
+        <div class="page-nav">
+            <button class="nav-tab active" onclick="switchPage('dashboard', this)">⚡ Live Dashboard</button>
+            <button class="nav-tab" onclick="switchPage('diet', this)">🥗 Pro Diet Engine</button>
+            <button class="nav-tab" onclick="switchPage('analytics', this)">📈 Deep Analytics & Logs</button>
+        </div>
+
+        <!-- ================= PAGE 1: LIVE DASHBOARD ================= -->
+        <div id="page-dashboard" class="page-section active">
+
+            <!-- Profile Header -->
+            <div class="card profile-card">
+                <div class="fut-card">
+                    <span class="pos">LW</span>
+                    <span class="rating">88</span>
+                    <div style="font-size: 2rem; margin: 6px 0;">⚽</div>
+                    <div style="font-size: 0.75rem; font-weight:700;">Krit Sehrawat</div>
                 </div>
-                <p class="subtitle">Elite training consistency builds champions. Complete your daily tasks, log match stats, and elevate your game metrics!</p>
-                <div class="quick-metrics">
-                    <div class="metric-box">
-                        <label>READINESS</label>
-                        <val style="color: var(--accent-green);">Optimal 🟢</val>
+                <div style="flex-grow: 1;">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
+                        <h2 style="margin: 0; font-size: 1.4rem;">Krit Sehrawat</h2>
+                        <span class="badge">Right Foot</span>
+                        <span style="font-size: 0.75rem; color: var(--text-dim); margin-left: auto;" id="liveClock">Loading Date...</span>
                     </div>
-                    <div class="metric-box">
-                        <label>CONSISTENCY</label>
-                        <val style="color: var(--accent-yellow);">85% 🔥</val>
+                    <p style="color: var(--text-dim); font-size: 0.85rem; margin: 0 0 12px 0;">Track every second of training, maintain daily consistency, and level up your game.</p>
+                    <div style="display: flex; gap: 10px;">
+                        <div style="background: #080c14; padding: 8px; border-radius: 6px; flex:1; text-align:center;">
+                            <span style="font-size:0.65rem; color:var(--text-dim); display:block;">TODAY STATUS</span>
+                            <span style="font-size:0.9rem; color:var(--accent-green); font-weight:700;">Active 🟢</span>
+                        </div>
+                        <div style="background: #080c14; padding: 8px; border-radius: 6px; flex:1; text-align:center;">
+                            <span style="font-size:0.65rem; color:var(--text-dim); display:block;">STREAK</span>
+                            <span style="font-size:0.9rem; color:var(--accent-yellow); font-weight:700;">7 Days 🔥</span>
+                        </div>
                     </div>
-                    <div class="metric-box">
-                        <label>TOP SPEED</label>
-                        <val style="color: var(--accent-orange);">29.4 km/h ⚡</val>
+                </div>
+            </div>
+
+            <!-- LIVE TRAINING STOPWATCH (START/END SESSION) -->
+            <div class="card stopwatch-box">
+                <div>
+                    <div style="font-size: 0.75rem; color: var(--accent-green); font-weight: 700; margin-bottom: 4px;">⏱️ LIVE SESSION TRACKER</div>
+                    <div class="timer-display" id="stopwatchTime">00:00:00</div>
+                    <div style="font-size: 0.75rem; color: var(--text-dim);" id="sessionStatus">Session Paused. Click Start when you begin training!</div>
+                </div>
+                <div>
+                    <button class="timer-btn btn-start" id="startStopBtn" onclick="toggleStopwatch()">Start Training</button>
+                </div>
+            </div>
+
+            <!-- Today's Report Grid -->
+            <div class="card">
+                <div class="section-header">
+                    <h3 style="color: var(--accent-green);">⚡ TODAY'S FOOTBALL REPORT</h3>
+                    <span style="font-size: 0.75rem; color: var(--text-dim);" id="dateStampText">Auto-Synced</span>
+                </div>
+                <div class="summary-grid">
+                    <div class="sum-item"><div>👟 Steps</div><span id="statSteps">8,420</span></div>
+                    <div class="sum-item"><div>📍 Distance</div><span id="statDistance">4.7 km</span></div>
+                    <div class="sum-item"><div>⚡ Sprints</div><span id="statSprints">14</span></div>
+                    <div class="sum-item"><div>⏱️ Active Time</div><span id="statTime">75 min</span></div>
+                    <div class="sum-item"><div>⚽ Drills</div><span id="statDrillsCount">1/4</span></div>
+                    <div class="sum-item"><div>🔥 Streak</div><span>7 Days</span></div>
+                </div>
+            </div>
+
+            <!-- Smart Training Tasks -->
+            <div class="card">
+                <div class="section-header">
+                    <h3 style="color: var(--text-white);">📋 Smart Training Plan & Drills</h3>
+                    <span class="badge" id="planBadge">1/4 Completed</span>
+                </div>
+                <div class="plan-list" id="trainingPlanList">
+                    <div class="plan-item">
+                        <span>Ball Mastery — 20 min</span>
+                        <button class="status-btn status-completed" onclick="toggleTask(0)">Completed ✓</button>
+                    </div>
+                    <div class="plan-item">
+                        <span>Passing Drills — 15 min</span>
+                        <button class="status-btn status-progress" onclick="toggleTask(1)">In Progress ⏳</button>
+                    </div>
+                    <div class="plan-item">
+                        <span>Dribbling & Agility — 15 min</span>
+                        <button class="status-btn status-notstarted" onclick="toggleTask(2)">Not Started ⏳</button>
+                    </div>
+                    <div class="plan-item">
+                        <span>Finishing & Shooting — 20 min</span>
+                        <button class="status-btn status-notstarted" onclick="toggleTask(3)">Not Started ⏳</button>
                     </div>
                 </div>
             </div>
+
         </div>
 
-        <!-- 2. TODAY'S FOOTBALL REPORT -->
-        <div class="card">
-            <div class="section-header">
-                <h3>⚡ TODAY'S FOOTBALL REPORT</h3>
-                <span class="live-sync">Live Synced</span>
-            </div>
-            <div class="summary-grid">
-                <div class="sum-item"><div>👟 Steps</div><span id="statSteps">8,420</span></div>
-                <div class="sum-item"><div>📍 Distance</div><span id="statDistance">4.7 km</span></div>
-                <div class="sum-item"><div>⚡ Sprints</div><span id="statSprints">14</span></div>
-                <div class="sum-item"><div>⏱️ Active Time</div><span id="statTime">75 min</span></div>
-                <div class="sum-item"><div>⚽ Drills</div><span id="statDrillsCount">1/4</span></div>
-                <div class="sum-item"><div>🔥 Streak</div><span id="statStreak">7 Days</span></div>
-            </div>
-        </div>
+        <!-- ================= PAGE 2: PRO DIET ENGINE ================= -->
+        <div id="page-diet" class="page-section">
+            <div class="card">
+                <div class="section-header">
+                    <h3 style="color: var(--accent-orange);">🥗 Professional Footballer Diet Engine</h3>
+                    <span style="font-size: 0.75rem; color: var(--text-dim);">Fuel for Matchdays</span>
+                </div>
+                <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 0;">Select your current tier to view exact pre-match, post-match, and recovery nutritional plans designed for speed and endurance.</p>
+                
+                <div class="diet-tabs">
+                    <button class="diet-btn active" onclick="switchDiet('beginner', this)">🌱 Beginner Player</button>
+                    <button class="diet-btn" onclick="switchDiet('pro', this)">⚡ Professional Player</button>
+                    <button class="diet-btn" onclick="switchDiet('elite', this)">🔥 Elite Academy Player</button>
+                </div>
 
-        <!-- 3. SMART TRAINING PLAN (INTERACTIVE) -->
-        <div class="card">
-            <div class="section-header">
-                <h3 style="color: var(--text-white);">📋 Smart Training Plan — LW</h3>
-                <span class="badge" id="planBadge" style="background: rgba(255,255,255,0.05); color: var(--text-dim);">1/4 Completed</span>
-            </div>
-            <div class="plan-list" id="trainingPlanList">
-                <div class="plan-item">
-                    <span>Ball Mastery — 20 min</span>
-                    <button class="status-btn status-completed" onclick="toggleTask(0)">Completed ✓</button>
+                <!-- Beginner Diet -->
+                <div id="diet-beginner" class="diet-content active">
+                    <div class="diet-item"><div>🍳 Breakfast: Oats with banana & milk</div><span style="color:var(--accent-orange); font-weight:700;">350 kcal</span></div>
+                    <div class="diet-item"><div>🍛 Lunch: Brown rice, dal, chicken breast & salad</div><span style="color:var(--accent-orange); font-weight:700;">550 kcal</span></div>
+                    <div class="diet-item"><div>🍎 Pre-Training: 1 Apple & handful of almonds</div><span style="color:var(--accent-orange); font-weight:700;">200 kcal</span></div>
+                    <div class="diet-item"><div>🥛 Post-Training: Paneer sandwich or whey protein shake</div><span style="color:var(--accent-orange); font-weight:700;">400 kcal</span></div>
                 </div>
-                <div class="plan-item">
-                    <span>Passing Drills — 15 min</span>
-                    <button class="status-btn status-progress" onclick="toggleTask(1)">In Progress ⏳</button>
-                </div>
-                <div class="plan-item">
-                    <span>Dribbling & Agility — 15 min</span>
-                    <button class="status-btn status-notstarted" onclick="toggleTask(2)">Not Started ⏳</button>
-                </div>
-                <div class="plan-item">
-                    <span>Finishing & Shooting — 20 min</span>
-                    <button class="status-btn status-notstarted" onclick="toggleTask(3)">Not Started ⏳</button>
-                </div>
-            </div>
-        </div>
 
-        <!-- 4. ANALYTICS & GRAPH -->
-        <div class="card">
-            <div class="section-header">
-                <h3 style="color: var(--accent-blue);">📊 Performance Centre & Analytics</h3>
-                <div class="chart-tabs">
-                    <button class="tab-btn active" onclick="switchTab('weekly', this)">Weekly</button>
-                    <button class="tab-btn" onclick="switchTab('monthly', this)">Monthly</button>
-                    <button class="tab-btn" onclick="switchTab('yearly', this)">Yearly</button>
-                    <button class="tab-btn" style="border-color: var(--accent-blue); color: var(--accent-blue);" onclick="openModal()">🛡️ Log Stats</button>
+                <!-- Pro Diet -->
+                <div id="diet-pro" class="diet-content">
+                    <div class="diet-item"><div>🥑 Breakfast: Whole wheat toast, 3 egg whites, avocado & juice</div><span style="color:var(--accent-orange); font-weight:700;">500 kcal</span></div>
+                    <div class="diet-item"><div>🍗 Lunch: Grilled chicken quinoa bowl with sweet potatoes</div><span style="color:var(--accent-orange); font-weight:700;">700 kcal</span></div>
+                    <div class="diet-item"><div>🍌 Pre-Match: Peanut butter toast & banana (2 hours before kick-off)</div><span style="color:var(--accent-orange); font-weight:700;">300 kcal</span></div>
+                    <div class="diet-item"><div>🥩 Dinner: Salmon/Lean steak with roasted vegetables & rice</div><span style="color:var(--accent-orange); font-weight:700;">650 kcal</span></div>
                 </div>
-            </div>
-            <div class="stats-cards-mini">
-                <div class="sum-item"><div>Training Minutes</div><span id="miniMinutes">75 min</span></div>
-                <div class="sum-item"><div>Daily Steps</div><span id="miniSteps">8,420</span></div>
-                <div class="sum-item"><div>Sprint Count</div><span id="miniSprints">14 Sprints</span></div>
-                <div class="sum-item"><div>Match Goals</div><span style="color: #f43f5e;" id="miniGoals">12 Goals</span></div>
-            </div>
-            <div style="height: 220px; width: 100%;">
-                <canvas id="performanceChart"></canvas>
-            </div>
-        </div>
 
-        <!-- 5. STREAK CALENDAR (CLICKABLE DAYS) -->
-        <div class="card">
-            <div class="section-header">
-                <h3 style="color: var(--accent-yellow);">📅 Training History & Streak Calendar</h3>
-                <span style="font-size: 0.75rem; color: var(--text-dim);">Click box to toggle status</span>
-            </div>
-            <div class="calendar-grid" id="calendarGrid">
-                <div class="day-box" onclick="toggleDay(this)"><div>Mon</div><span class="check-icon">✔</span></div>
-                <div class="day-box" onclick="toggleDay(this)"><div>Tue</div><span class="check-icon">✔</span></div>
-                <div class="day-box" onclick="toggleDay(this)"><div>Wed</div><span class="check-icon">✔</span></div>
-                <div class="day-box" onclick="toggleDay(this)"><div>Thu</div><span class="check-icon">✔</span></div>
-                <div class="day-box" onclick="toggleDay(this)"><div>Fri</div><span class="cross-icon">✖</span></div>
-                <div class="day-box" onclick="toggleDay(this)"><div>Sat</div><span class="check-icon">✔</span></div>
-                <div class="day-box" onclick="toggleDay(this)"><div>Sun</div><span style="color: var(--text-dim);">🔵</span></div>
-            </div>
-        </div>
-
-        <!-- 6. DRILL LIBRARY -->
-        <div class="card">
-            <div class="section-header">
-                <h3 style="color: var(--text-white);">📖 Pro Drill Library</h3>
-                <span style="font-size: 0.75rem; color: var(--text-dim);">Elite Standards</span>
-            </div>
-            <div class="drills-grid">
-                <div class="drill-card">
-                    <div class="drill-tag"><span>Difficulty: Pro</span> <span>15 min</span></div>
-                    <div class="drill-title">Cone Weaving & Agility</div>
-                    <div class="drill-desc">Tight space control and quick foot frequency.</div>
-                </div>
-                <div class="drill-card">
-                    <div class="drill-tag" style="color: var(--accent-orange);"><span>Difficulty: Intermediate</span> <span>20 min</span></div>
-                    <div class="drill-title">Box Finishing & Volleys</div>
-                    <div class="drill-desc">One-touch powerful strikes under pressure.</div>
-                </div>
-                <div class="drill-card">
-                    <div class="drill-tag" style="color: var(--accent-blue);"><span>Difficulty: Advanced</span> <span>10 min</span></div>
-                    <div class="drill-title">Explosive 30m Sprints</div>
-                    <div class="drill-desc">Max velocity acceleration drills for wingers.</div>
+                <!-- Elite Diet -->
+                <div id="diet-elite" class="diet-content">
+                    <div class="diet-item"><div>🥞 Breakfast: High-protein pancakes, berries, organic honey & eggs</div><span style="color:var(--accent-orange); font-weight:700;">650 kcal</span></div>
+                    <div class="diet-item"><div>🍝 Mid-Day: Carb-loading whole grain pasta with turkey meatballs</div><span style="color:var(--accent-orange); font-weight:700;">850 kcal</span></div>
+                    <div class="diet-item"><div>⚡ Matchday Fuel: Electrolyte loading drink, fast-acting energy gels</div><span style="color:var(--accent-orange); font-weight:700;">250 kcal</span></div>
+                    <div class="diet-item"><div>🐟 Recovery: White fish, asparagus, organic rice & magnesium supplement</div><span style="color:var(--accent-orange); font-weight:700;">700 kcal</span></div>
                 </div>
             </div>
         </div>
 
-        <!-- 7. GEAR HUB -->
+        <!-- ================= PAGE 3: DEEP ANALYTICS & LOGS ================= -->
+        <div id="page-analytics" class="page-section">
+            <div class="card">
+                <div class="section-header">
+                    <h3 style="color: var(--accent-blue);">📈 Deep Performance Analytics & Graphs</h3>
+                    <div style="display: flex; gap: 6px;">
+                        <button class="diet-btn active" onclick="switchChart('weekly', this)" style="padding: 4px 10px;">Weekly</button>
+                        <button class="diet-btn" onclick="switchChart('monthly', this)" style="padding: 4px 10px;">Monthly</button>
+                        <button class="diet-btn" onclick="switchChart('yearly', this)" style="padding: 4px 10px;">Yearly</button>
+                    </div>
+                </div>
+                <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 0;">Analyze training volume across days, weeks, months, and years to detect performance trends.</p>
+                <div style="height: 250px; width: 100%;">
+                    <canvas id="deepPerformanceChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Streak & Calendar History -->
+            <div class="card">
+                <div class="section-header">
+                    <h3 style="color: var(--accent-yellow);">📅 Historical Training Calendar</h3>
+                    <span style="font-size: 0.75rem; color: var(--text-dim);" id="currentYearDisplay">Year 2026</span>
+                </div>
+                <div class="calendar-grid">
+                    <div class="day-box"><div>Mon</div><span class="check-icon">✔</span></div>
+                    <div class="day-box"><div>Tue</div><span class="check-icon">✔</span></div>
+                    <div class="day-box"><div>Wed</div><span class="check-icon">✔</span></div>
+                    <div class="day-box"><div>Thu</div><span class="check-icon">✔</span></div>
+                    <div class="day-box"><div>Fri</div><span class="cross-icon">✖</span></div>
+                    <div class="day-box"><div>Sat</div><span class="check-icon">✔</span></div>
+                    <div class="day-box"><div>Sun</div><span style="color: var(--accent-blue);">●</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gear Hub Footer -->
         <div class="card gear-card">
             <div>
                 <div style="font-size: 0.75rem; color: var(--accent-green); font-weight: 700; margin-bottom: 4px;">🛍️ Pro Recommendation Hub</div>
@@ -529,26 +497,60 @@
 
     </div>
 
-    <!-- MODAL FOR LOGGING STATS -->
-    <div class="modal" id="statsModal">
-        <div class="modal-content">
-            <h3 style="margin:0; color:var(--accent-blue);">Log Today's Stats</h3>
-            <label style="font-size:0.8rem; color:var(--text-dim);">Training Minutes:</label>
-            <input type="number" id="inputMinutes" value="75">
-            <label style="font-size:0.8rem; color:var(--text-dim);">Steps Taken:</label>
-            <input type="number" id="inputSteps" value="8420">
-            <label style="font-size:0.8rem; color:var(--text-dim);">Goals Scored:</label>
-            <input type="number" id="inputGoals" value="12">
-            <div class="modal-buttons">
-                <button class="status-btn status-completed" style="flex:1;" onclick="saveStats()">Save Stats</button>
-                <button class="status-btn status-notstarted" style="flex:1;" onclick="closeModal()">Cancel</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- SCRIPT LOGIC -->
+    <!-- SCRIPT LOGIC FOR FULL ECOSYSTEM -->
     <script>
-        // Task Management
+        // Live Date & Time Stamp Updater
+        function updateClock() {
+            const now = new Date();
+            const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+            document.getElementById('liveClock').innerText = now.toLocaleDateString('en-US', options);
+            document.getElementById('dateStampText').innerText = "Live Synced: " + now.toLocaleDateString();
+            document.getElementById('currentYearDisplay').innerText = "Year " + now.getFullYear();
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Page Navigation Switcher
+        function switchPage(pageId, btnElement) {
+            document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+            
+            document.getElementById('page-' + pageId).classList.add('active');
+            btnElement.classList.add('active');
+        }
+
+        // Live Stopwatch Logic
+        let stopwatchInterval;
+        let secondsElapsed = 0;
+        let isRunning = false;
+
+        function toggleStopwatch() {
+            let btn = document.getElementById('startStopBtn');
+            let statusText = document.getElementById('sessionStatus');
+
+            if(!isRunning) {
+                isRunning = true;
+                btn.innerText = "End Session";
+                btn.className = "timer-btn btn-stop";
+                statusText.innerText = "Training session is live! Go crush your drills.";
+                stopwatchInterval = setInterval(() => {
+                    secondsElapsed++;
+                    let hrs = Math.floor(secondsElapsed / 3600).toString().padStart(2, '0');
+                    let mins = Math.floor((secondsElapsed % 3600) / 60).toString().padStart(2, '0');
+                    let secs = (secondsElapsed % 60).toString().padStart(2, '0');
+                    document.getElementById('stopwatchTime').innerText = `${hrs}:${mins}:${secs}`;
+                }, 1000);
+            } else {
+                isRunning = false;
+                clearInterval(stopwatchInterval);
+                btn.innerText = "Start Training";
+                btn.className = "timer-btn btn-start";
+                statusText.innerText = `Session completed! Total active training time saved.`;
+                alert(`Great session, Champion! You logged ${Math.floor(secondsElapsed/60)} minutes of active training today. 🚀`);
+            }
+        }
+
+        // Task & Drill Status Manager
         let tasks = [
             { status: "completed" },
             { status: "progress" },
@@ -585,14 +587,23 @@
             document.getElementById("planBadge").innerText = `${completedCount}/4 Completed`;
         }
 
-        // Chart.js Configuration
-        const ctx = document.getElementById('performanceChart').getContext('2d');
-        let performanceChart = new Chart(ctx, {
+        // Diet Category Switcher
+        function switchDiet(tier, btnElement) {
+            document.querySelectorAll('.diet-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.diet-btn').forEach(b => b.classList.remove('active'));
+
+            document.getElementById('diet-' + tier).classList.add('active');
+            btnElement.classList.add('active');
+        }
+
+        // Advanced Chart.js Analytics Engine
+        const ctx = document.getElementById('deepPerformanceChart').getContext('2d');
+        let deepChart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
                 datasets: [{
-                    label: 'Training Load / Minutes',
+                    label: 'Training Volume (Minutes)',
                     data: [45, 60, 30, 75, 50, 90, 40],
                     backgroundColor: '#38bdf8',
                     borderRadius: 6
@@ -609,60 +620,21 @@
             }
         });
 
-        function switchTab(type, btnElement) {
-            document.querySelectorAll('.tab-btn').forEach(b => {
-                if(!b.textContent.includes('Log Stats')) b.classList.remove('active');
-            });
+        function switchChart(timeframe, btnElement) {
+            document.querySelectorAll('#page-analytics .diet-btn').forEach(b => b.classList.remove('active'));
             btnElement.classList.add('active');
 
-            if(type === 'weekly') {
-                performanceChart.data.labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-                performanceChart.data.datasets[0].data = [45, 60, 30, 75, 50, 90, 40];
-            } else if(type === 'monthly') {
-                performanceChart.data.labels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
-                performanceChart.data.datasets[0].data = [320, 280, 410, 390];
-            } else if(type === 'yearly') {
-                performanceChart.data.labels = ['Q1', 'Q2', 'Q3', 'Q4'];
-                performanceChart.data.datasets[0].data = [1200, 1450, 1300, 1600];
+            if(timeframe === 'weekly') {
+                deepChart.data.labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                deepChart.data.datasets[0].data = [45, 60, 30, 75, 50, 90, 40];
+            } else if(timeframe === 'monthly') {
+                deepChart.data.labels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+                deepChart.data.datasets[0].data = [320, 290, 410, 380];
+            } else if(timeframe === 'yearly') {
+                deepChart.data.labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                deepChart.data.datasets[0].data = [1200, 1350, 1400, 1550, 1600, 1450, 1500, 1700, 1650, 1800, 1750, 1900];
             }
-            performanceChart.update();
-        }
-
-        // Calendar Day Toggle
-        function toggleDay(element) {
-            let span = element.querySelector('span');
-            if(span.classList.contains('check-icon')) {
-                span.className = 'cross-icon';
-                span.innerText = '✖';
-            } else if(span.classList.contains('cross-icon')) {
-                span.className = '';
-                span.style.color = 'var(--text-dim)';
-                span.innerText = '🔵';
-            } else {
-                span.className = 'check-icon';
-                span.innerText = '✔';
-            }
-        }
-
-        // Modal Controls
-        function openModal() {
-            document.getElementById('statsModal').style.display = 'flex';
-        }
-        function closeModal() {
-            document.getElementById('statsModal').style.display = 'none';
-        }
-        function saveStats() {
-            let mins = document.getElementById('inputMinutes').value;
-            let steps = document.getElementById('inputSteps').value;
-            let goals = document.getElementById('inputGoals').value;
-
-            document.getElementById('statTime').innerText = mins + " min";
-            document.getElementById('miniMinutes').innerText = mins + " min";
-            document.getElementById('statSteps').innerText = Number(steps).toLocaleString();
-            document.getElementById('miniSteps').innerText = Number(steps).toLocaleString();
-            document.getElementById('miniGoals').innerText = goals + " Goals";
-
-            closeModal();
+            deepChart.update();
         }
     </script>
 </body>
