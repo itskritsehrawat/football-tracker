@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PRO-TRAIN FC | Live Player Dashboard</title>
+    <title>PRO-TRAIN FC | Complete Player Dashboard</title>
     <!-- Chart.js CDN for Analytics Graph -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -44,7 +44,7 @@
             padding: 20px;
         }
 
-        /* Profile Section */
+        /* 1. Header Profile Section */
         .profile-card {
             display: flex;
             align-items: center;
@@ -152,7 +152,7 @@
             font-weight: 700;
         }
 
-        /* Reports Section */
+        /* 2. Today's Football Report */
         .section-header {
             display: flex;
             justify-content: space-between;
@@ -199,7 +199,7 @@
             font-size: 1.1rem;
         }
 
-        /* Training Plan List */
+        /* 3. Smart Training Plan */
         .plan-list {
             display: flex;
             flex-direction: column;
@@ -230,7 +230,7 @@
         .status-progress { background: rgba(234, 179, 8, 0.2); color: var(--accent-yellow); }
         .status-notstarted { background: rgba(148, 163, 184, 0.1); color: var(--text-dim); }
 
-        /* Analytics */
+        /* 4. Analytics Graph */
         .chart-tabs {
             display: flex;
             gap: 6px;
@@ -260,7 +260,7 @@
             margin-bottom: 20px;
         }
 
-        /* Calendar */
+        /* 5. Calendar */
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
@@ -284,7 +284,7 @@
         .check-icon { color: var(--accent-green); font-weight: bold; }
         .cross-icon { color: #ef4444; font-weight: bold; }
 
-        /* Drill Library */
+        /* 6. Drill Library */
         .drills-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -318,7 +318,7 @@
             color: var(--text-dim);
         }
 
-        /* Gear Hub */
+        /* 7. Gear Hub */
         .gear-card {
             background: linear-gradient(90deg, #0f1623 0%, #064e3b 100%);
             display: flex;
@@ -336,7 +336,7 @@
             font-weight: 700;
         }
 
-        /* Modal Popup for Logging Stats */
+        /* Modal Popup */
         .modal {
             display: none;
             position: fixed;
@@ -378,13 +378,13 @@
         <div class="card profile-card">
             <div class="fut-card">
                 <span class="pos">LW</span>
-                <span class="rating" id="playerRating">88</span>
+                <span class="rating">88</span>
                 <div class="icon">👤</div>
                 <div class="name">Krit Sehrawat</div>
             </div>
             <div class="profile-info">
                 <div class="player-title">
-                    <h2 id="playerName">Krit Sehrawat</h2>
+                    <h2>Krit Sehrawat</h2>
                     <span class="badge">Right Foot</span>
                     <span style="font-size: 0.75rem; color: var(--text-dim); margin-left: auto;">Academy XI</span>
                 </div>
@@ -396,7 +396,7 @@
                     </div>
                     <div class="metric-box">
                         <label>CONSISTENCY</label>
-                        <val style="color: var(--accent-yellow);" id="consistencyVal">85% 🔥</val>
+                        <val style="color: var(--accent-yellow);">85% 🔥</val>
                     </div>
                     <div class="metric-box">
                         <label>TOP SPEED</label>
@@ -410,7 +410,7 @@
         <div class="card">
             <div class="section-header">
                 <h3>⚡ TODAY'S FOOTBALL REPORT</h3>
-                <span class="live-sync" id="syncStatus">Live Synced</span>
+                <span class="live-sync">Live Synced</span>
             </div>
             <div class="summary-grid">
                 <div class="sum-item"><div>👟 Steps</div><span id="statSteps">8,420</span></div>
@@ -422,26 +422,26 @@
             </div>
         </div>
 
-        <!-- 3. SMART TRAINING PLAN -->
+        <!-- 3. SMART TRAINING PLAN (TASKS & DRILLS CHECK) -->
         <div class="card">
             <div class="section-header">
                 <h3 style="color: var(--text-white);">📋 Smart Training Plan — LW</h3>
                 <span class="badge" id="planBadge" style="background: rgba(255,255,255,0.05); color: var(--text-dim);">1/4 Completed</span>
             </div>
             <div class="plan-list" id="trainingPlanList">
-                <div class="plan-item" data-id="0">
+                <div class="plan-item">
                     <span>Ball Mastery — 20 min</span>
                     <button class="status-btn status-completed" onclick="toggleTask(0)">Completed ✓</button>
                 </div>
-                <div class="plan-item" data-id="1">
+                <div class="plan-item">
                     <span>Passing Drills — 15 min</span>
                     <button class="status-btn status-progress" onclick="toggleTask(1)">In Progress ⏳</button>
                 </div>
-                <div class="plan-item" data-id="2">
+                <div class="plan-item">
                     <span>Dribbling & Agility — 15 min</span>
                     <button class="status-btn status-notstarted" onclick="toggleTask(2)">Not Started ⏳</button>
                 </div>
-                <div class="plan-item" data-id="3">
+                <div class="plan-item">
                     <span>Finishing & Shooting — 20 min</span>
                     <button class="status-btn status-notstarted" onclick="toggleTask(3)">Not Started ⏳</button>
                 </div>
@@ -511,7 +511,7 @@
             </div>
         </div>
 
-        <!-- 7. GEAR HUB -->
+        <!-- 7. GEAR HUB (WORKING AMAZON FOOTBALL GEAR LINK) -->
         <div class="card gear-card">
             <div>
                 <div style="font-size: 0.75rem; color: var(--accent-green); font-weight: 700; margin-bottom: 4px;">🛍️ Pro Recommendation Hub</div>
@@ -523,7 +523,7 @@
 
     </div>
 
-    <!-- MODAL FOR LOGGING STATS -->
+    <!-- MODAL POPUP FOR LOGGING STATS -->
     <div class="modal" id="statsModal">
         <div class="modal-content">
             <h3 style="margin:0; color:var(--accent-blue);">Log Today's Stats</h3>
@@ -540,22 +540,18 @@
         </div>
     </div>
 
-    <!-- JAVASCRIPT LOGIC -->
+    <!-- JAVASCRIPT FUNCTIONS -->
     <script>
-        // Task Management State
         let tasks = [
-            { name: "Ball Mastery", status: "completed" },
-            { name: "Passing Drills", status: "progress" },
-            { name: "Dribbling & Agility", status: "notstarted" },
-            { name: "Finishing & Shooting", status: "notstarted" }
+            { status: "completed" },
+            { status: "progress" },
+            { status: "notstarted" },
+            { status: "notstarted" }
         ];
 
         function toggleTask(index) {
-            let statuses = ["notstarted", "progress", "completed"];
-            let nextLabels = { "notstarted": "Not Started ⏳", "progress": "In Progress ⏳", "completed": "Completed ✓" };
             let current = tasks[index].status;
             let next = current === "notstarted" ? "progress" : current === "progress" ? "completed" : "notstarted";
-            
             tasks[index].status = next;
             updateTaskUI();
         }
@@ -582,7 +578,7 @@
             document.getElementById("planBadge").innerText = `${completedCount}/4 Completed`;
         }
 
-        // Chart Setup
+        // Chart Configuration
         const ctx = document.getElementById('performanceChart').getContext('2d');
         let performanceChart = new Chart(ctx, {
             type: 'bar',
@@ -625,7 +621,6 @@
             performanceChart.update();
         }
 
-        // Modal Controls
         function openModal() {
             document.getElementById('statsModal').style.display = 'flex';
         }
@@ -644,7 +639,6 @@
             document.getElementById('miniGoals').innerText = goals + " Goals";
 
             closeModal();
-            alert("Stats updated successfully! 🚀");
         }
     </script>
 </body>
