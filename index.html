@@ -310,94 +310,49 @@
         .status-progress { background: rgba(234, 179, 8, 0.2); color: var(--accent-yellow); }
         .status-notstarted { background: rgba(148, 163, 184, 0.1); color: var(--text-dim); }
 
-        /* REALISTIC FOOTBALL PITCH STYLING */
-        .pro-pitch {
-            background: linear-gradient(90deg, #064e3b 0%, #047857 50%, #064e3b 100%);
-            border: 2px solid #ffffff;
-            border-radius: 8px;
-            height: 460px;
+        /* Tactical Board Styling */
+        .pitch-container {
+            background: linear-gradient(180deg, #064e3b 0%, #022c22 100%);
+            border: 2px solid var(--accent-green);
+            border-radius: 10px;
+            height: 320px;
             position: relative;
             overflow: hidden;
-            box-shadow: inset 0 0 30px rgba(0,0,0,0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-        /* Pitch markings */
-        .pitch-halfway {
+        .pitch-line-center {
             position: absolute;
-            top: 0; left: 50%;
-            width: 2px; height: 100%;
-            background: rgba(255,255,255,0.4);
+            width: 100%;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.3);
         }
-        .pitch-center-circle {
+        .pitch-circle {
             position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100px; height: 100px;
-            border: 2px solid rgba(255,255,255,0.4);
+            width: 80px;
+            height: 80px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
             border-radius: 50%;
         }
-        .penalty-box-left {
-            position: absolute;
-            top: 25%; left: 0;
-            width: 15%; height: 50%;
-            border: 2px solid rgba(255,255,255,0.4);
-            border-left: none;
-        }
-        .penalty-box-right {
-            position: absolute;
-            top: 25%; right: 0;
-            width: 15%; height: 50%;
-            border: 2px solid rgba(255,255,255,0.4);
-            border-right: none;
-        }
-
-        /* Player Nodes on Field (Smooth transition for auto movement) */
         .player-node {
             position: absolute;
-            width: 28px;
-            height: 28px;
+            width: 24px;
+            height: 24px;
+            background: var(--accent-blue);
+            border: 2px solid #fff;
             border-radius: 50%;
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             font-weight: 800;
-            color: #fff;
+            color: #000;
             display: flex;
             justify-content: center;
             align-items: center;
-            cursor: grab;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.6);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            user-select: none;
-            z-index: 10;
-            transform: translate(-50%, -50%);
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+            transition: 0.2s;
         }
-        .player-node:active { cursor: grabbing; }
-        .team-home { background: var(--accent-blue); border: 2px solid #ffffff; color: #000; }
-        .team-away { background: #ef4444; border: 2px solid #ffffff; color: #fff; }
-
-        /* Real Football Ball Styling */
-        .match-ball {
-            position: absolute;
-            width: 18px;
-            height: 18px;
-            background: #ffffff;
-            border: 2px solid #000;
-            border-radius: 50%;
-            box-shadow: 0 0 10px rgba(255,255,255,0.8);
-            z-index: 15;
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            transform: translate(-50%, -50%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 9px;
-        }
-
-        /* SVG Tactical Lines Overlay */
-        #tacticalSvgOverlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 5;
-        }
+        .player-node:hover { transform: scale(1.2); background: var(--accent-yellow); }
 
         /* Gear Hub */
         .gear-card {
@@ -459,14 +414,14 @@
 
         <!-- COACH VOICE BANNER -->
         <div class="coach-banner" id="coachBannerText">
-            🎙️ <strong>Coach's Command:</strong> "Type your match situation in the box below! Watch players & ball shift automatically with tactical directional arrows."
+            🎙️ <strong>Coach's Command:</strong> "Listen up! Elite players eat natural food, master every tactical option on the pitch, and leave zero room for excuses."
         </div>
 
         <!-- NAVIGATION -->
         <div class="page-nav">
             <button class="nav-tab active" onclick="switchPage('dashboard', this)">⚡ Live Academy</button>
             <button class="nav-tab" onclick="switchPage('timeline', this)">🕒 Master Timeline</button>
-            <button class="nav-tab" onclick="switchPage('tactics', this)">♟️ 11v11 Tactics & Field</button>
+            <button class="nav-tab" onclick="switchPage('tactics', this)">♟️ 11v11 Tactics & Vision</button>
             <button class="nav-tab" onclick="switchPage('gearstore', this)">👟 Boots & Natural Diet</button>
             <button class="nav-tab" onclick="switchPage('diet', this)">🥗 Natural Diet Plan</button>
             <button class="nav-tab" onclick="switchPage('aiqa', this)">🧠 Elite AI Q&A</button>
@@ -561,7 +516,7 @@
 
         </div>
 
-        <!-- ================= PAGE 2: MASTER TIMELINE ================= -->
+        <!-- ================= PAGE 2: MASTER TIMELINE (CURISOTY & ROUTINES) ================= -->
         <div id="page-timeline" class="page-section">
             <div class="card">
                 <div class="section-header">
@@ -591,82 +546,46 @@
                         • 10 minutes of deep static stretching to prevent muscle tightness.<br>
                         • Recovery meal: Grilled chicken or paneer with steamed rice and vegetables.
                     </div>
+                    <div class="content-box" style="border-left-color: var(--accent-orange);">
+                        <strong>🏆 Match Day Protocol (Before & After Whistle):</strong><br>
+                        • <em>Pre-Match:</em> Deep scanning focus, calm breathing, no chaotic distractions, wearing position-matched precision boots.<br>
+                        • <em>Post-Match:</em> Tactical self-audit of every turnover and successful pass, ice water bath, and restorative whole-food nutrition.
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- ================= PAGE 3: 11v11 TACTICS & MOVABLE FIELD WITH BALL & ARROWS ================= -->
+        <!-- ================= PAGE 3: TACTICS & VISION 11v11 ================= -->
         <div id="page-tactics" class="page-section">
             <div class="card">
                 <div class="section-header">
-                    <h3 style="color: var(--accent-blue);">♟️ 11v11 Tactical Field + Ball + Auto-Position Simulator</h3>
-                    <span style="font-size: 0.75rem; color: var(--text-dim);">Ask Situation & Watch Players Move With Ball</span>
+                    <h3 style="color: var(--accent-blue);">♟️ Professional Club 11v11 Tactics & Option Creator</h3>
+                    <span style="font-size: 0.75rem; color: var(--text-dim);">Master Every Match Situation</span>
                 </div>
                 <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 0;">
-                    Type any match question below (e.g., <em>"If a8 is pressing what should h8 do"</em>). The players, the **football ball**, and **tactical directional arrows** will instantly adapt on the pitch!
+                    Professional clubs don't just kick the ball; they create numerical advantages and master passing options. Tap a player position below on the tactical pitch to reveal exact passing channels and decision guides!
                 </p>
 
-                <!-- TACTICAL SITUATION QUESTION BOX -->
-                <div style="display: flex; gap: 10px; margin-bottom: 12px;">
-                    <input type="text" id="tacticalQueryInput" placeholder="e.g. If a8 is pressing what should h8 do" style="flex:1; background: #05080f; border: 1px solid var(--card-border); color: #fff; padding: 10px; border-radius: 8px; font-size: 0.85rem;">
-                    <button class="timer-btn btn-start" onclick="simulateTacticalScenario()" style="padding: 10px 16px; font-size: 0.8rem;">Run Scenario 🧠</button>
+                <!-- Tactical Interactive Field -->
+                <div class="pitch-container" id="tacticalPitch">
+                    <div class="pitch-line-center"></div>
+                    <div class="pitch-circle"></div>
+                    <!-- 11 Players Opponent & Teammate Simulation Nodes -->
+                    <div class="player-node" style="top: 20%; left: 48%; background: var(--accent-yellow);" onclick="showTacticalAdvice('GK')">GK</div>
+                    <div class="player-node" style="top: 40%; left: 20%;" onclick="showTacticalAdvice('LB')">LB</div>
+                    <div class="player-node" style="top: 35%; left: 38%;" onclick="showTacticalAdvice('CB1')">CB</div>
+                    <div class="player-node" style="top: 35%; left: 58%;" onclick="showTacticalAdvice('CB2')">CB</div>
+                    <div class="player-node" style="top: 40%; left: 78%;" onclick="showTacticalAdvice('RB')">RB</div>
+                    <div class="player-node" style="top: 55%; left: 35%;" onclick="showTacticalAdvice('CM1')">CM</div>
+                    <div class="player-node" style="top: 60%; left: 50%; background: var(--accent-orange);" onclick="showTacticalAdvice('CDM')">DM</div>
+                    <div class="player-node" style="top: 55%; left: 65%;" onclick="showTacticalAdvice('CM2')">CM</div>
+                    <div class="player-node" style="top: 75%; left: 20%;" onclick="showTacticalAdvice('LW')">LW</div>
+                    <div class="player-node" style="top: 80%; left: 50%; background: var(--accent-green);" onclick="showTacticalAdvice('ST')">ST</div>
+                    <div class="player-node" style="top: 75%; left: 80%;" onclick="showTacticalAdvice('RW')">RW</div>
                 </div>
 
-                <!-- REALISTIC 11v11 FOOTBALL PITCH WITH BALL & SVG ARROWS -->
-                <div class="pro-pitch" id="proPitchField">
-                    <div class="pitch-halfway"></div>
-                    <div class="pitch-center-circle"></div>
-                    <div class="penalty-box-left"></div>
-                    <div class="penalty-box-right"></div>
-
-                    <!-- SVG OVERLAY FOR DIRECTIONAL ARROWS -->
-                    <svg id="tacticalSvgOverlay">
-                        <defs>
-                            <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="6" refY="3.5" orient="auto">
-                                <polygon points="0 0, 10 3.5, 0 7" fill="#38bdf8"/>
-                            </marker>
-                            <marker id="arrowhead-red" markerWidth="10" markerHeight="7" refX="6" refY="3.5" orient="auto">
-                                <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
-                            </marker>
-                        </defs>
-                        <!-- Dynamic arrow lines will be injected here via JS -->
-                        <g id="svgArrowsGroup"></g>
-                    </svg>
-
-                    <!-- THE FOOTBALL -->
-                    <div class="match-ball" id="matchBall" style="top: 50%; left: 50%;">⚽</div>
-
-                    <!-- HOME TEAM (11 BLUE PLAYERS) -->
-                    <div class="player-node team-home" id="playerH1" style="top: 50%; left: 6%;">H1</div>
-                    <div class="player-node team-home" id="playerH2" style="top: 15%; left: 22%;">H2</div>
-                    <div class="player-node team-home" id="playerH3" style="top: 38%; left: 28%;">H3</div>
-                    <div class="player-node team-home" id="playerH4" style="top: 62%; left: 28%;">H4</div>
-                    <div class="player-node team-home" id="playerH5" style="top: 85%; left: 22%;">H5</div>
-                    <div class="player-node team-home" id="playerH6" style="top: 30%; left: 42%;">H6</div>
-                    <div class="player-node team-home" id="playerH7" style="top: 70%; left: 42%;">H7</div>
-                    <div class="player-node team-home" id="playerH8" style="top: 50%; left: 48%;">H8</div>
-                    <div class="player-node team-home" id="playerH9" style="top: 15%; left: 68%;">H9</div>
-                    <div class="player-node team-home" id="playerH10" style="top: 50%; left: 65%;">H10</div>
-                    <div class="player-node team-home" id="playerH11" style="top: 85%; left: 68%;">H11</div>
-
-                    <!-- OPPONENT TEAM (11 RED PLAYERS) -->
-                    <div class="player-node team-away" id="playerA1" style="top: 50%; right: 6%;">A1</div>
-                    <div class="player-node team-away" id="playerA2" style="top: 15%; right: 22%;">A2</div>
-                    <div class="player-node team-away" id="playerA3" style="top: 38%; right: 28%;">A3</div>
-                    <div class="player-node team-away" id="playerA4" style="top: 62%; right: 28%;">A4</div>
-                    <div class="player-node team-away" id="playerA5" style="top: 85%; right: 22%;">A5</div>
-                    <div class="player-node team-away" id="playerA6" style="top: 30%; right: 42%;">A6</div>
-                    <div class="player-node team-away" id="playerA7" style="top: 70%; right: 42%;">A7</div>
-                    <div class="player-node team-away" id="playerA8" style="top: 50%; right: 42%;">A8</div>
-                    <div class="player-node team-away" id="playerA9" style="top: 15%; right: 68%;">A9</div>
-                    <div class="player-node team-away" id="playerA10" style="top: 50%; right: 65%;">A10</div>
-                    <div class="player-node team-away" id="playerA11" style="top: 85%; right: 68%;">A11</div>
-                </div>
-
-                <!-- STEP-BY-STEP ACTION GUIDE BELOW -->
-                <div id="tacticalScenarioFeedback" class="content-box" style="border-left-color: var(--accent-yellow); margin-top: 10px;">
-                    <strong>🔥 Tactical Match Analysis & Execution Guide:</strong><br>
-                    Type your scenario above (e.g., <em>"If a8 is pressing what should h8 do"</em>) to see the players shift, the ball move to the correct zone, directional arrows appear, and precise instructions populate here!
+                <div id="tacticalAdviceBox" class="content-box" style="border-left-color: var(--accent-yellow); margin-top: 10px;">
+                    <strong>👆 Tap any player node above</strong> on the 11v11 tactical pitch to view professional passing options, spatial awareness guides, and pressure-handling instructions.
                 </div>
             </div>
         </div>
@@ -678,10 +597,18 @@
                     <h3 style="color: var(--accent-green);">👟 Smart Boot Matcher & Natural Fuel Hub</h3>
                     <span style="font-size: 0.75rem; color: var(--text-dim);">Tailored Gear Sense</span>
                 </div>
-                <div style="display: flex; flex-direction: column; gap: 12px;">
+                <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 0;">
+                    The web senses your position and recommends the exact boot category you should wear. When you are ready to upgrade your arsenal, use our curated link below to explore authentic professional gear on Amazon!
+                </p>
+
+                <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 10px;">
                     <div class="content-box" style="border-left-color: var(--accent-yellow);">
                         <strong>🎯 Your Position Boot Match:</strong><br>
                         <span id="dynamicBootSuggestionText">Analyzing player profile...</span>
+                    </div>
+                    <div class="content-box" style="border-left-color: var(--accent-green);">
+                        <strong>🚫 100% Natural Diet Rule (No Dangerous Supplements):</strong><br>
+                        Synthetic powders and unknown supplements can harm developing bodies. Elite stamina and strength are built exclusively on whole foods: fresh fruits, eggs, paneer, oats, nuts, and clean water.
                     </div>
                 </div>
 
@@ -704,6 +631,7 @@
                     <h3 style="color: var(--accent-orange);">🥗 Full-Day 100% Natural Pro Nutrition Plan</h3>
                     <span style="font-size: 0.75rem; color: var(--text-dim);">Zero Supplements | Pure Real Food</span>
                 </div>
+                
                 <div class="sub-tabs">
                     <button class="sub-btn active" onclick="switchDietTab('monday', this)">Mon</button>
                     <button class="sub-btn" onclick="switchDietTab('tuesday', this)">Tue</button>
@@ -713,26 +641,41 @@
                     <button class="sub-btn" onclick="switchDietTab('saturday', this)">Sat</button>
                     <button class="sub-btn" onclick="switchDietTab('sunday', this)">Sun</button>
                 </div>
+
                 <div id="fulldiet-box" class="content-box" style="border-left-color: var(--accent-orange); font-size: 0.85rem; line-height: 1.7;">
                     Loading natural nutrition plan...
                 </div>
             </div>
         </div>
 
-        <!-- ================= PAGE 6: ELITE AI Q&A ================= -->
+        <!-- ================= PAGE 6: ELITE AI Q&A & MIND READER ================= -->
         <div id="page-aiqa" class="page-section">
             <div class="card">
                 <div class="section-header">
                     <h3 style="color: var(--accent-blue);">🧠 Elite Coach AI Q&A & Mind Reader</h3>
                     <span style="font-size: 0.75rem; color: var(--text-dim);">Stuck? Ask your question</span>
                 </div>
-                <div style="display: flex; flex-direction: column; gap: 10px;">
-                    <textarea id="playerQuestionInput" rows="3" placeholder="e.g. My first touch under pressure is terrible..." style="background: #05080f; border: 1px solid var(--card-border); color: #fff; padding: 12px; border-radius: 8px; font-size: 0.9rem; resize: vertical;"></textarea>
+                <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 0;">
+                    If you are stuck in any situation (bad first touch, losing stamina, feeling nervous), type your question below. The web engine thinks like an elite player and instantly gives you a custom drill and 100% natural diet adjustment!
+                </p>
+
+                <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+                    <textarea id="playerQuestionInput" rows="3" placeholder="e.g. My first touch under pressure is terrible and I panic when defenders rush me..." style="background: #05080f; border: 1px solid var(--card-border); color: #fff; padding: 12px; border-radius: 8px; font-size: 0.9rem; resize: vertical;"></textarea>
                     <button class="timer-btn btn-start" onclick="processPlayerQuestion()" style="align-self: flex-start;">Analyze & Generate Elite Solution 🚀</button>
                 </div>
+
                 <div id="aiResponseContainer" style="display: none; margin-top: 15px; flex-direction: column; gap: 10px;">
                     <div class="content-box" style="border-left-color: var(--accent-yellow);">
-                        <strong>🎯 Coach's Mind Analysis:</strong><br><span id="aiMindsetAnswer"></span>
+                        <strong>🎯 Coach's Mind Analysis:</strong><br>
+                        <span id="aiMindsetAnswer"></span>
+                    </div>
+                    <div class="content-box" style="border-left-color: var(--accent-green);">
+                        <strong>⚽ Custom Drill For Your Problem:</strong><br>
+                        <span id="aiCustomDrill"></span>
+                    </div>
+                    <div class="content-box" style="border-left-color: var(--accent-orange);">
+                        <strong>🥗 Natural Whole-Food Recovery Adjustment:</strong><br>
+                        <span id="aiCustomDiet"></span>
                     </div>
                 </div>
             </div>
@@ -743,6 +686,11 @@
             <div class="card">
                 <div class="section-header">
                     <h3 style="color: var(--accent-blue);">📈 Deep Performance Logs & 1-Year Audit</h3>
+                    <div style="display: flex; gap: 6px;">
+                        <button class="sub-btn active" onclick="switchChart('weekly', this)" style="padding: 4px 10px;">Weekly</button>
+                        <button class="sub-btn" onclick="switchChart('monthly', this)" style="padding: 4px 10px;">Monthly</button>
+                        <button class="sub-btn" onclick="switchChart('yearly', this)" style="padding: 4px 10px;">Yearly Audit</button>
+                    </div>
                 </div>
                 <div style="height: 250px; width: 100%;">
                     <canvas id="deepPerformanceChart"></canvas>
@@ -750,9 +698,19 @@
             </div>
         </div>
 
+        <!-- AMAZON GEAR RECOMMENDATION HUB -->
+        <div class="card gear-card">
+            <div>
+                <div style="font-size: 0.75rem; color: var(--accent-green); font-weight: 700; margin-bottom: 4px;">🛍️ PRO GEAR RECOMMENDATION HUB</div>
+                <h3 style="margin: 0 0 4px 0; font-size: 1.1rem;">"Your Game Is Hard? Make It Harder with Pro Equipment!"</h3>
+                <p style="margin: 0; font-size: 0.8rem; color: var(--text-dim);">Equip grip socks, resistance bands, and training footballs from Amazon.</p>
+            </div>
+            <a href="https://www.amazon.in/s?k=football+grip+socks+training+equipment" target="_blank" class="shop-btn">On Amazon ↗</a>
+        </div>
+
     </div>
 
-    <!-- LOGIC SCRIPT WITH DYNAMIC POSITION, BALL & ARROW ANIMATION -->
+    <!-- LOGIC SCRIPT -->
     <script>
         window.addEventListener('DOMContentLoaded', () => {
             const savedProfile = localStorage.getItem('protrain_player_profile');
@@ -763,6 +721,7 @@
             } else {
                 document.getElementById('registrationModal').style.display = 'flex';
             }
+            loadDailyData();
             loadFullDayDiet('monday');
             updateBootRecommendation();
         });
@@ -785,139 +744,127 @@
             document.getElementById('displayNameHeader').innerText = name;
             document.getElementById('displayPos').innerText = pos;
             document.getElementById('displayContract').innerText = tier;
+
+            let quote = `"Listen up, ${name}! Elite players rely on natural whole foods and professional tactical vision. Push your limits harder every second!"`;
+            document.getElementById('coachBannerText').innerHTML = `🎙️ <strong>Coach's Command:</strong> ${quote}`;
+            updateBootRecommendation();
         }
 
         function updateBootRecommendation() {
             let pos = document.getElementById('regPos') ? document.getElementById('regPos').value : "LW";
-            let bootText = (pos === "ST") ? "🔥 Striking & Power Boots Recommended" : "⚡ Speed Boots Recommended for Flanks";
+            let bootText = "";
+            let senseText = "";
+
+            if(pos === "LW" || pos === "RW") {
+                bootText = "⚡ <strong>Speed Boots Recommended:</strong> Lightweight synthetic upper with aggressive blade stud configuration for explosive acceleration down the flanks.";
+                senseText = "Speed Boots Optimal ⚡";
+            } else if(pos === "ST") {
+                bootText = "🔥 <strong>Striking & Power Boots Recommended:</strong> Cushioned strike-zone texture for venomous shooting power and sharp cutting grip.";
+                senseText = "Striking Boots Optimal 🔥";
+            } else if(pos === "CM" || pos === "CDM") {
+                bootText = "🎯 <strong>Control & Passing Boots Recommended:</strong> Conical stud layout for 360-degree pivoting and enhanced touch friction on the ball.";
+                senseText = "Control Boots Optimal 🎯";
+            } else if(pos === "CB") {
+                bootText = "🛡️ <strong>Defender Armor Boots Recommended:</strong> Reinforced heel structure and heavy-duty stability for robust tackling and aerial duels.";
+                senseText = "Armor Boots Optimal 🛡️";
+            } else {
+                bootText = "🧤 <strong>Goalkeeper Stability Boots Recommended:</strong> Maximum traction soleplate for explosive lateral dives and goalmouth stability.";
+                senseText = "GK Traction Optimal 🧤";
+            }
+
             if(document.getElementById('dynamicBootSuggestionText')) {
                 document.getElementById('dynamicBootSuggestionText').innerHTML = bootText;
+                document.getElementById('quickBootSense').innerText = senseText;
             }
         }
 
         function confirmResetData() {
-            if (confirm("⚠️ Reset career profile?")) {
-                localStorage.removeItem('protrain_player_profile');
-                location.reload();
+            let confirmation1 = confirm("⚠️ Coach Warning: Are you sure you want to reset your career profile?");
+            if (confirmation1) {
+                let confirmation2 = confirm("🚨 FINAL CONFIRMATION: This will erase your academy logs. Proceed?");
+                if (confirmation2) {
+                    localStorage.removeItem('protrain_player_profile');
+                    location.reload();
+                }
             }
         }
 
-        /* SIMULATE TACTICAL SCENARIO WITH AUTOMATIC PLAYER MOVEMENT, BALL & ARROWS */
-        function simulateTacticalScenario() {
-            let query = document.getElementById('tacticalQueryInput').value.trim().toLowerCase();
-            let feedbackBox = document.getElementById('tacticalScenarioFeedback');
-            let svgGroup = document.getElementById('svgArrowsGroup');
-            svgGroup.innerHTML = ""; // clear previous arrows
-
-            if(!query) {
-                feedbackBox.innerHTML = "⚠️ Please type a match tactical question (e.g., 'If a8 is pressing what should h8 do').";
-                return;
+        const daysData = {
+            1: {
+                name: "Monday",
+                schedule: "06:00 AM - Core & Agility | 05:00 PM - 90 Minutes Hardcore Passing",
+                drill: "The 400-Touch Wall Rebounder Challenge: Zero loose touches allowed.",
+                dietDesc: "Natural Fuel: Rolled oats with raw honey, grilled chicken/paneer with brown rice, and fresh coconut water.",
+                tasks: ["Wall Rebounder One-Touch (400 Reps)", "Cone Weaving Agility Sprints", "Max Velocity 30m Accelerations", "Weak Foot Passing Under Fatigue"]
+            },
+            2: {
+                name: "Tuesday",
+                schedule: "06:30 AM - 7km Endurance Run | 04:30 PM - Tight Space Dribbling",
+                drill: "Cone Minefield: Weave through 25 tight cones at full velocity.",
+                dietDesc: "Natural Fuel: Avocado sourdough toast, salmon/tofu quinoa bowl, and clean electrolytes.",
+                tasks: ["7km Endurance Pace Run", "Tight Space Sole-Roll Dribbling", "Direction Change Cutting Drills", "Core Stability Plank Holds"]
+            },
+            3: {
+                name: "Wednesday",
+                schedule: "07:00 AM - Active Recovery | 05:00 PM - Finishing Under Fatigue",
+                drill: "Exhaustion Volleys: 60 powerful strikes following high-speed sprints.",
+                dietDesc: "Natural Fuel: Buckwheat pancakes, turkey/sprouts salad, and fresh orange juice.",
+                tasks: ["Dynamic Mobility & Hip Openers", "Exhaustion Finishing Volleys", "1v1 Defending Pressure Duels", "Mental Visualization Study"]
+            },
+            4: {
+                name: "Thursday",
+                schedule: "06:00 AM - Explosive Acceleration | 05:30 PM - Tactical Scanning",
+                drill: "Blind Spot Scanning: Scan over both shoulders before receiving every ball.",
+                dietDesc: "Natural Fuel: Peanut butter banana smoothie, lean beef/lentil pasta.",
+                tasks: ["Explosive Resistance Sprints", "Shoulder-Check Scanning Drills", "First-Touch Receiving Under Press", "Agility Ladder Footwork"]
+            },
+            5: {
+                name: "Friday",
+                schedule: "07:00 AM - Ball Mastery | 04:00 PM - Pre-Match Tactical Briefing",
+                drill: "2,500 Touches Challenge: Restricted space ball manipulation with zero errors.",
+                dietDesc: "Natural Fuel: Massive whole-wheat pasta portion, grilled fish/paneer, and fresh fruit juice.",
+                tasks: ["2500 Touches Ball Mastery", "Tactical Shape Positioning", "Set-Piece Delivery Practice", "Match Readiness Review"]
+            },
+            6: {
+                name: "Saturday",
+                schedule: "MATCHDAY: 09:00 AM Warmup | 11:00 AM Official Competitive Match",
+                drill: "Match Execution: Dominate physical duels, high pressing intensity, zero errors.",
+                dietDesc: "Natural Fuel: Ripe bananas, natural honey toast, and post-match chicken soup.",
+                tasks: ["Pre-Match Activation Routine", "90-Min Match Performance", "GPS Data & Sprint Analysis", "Post-Match Ice Bath & Recovery"]
+            },
+            0: {
+                name: "Sunday",
+                schedule: "REST & RECOVERY: Tactical video analysis and mental preparation",
+                drill: "Match IQ Study: Analyze top professional players in your specific position.",
+                dietDesc: "Natural Fuel: Antioxidant berries, green tea, mixed nuts, and warm vegetable broth.",
+                tasks: ["Tactical Video Review", "Passive Stretching & Foam Rolling", "Mental Focus & Goal Setting", "Hydration & Mineral Balance"]
             }
+        };
 
-            // Default standard positions helper
-            const setPos = (id, top, left) => {
-                let el = document.getElementById(id);
-                if(el) { el.style.top = top + "%"; el.style.left = left + "%"; }
-            };
+        function loadDailyData() {
+            const todayIndex = new Date().getDay();
+            const currentDay = daysData[todayIndex] || daysData[1];
 
-            const setBall = (top, left) => {
-                let ball = document.getElementById('matchBall');
-                if(ball) { ball.style.top = top + "%"; ball.style.left = left + "%"; }
-            };
+            if(document.getElementById('currentDayNameLabel')) {
+                document.getElementById('currentDayNameLabel').innerText = currentDay.name + " Mission";
+                document.getElementById('dailyScheduleText').innerText = currentDay.schedule;
+                document.getElementById('dailyDrillText').innerText = currentDay.drill;
+                document.getElementById('dailyDietText').innerText = currentDay.dietDesc;
 
-            const drawArrow = (x1, y1, x2, y2, color="#38bdf8", label="") => {
-                let pitch = document.getElementById('proPitchField');
-                let w = pitch.clientWidth;
-                let h = pitch.clientHeight;
-                let px1 = (x1/100)*w, py1 = (y1/100)*h;
-                let px2 = (x2/100)*w, py2 = (y2/100)*h;
-
-                let markerId = color === "#ef4444" ? "arrowhead-red" : "arrowhead";
-                let line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-                line.setAttribute("x1", px1);
-                line.setAttribute("y1", py1);
-                line.setAttribute("x2", px2);
-                line.setAttribute("y2", py2);
-                line.setAttribute("stroke", color);
-                line.setAttribute("stroke-width", "2.5");
-                line.setAttribute("stroke-dasharray", "4,4");
-                line.setAttribute("marker-end", `url(#${markerId})`);
-                svgGroup.appendChild(line);
-
-                if(label) {
-                    let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-                    text.setAttribute("x", (px1+px2)/2);
-                    text.setAttribute("y", (py1+py2)/2 - 6);
-                    text.setAttribute("fill", color);
-                    text.setAttribute("font-size", "10px");
-                    text.setAttribute("font-weight", "bold");
-                    text.textContent = label;
-                    svgGroup.appendChild(text);
+                for(let i=0; i<4; i++) {
+                    document.getElementById('taskText' + i).innerText = currentDay.tasks[i] + " — 20 min";
                 }
-            };
-
-            if (query.includes("a8") && query.includes("press") && query.includes("h8")) {
-                // Scenario: A8 is pressing H8!
-                // 1. Move A8 forward to press H8 aggressively
-                setPos('playerA8', 50, 52); 
-                // 2. Move H8 to shift quickly or lay off the ball
-                setPos('playerH8', 50, 42); 
-                // 3. Move Ball to H8
-                setBall(50, 42);
-                // 4. Move supporting teammates H6 and H7 into passing lanes
-                setPos('playerH6', 36, 45);
-                setPos('playerH7', 64, 45);
-
-                // Draw tactical arrows
-                drawArrow(50, 48, 50, 52, "#ef4444", "A8 Press");
-                drawArrow(50, 48, 50, 42, "#38bdf8", "H8 Escape & Drop");
-                drawArrow(50, 42, 36, 45, "#38bdf8", "Pass Option H6");
-                drawArrow(50, 42, 64, 45, "#38bdf8", "Pass Option H7");
-
-                feedbackBox.innerHTML = `
-                    🔥 <strong>High Press Counter Analysis (A8 vs H8):</strong><br>
-                    • <strong>Situation Visualized:</strong> Opponent midfielder <strong>A8</strong> steps up to press our central pivot <strong>H8</strong>.<br>
-                    • <strong>Movement Action:</strong> <strong>H8</strong> takes a quick touch backward/sideways to evade the immediate tackle and receives the ball.<br>
-                    • <strong>Passing Channels Opened:</strong> Because A8 committed forward, central passing lanes to <strong>H6</strong> and <strong>H7</strong> open up automatically. Play a quick 1-touch pass to bypass their press!
-                `;
-            } else if (query.includes("press") || query.includes("high press")) {
-                // General high press scenario
-                setPos('playerA8', 45, 50);
-                setPos('playerA6', 30, 45);
-                setPos('playerH8', 52, 40);
-                setBall(52, 40);
-                setPos('playerH3', 25, 32);
-                setPos('playerH4', 75, 32);
-
-                drawArrow(50, 50, 45, 50, "#ef4444", "High Press");
-                drawArrow(48, 50, 52, 40, "#38bdf8", "Drop & Recirculate");
-                drawArrow(52, 40, 25, 32, "#38bdf8", "Switch to LB/CB");
-
-                feedbackBox.innerHTML = `
-                    ⚡ <strong>General High-Press Breakthrough:</strong><br>
-                    • <strong>Movement Action:</strong> Opponent team pushes high up the pitch. Our central midfielder drops deep.<br>
-                    • <strong>Ball & Player Shift:</strong> The ball moves to safety while fullbacks widen up.<br>
-                    • <strong>Execution Guide:</strong> Circulate the ball quickly in triangles (minimum 3 passing options per player) to break their frontline pressure.
-                `;
-            } else {
-                // Default situational response
-                setBall(50, 48);
-                feedbackBox.innerHTML = `
-                    ♟️ <strong>Tactical Analysis for "${query}":</strong><br>
-                    • <strong>On-Field Adjustment:</strong> Players have maintained structured defensive block.<br>
-                    • <strong>Execution Guide:</strong> Maintain compact lines (maximum 30 meters between defence and attack) and use quick switching passes to dominate space.
-                `;
             }
         }
 
         const fullDiets = {
-            monday: "<strong>🌱 Monday 100% Natural Pro Diet Plan:</strong><br>• Breakfast: Rolled oats with raw honey and whole milk.<br>• Lunch: Grilled paneer/chicken with brown rice and coconut water.<br>• Dinner: Baked fish with quinoa.",
-            tuesday: "<strong>⚡ Tuesday Diet Plan:</strong><br>• Breakfast: Avocado sourdough toast with eggs.<br>• Lunch: Lean turkey/lentil mince bowl.",
-            wednesday: "<strong>🔥 Wednesday Diet Plan:</strong><br>• Breakfast: Peanut butter banana smoothie.<br>• Lunch: Quinoa chicken salad.",
-            thursday: "<strong>⚡ Thursday Diet Plan:</strong><br>• Breakfast: Scrambled eggs on whole grain toast.<br>• Lunch: Grilled prawn/paneer bowl.",
-            friday: "<strong>🔥 Friday Carb-Loading:</strong><br>• Lunch: Whole-grain pasta with lean chicken/paneer.",
-            saturday: "<strong>⚽ Matchday Fuel:</strong><br>• Pre-Match: White rice with lean chicken/paneer & coconut water.",
-            sunday: "<strong>🛡️ Recovery Day:</strong><br>• Warm lentil soup and green tea."
+            monday: "<strong>🌱 Monday 100% Natural Pro Diet Plan:</strong><br>• <em>Breakfast:</em> Rolled oats with chia seeds, raw honey, and real whole milk.<br>• <em>Mid-Morning:</em> 2 boiled eggs and a handful of almonds.<br>• <em>Lunch:</em> Grilled chicken/paneer breast, brown rice, steamed broccoli, and fresh coconut water.<br>• <em>Pre-Workout:</em> 1 ripe banana and natural dates.<br>• <em>Post-Workout:</em> Real fruit smoothie with curd and honey.<br>• <em>Dinner:</em> Baked fish/tofu, quinoa, and roasted asparagus.",
+            tuesday: "<strong>⚡ Tuesday 100% Natural Pro Diet Plan:</strong><br>• <em>Breakfast:</em> Avocado sourdough toast with 3 egg whites and 1 whole egg.<br>• <em>Mid-Morning:</em> Fresh pomegranate bowl.<br>• <em>Lunch:</em> Lean turkey/lentil mince bowl with sweet potato mash and spinach.<br>• <em>Pre-Workout:</em> Fresh beetroot juice shot.<br>• <em>Post-Workout:</em> Coconut water and soaked raisins.<br>• <em>Dinner:</em> Grilled paneer strips with mixed bell peppers and olive oil dressing.",
+            wednesday: "<strong>🔥 Wednesday 100% Natural Pro Diet Plan:</strong><br>• <em>Breakfast:</em> Peanut butter banana smoothie with real milk.<br>• <em>Mid-Morning:</em> Cottage cheese with sliced cucumbers.<br>• <em>Lunch:</em> Quinoa chicken/tofu salad with walnuts and lemon dressing.<br>• <em>Pre-Workout:</em> Rice cakes with raw honey.<br>• <em>Post-Workout:</em> Fresh orange juice.<br>• <em>Dinner:</em> White fish fillet with roasted baby potatoes and zucchini.",
+            thursday: "<strong>⚡ Thursday 100% Natural Pro Diet Plan:</strong><br>• <em>Breakfast:</em> Scrambled eggs on whole grain toast with cherry tomatoes.<br>• <em>Mid-Morning:</em> Mixed walnuts and dark chocolate.<br>• <em>Lunch:</em> Grilled prawn/paneer bowl with brown rice and avocado.<br>• <em>Pre-Workout:</em> Apple slices with almond butter.<br>• <em>Post-Workout:</em> Whole milk and dates.<br>• <em>Dinner:</em> Lean chicken/lentil soup with side green salad.",
+            friday: "<strong>🔥 Friday Natural Carb-Loading Plan:</strong><br>• <em>Breakfast:</em> Pancakes made with oats, banana, and egg whites.<br>• <em>Mid-Morning:</em> Greek yogurt with organic honey.<br>• <em>Lunch:</em> Large portion of whole-grain pasta with lean minced chicken/paneer and fresh tomato sauce.<br>• <em>Pre-Workout:</em> Fresh fruit juice.<br>• <em>Post-Workout:</em> Coconut water.<br>• <i>Dinner:</i> Baked fish with sweet potato fries and steamed greens.",
+            saturday: "<strong>⚽ Saturday Matchday Natural Fuel Plan:</strong><br>• <em>Breakfast:</em> White toast with honey, scrambled egg whites, and fresh orange juice.<br>• <em>Pre-Match (2 hrs prior):</em> Easily digestible white rice with lean chicken/paneer.<br>• <em>During Match:</em> Fresh coconut water and diluted fresh fruit juice at halftime.<br>• <em>Post-Match:</em> Real fruit recovery shake and warm vegetable soup.<br>• <em>Dinner:</em> Grilled salmon/paneer with quinoa and roasted root veggies.",
+            sunday: "<strong>🛡️ Sunday Recovery & Repair Diet Plan:</strong><br>• <em>Breakfast:</em> Omelet with spinach, mushrooms, and cheese.<br>• <em>Mid-Morning:</em> Green tea and mixed almonds.<br>• <i>Lunch:</i> Warm bone broth or lentil soup with carrots.<br>• <i>Evening Snack:</i> Chamomile tea with pumpkin seeds.<br>• <i>Dinner:</i> Baked white fish/tofu with steamed broccoli and olive oil."
         };
 
         function loadFullDayDiet(dayKey) {
@@ -930,57 +877,125 @@
             loadFullDayDiet(dayKey);
         }
 
+        function showTacticalAdvice(nodeKey) {
+            let adviceBox = document.getElementById('tacticalAdviceBox');
+            let info = "";
+
+            if(nodeKey === 'GK') {
+                info = "<strong>🧤 Goalkeeper Build-Up Situation:</strong> You have 2 short central passing options (CBs) and 2 wide fullback options. <em>Pro Rule:</em> Never play blind long balls under high press; draw the striker in, then break the press with a sharp flat pass to the CDM.";
+            } else if(nodeKey === 'ST') {
+                info = "<strong>⚽ Striker Option Creator:</strong> You are marked by 2 Center Backs. <em>Pro Rule:</em> Drop deep to drag one CB out of position, creating an instant vacant channel for your oncoming Winger (LW/RW) to exploit!";
+            } else if(nodeKey === 'CDM') {
+                info = "<strong>🎯 Central Defensive Midfield (The Engine):</strong> You have 360-degree scanning responsibility. You have 3 passing options at all times. <em>Pro Rule:</em> Receive on your half-turn, scan over your shoulder before touching, and switch play instantly to the weak side.";
+            } else if(nodeKey === 'LW' || nodeKey === 'RW') {
+                info = "<strong>⚡ Winger 1v1 Isolation Situation:</strong> You are isolated against the fullback. <em>Pro Rule:</em> Create two options—either drive down the outside line for a cutback cross or cut inside for a curling shot. Keep your body feint unpredictable.";
+            } else {
+                info = "<strong>♟️ Defensive / Midfield Unit Strategy:</strong> Maintain compact lines (maximum 30 meters between defence and attack). When the opponent presses, circulate ball quickly in triangles (3 passing options minimum per player).";
+            }
+            adviceBox.innerHTML = info;
+        }
+
         function processPlayerQuestion() {
             let query = document.getElementById('playerQuestionInput').value.trim();
-            if(!query) return;
-            document.getElementById('aiMindsetAnswer').innerText = "Coach analysis: Execute high-intensity drills and maintain whole-food nutrition discipline.";
+            if(!query) {
+                alert("Please type your question or problem first, player!");
+                return;
+            }
+
+            let lowerQ = query.toLowerCase();
+            let mindAns = "";
+            let drillAns = "";
+            let dietAns = "";
+
+            if(lowerQ.includes("first touch") || lowerQ.includes("touch") || lowerQ.includes("panic")) {
+                mindAns = "Elite players don't panic under pressure; they scan before receiving and cushion the ball into space with soft ankles.";
+                drillAns = "The 300-Wall Rebounder Blind Test: Have someone throw balls at random angles. Control and pass back in under 0.8 seconds.";
+                dietAns = "Natural Recovery: Increase magnesium-rich foods like bananas, spinach, and pumpkin seeds to calm neuromuscular tension.";
+            } else if(lowerQ.includes("stamina") || lowerQ.includes("tired") || lowerQ.includes("fatigue")) {
+                mindAns = "Stamina is built when your brain tells you to stop, but your elite discipline forces you to execute 5 more high-speed sprints.";
+                drillAns = "High-Intensity Interval Shuttle Runs: 30 seconds sprint, 15 seconds walking rest for 12 consecutive rounds.";
+                dietAns = "Natural Fuel: Drink fresh beetroot juice 90 minutes before training for natural stamina enhancement without supplements.";
+            } else {
+                mindAns = "Coach analysis: Every elite player faces this mental barrier. Attack your weakness relentlessly with professional discipline.";
+                drillAns = "Custom Elite Agility & Technical Circuit: 20 minutes of high-speed cone weaving and sudden reaction sprints.";
+                dietAns = "100% Whole Food Nutrition: Lean chicken/paneer, complex slow-release brown rice, fresh fruits, and strict 3L water hydration.";
+            }
+
+            document.getElementById('aiMindsetAnswer').innerText = mindAns;
+            document.getElementById('aiCustomDrill').innerText = drillAns;
+            document.getElementById('aiCustomDiet').innerText = dietAns;
             document.getElementById('aiResponseContainer').style.display = 'flex';
         }
 
         function updateClock() {
             const now = new Date();
+            const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
             if(document.getElementById('liveClock')) {
-                document.getElementById('liveClock').innerText = now.toLocaleDateString('en-US', { hour: '2-digit', minute: '2-digit' });
+                document.getElementById('liveClock').innerText = now.toLocaleDateString('en-US', options);
             }
         }
         setInterval(updateClock, 1000);
+        updateClock();
 
         function switchPage(pageId, btnElement) {
             document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
             document.querySelectorAll('.page-nav .nav-tab').forEach(tab => tab.classList.remove('active'));
+            
             document.getElementById('page-' + pageId).classList.add('active');
             btnElement.classList.add('active');
         }
 
-        let stopwatchInterval, secondsElapsed = 0, isRunning = false;
+        let stopwatchInterval;
+        let secondsElapsed = 0;
+        let isRunning = false;
+
         function toggleStopwatch() {
             let btn = document.getElementById('startStopBtn');
+            let statusText = document.getElementById('sessionStatus');
+
             if(!isRunning) {
                 isRunning = true;
                 btn.innerText = "End Session";
                 btn.className = "timer-btn btn-stop";
-                stopwatchInterval = setInterval(() => secondsElapsed++, 1000);
+                statusText.innerText = "Coach is logging your active pitch minutes. Go hard!";
+                stopwatchInterval = setInterval(() => {
+                    secondsElapsed++;
+                    let hrs = Math.floor(secondsElapsed / 3600).toString().padStart(2, '0');
+                    let mins = Math.floor((secondsElapsed % 3600) / 60).toString().padStart(2, '0');
+                    let secs = (secondsElapsed % 60).toString().padStart(2, '0');
+                    document.getElementById('stopwatchTime').innerText = `${hrs}:${mins}:${secs}`;
+                }, 1000);
             } else {
                 isRunning = false;
                 clearInterval(stopwatchInterval);
                 btn.innerText = "Start Training";
                 btn.className = "timer-btn btn-start";
-                alert(`Session logged: ${Math.floor(secondsElapsed/60)} minutes! 🚀`);
+                statusText.innerText = `Session logged successfully. Keep building that wall!`;
+                alert(`Coach note: Excellent session! You recorded ${Math.floor(secondsElapsed/60)} minutes of rigorous training today. Keep pushing! 🚀`);
             }
         }
 
         let tasks = [{ status: "completed" }, { status: "completed" }, { status: "progress" }, { status: "notstarted" }];
         function toggleTask(index) {
-            tasks[index].status = tasks[index].status === "notstarted" ? "progress" : tasks[index].status === "progress" ? "completed" : "notstarted";
+            let current = tasks[index].status;
+            let next = current === "notstarted" ? "progress" : current === "progress" ? "completed" : "notstarted";
+            tasks[index].status = next;
             updateTaskUI();
         }
+
         function updateTaskUI() {
-            let items = document.getElementById("trainingPlanList").getElementsByClassName("plan-item");
+            let container = document.getElementById("trainingPlanList");
+            let items = container.getElementsByClassName("plan-item");
+            let completedCount = 0;
             tasks.forEach((t, i) => {
                 let btn = items[i].querySelector("button");
                 btn.className = `status-btn status-${t.status}`;
-                btn.innerText = t.status === "completed" ? "Completed ✓" : t.status === "progress" ? "In Progress ⏳" : "Not Started ⏳";
+                if(t.status === "completed") { btn.innerText = "Completed ✓"; completedCount++; }
+                else if(t.status === "progress") { btn.innerText = "In Progress ⏳"; }
+                else { btn.innerText = "Not Started ⏳"; }
             });
+            document.getElementById("statDrillsCount").innerText = `${completedCount}/4`;
+            document.getElementById("planBadge").innerText = `${completedCount}/4 Completed`;
         }
 
         const ctx = document.getElementById('deepPerformanceChart').getContext('2d');
@@ -988,10 +1003,39 @@
             type: 'bar',
             data: {
                 labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                datasets: [{ data: [60, 90, 75, 110, 85, 130, 50], backgroundColor: '#38bdf8', borderRadius: 6 }]
+                datasets: [{
+                    label: 'Training Volume (Mins)',
+                    data: [60, 90, 75, 110, 85, 130, 50],
+                    backgroundColor: '#38bdf8',
+                    borderRadius: 6
+                }]
             },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { display: false }, ticks: { color: '#94a3b8' } },
+                    y: { grid: { color: '#1a2332' }, ticks: { color: '#94a3b8' } }
+                }
+            }
         });
+
+        function switchChart(timeframe, btnElement) {
+            document.querySelectorAll('#page-analytics .sub-btn').forEach(b => b.classList.remove('active'));
+            btnElement.classList.add('active');
+            if(timeframe === 'weekly') {
+                deepChart.data.labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                deepChart.data.datasets[0].data = [60, 90, 75, 110, 85, 130, 50];
+            } else if(timeframe === 'monthly') {
+                deepChart.data.labels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+                deepChart.data.datasets[0].data = [420, 480, 510, 550];
+            } else if(timeframe === 'yearly') {
+                deepChart.data.labels = ['Q1 Audit', 'Q2 Audit', 'Q3 Audit', 'Q4 Final Evaluation'];
+                deepChart.data.datasets[0].data = [1800, 2100, 2400, 2900];
+            }
+            deepChart.update();
+        }
     </script>
 </body>
 </html>
