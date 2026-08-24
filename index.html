@@ -4,14 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- SEO & GOOGLE RANKING META TAGS -->
-    <title>Football Tracker - Free Online Football Stats & Performance Log</title>
-    <meta name="description" content="Track your football matches, log goals, assists, and training sessions with this free online Football Tracker app.">
-    <meta name="keywords" content="football tracker, football stats tracker, online football log, track football training, football stats app">
-    <meta name="author" content="Itskritsehrawat">
-
-    <!-- FONTS & SCRIPTS -->
+    <title>PRO FOOTBALL TRACKER</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="style.css">
@@ -34,15 +27,37 @@
 
     <div class="container">
 
-        <!-- XP & LEVEL PROGRESS -->
-        <div class="xp-card">
-            <div class="xp-info">
-                <span>SEASON XP PROGRESS</span>
-                <span id="xpText">0 / 100 XP</span>
+        <!-- PLAYER PROFILE SETUP SECTION -->
+        <div class="section">
+            <h2>⚙️ Player Profile & Preferences</h2>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;">
+                <input type="text" id="playerNameInput" placeholder="Player Name" style="flex: 1; padding: 10px; border-radius: 5px; border: 1px solid #444; background: #222; color: #fff;">
+                <select id="playerPositionInput" style="flex: 1; padding: 10px; border-radius: 5px; border: 1px solid #444; background: #222; color: #fff;">
+                    <option value="ST">Striker (ST)</option>
+                    <option value="WINGER">Winger</option>
+                    <option value="MIDFIELDER">Midfielder</option>
+                    <option value="DEFENDER">Defender</option>
+                    <option value="GK">Goalkeeper</option>
+                </select>
+                <select id="playerFootInput" style="flex: 1; padding: 10px; border-radius: 5px; border: 1px solid #444; background: #222; color: #fff;">
+                    <option value="Right Foot">Right Footed</option>
+                    <option value="Left Foot">Left Footed</option>
+                    <option value="Both">Both Feet</option>
+                </select>
+                <button id="saveProfileBtn" class="btn-primary" style="padding: 10px 20px; cursor: pointer;">Save Profile</button>
             </div>
-            <div class="xp-bar">
-                <div id="xpFill"></div>
+        </div>
+
+        <!-- DAILY TASKS SECTION -->
+        <div class="section">
+            <h2>📝 Daily Training Tasks</h2>
+            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                <input type="text" id="taskInput" placeholder="Add a daily task (e.g. 50 juggles, 20 sprints)" style="flex: 1; padding: 10px; border-radius: 5px; border: 1px solid #444; background: #222; color: #fff;">
+                <button id="addTaskBtn" class="btn-success" style="padding: 10px 20px; cursor: pointer;">Add Task</button>
             </div>
+            <ul id="taskList" style="list-style: none; padding: 0; margin-top: 15px;">
+                <!-- Tasks will show here -->
+            </ul>
         </div>
 
         <!-- QUICK STATS DASHBOARD -->
@@ -159,65 +174,6 @@
                 </div>
             </div>
 
-        </div>
-
-        <!-- WEEKLY GOAL -->
-        <div class="section">
-            <div class="section-header">
-                <h2>🎯 Weekly Target</h2>
-                <button id="exportBtn" class="btn-secondary">📥 Export PDF Summary</button>
-            </div>
-
-            <div class="goal-input-group">
-                <input id="goalInput" type="number" placeholder="Set Weekly Goal (Mins)" min="1">
-                <button id="saveGoalButton" class="btn-dark">Set Target</button>
-            </div>
-
-            <p id="goalText" class="goal-status">Target: Not Set</p>
-            <p id="goalProgress">0 / 0 minutes completed</p>
-
-            <div id="goalBar">
-                <div id="goalFill"></div>
-            </div>
-        </div>
-
-        <!-- WEEKLY ACTIVITY BAR CHART -->
-        <div class="section">
-            <h2>📈 Weekly Activity Breakdown</h2>
-            <div id="weeklyChart"></div>
-        </div>
-
-        <!-- RECOMMENDED FOOTBALL GEAR (AMAZON AFFILIATE SECTION) -->
-        <div class="section">
-            <h2>🛍️ Recommended Football Gear</h2>
-            <p style="font-size: 14px; opacity: 0.8; margin-bottom: 15px;">Top rated gear to boost your performance:</p>
-            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                <!-- Product 1 Placeholder -->
-                <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; flex: 1; min-width: 200px; text-align: center;">
-                    <h3>⚽ Pro Football Shoes</h3>
-                    <p style="font-size: 13px; color: #888;">Best grip & durability</p>
-                    <a href="#" target="_blank" style="display: inline-block; margin-top: 10px; padding: 8px 15px; background: #00ff87; color: #000; text-decoration: none; border-radius: 5px; font-weight: bold;">Check on Amazon</a>
-                </div>
-                <!-- Product 2 Placeholder -->
-                <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; flex: 1; min-width: 200px; text-align: center;">
-                    <h3>🛡️ Shin Guards & Socks</h3>
-                    <p style="font-size: 13px; color: #888;">Maximum protection</p>
-                    <a href="#" target="_blank" style="display: inline-block; margin-top: 10px; padding: 8px 15px; background: #00ff87; color: #000; text-decoration: none; border-radius: 5px; font-weight: bold;">Check on Amazon</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- ACHIEVEMENTS -->
-        <div class="section">
-            <h2>🏆 Trophies & Badges</h2>
-            <div id="achievements">
-                <div class="achievement locked">🥉 First Session</div>
-                <div class="achievement locked">🥈 100 Mins Grind</div>
-                <div class="achievement locked">🥇 500 Mins Master</div>
-                <div class="achievement locked">🔥 7-Day Streak</div>
-                <div class="achievement locked">⚽ Debut Match</div>
-                <div class="achievement locked">👑 1000 Mins Legend</div>
-            </div>
         </div>
 
         <!-- HISTORY LOG -->
