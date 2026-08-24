@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elite Football Academy - Complete Tactical Web Dashboard</title>
+    <title>Elite Football Academy - Krit Sehrawat Dashboard</title>
     <style>
         :root {
             --bg-dark: #06090f;
@@ -29,33 +29,31 @@
 
         .dashboard {
             width: 100%;
-            max-width: 1100px;
+            max-width: 1050px;
             display: flex;
             flex-direction: column;
             gap: 15px;
         }
 
-        /* Top Yellow Coach Command Ticker */
-        .coach-ticker {
+        /* Top Yellow Coach Memo Ticker */
+        .coach-memo {
             background: linear-gradient(135deg, #2b2304, #1b1603);
             border: 1px solid rgba(234, 179, 8, 0.3);
             border-radius: 8px;
-            padding: 10px 16px;
+            padding: 12px 18px;
             font-size: 0.85rem;
             color: var(--accent-yellow);
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            line-height: 1.4;
             box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
 
         /* Top Navigation Tabs Bar */
         .nav-tabs {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             background-color: var(--card-bg);
             border: 1px solid var(--card-border);
-            padding: 8px 12px;
+            padding: 8px;
             border-radius: 10px;
             overflow-x: auto;
             align-items: center;
@@ -67,7 +65,7 @@
             color: var(--text-dim);
             padding: 8px 14px;
             border-radius: 6px;
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             font-weight: 600;
             cursor: pointer;
             display: flex;
@@ -91,9 +89,11 @@
         /* Tab Content Panels */
         .tab-panel {
             display: none;
+            flex-direction: column;
+            gap: 15px;
         }
         .tab-panel.active-panel {
-            display: block;
+            display: flex;
         }
 
         /* Card Container */
@@ -105,36 +105,278 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
         }
 
-        .card-header-row {
+        /* Profile Card Top */
+        .profile-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #0d131f, #111a2e);
+        }
+
+        .profile-left {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .rating-badge {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #000;
+            width: 70px;
+            height: 70px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+            position: relative;
+        }
+
+        .rating-badge .lw-tag {
+            font-size: 0.65rem;
+            position: absolute;
+            top: 4px; right: 6px;
+            color: #111;
+        }
+
+        .rating-badge .score {
+            font-size: 1.8rem;
+            line-height: 1;
+        }
+
+        .rating-badge .name-sub {
+            font-size: 0.55rem;
+            text-transform: uppercase;
+        }
+
+        .profile-info h2 {
+            margin: 0 0 4px 0;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pro-tier-tag {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-green);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .profile-info p {
+            margin: 0;
+            color: var(--text-dim);
+            font-size: 0.8rem;
+        }
+
+        .profile-right {
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+        }
+
+        .date-text {
+            font-size: 0.78rem;
+            color: var(--text-dim);
+        }
+
+        .status-boxes {
+            display: flex;
+            gap: 10px;
+        }
+
+        .status-box {
+            background: #05080f;
+            border: 1px solid var(--card-border);
+            padding: 8px 14px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .status-box .label {
+            font-size: 0.65rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+        }
+
+        .status-box .value {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--accent-yellow);
+            margin-top: 2px;
+        }
+
+        /* Pitch Stopwatch Section */
+        .stopwatch-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(90deg, #064e3b, #047857);
+            border: 1px solid #059669;
+            border-radius: 10px;
+            padding: 16px 20px;
+        }
+
+        .stopwatch-info h4 {
+            margin: 0 0 4px 0;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+            color: #a7f3d0;
+            text-transform: uppercase;
+        }
+
+        .stopwatch-timer {
+            font-size: 1.8rem;
+            font-weight: 800;
+            font-family: monospace;
+            color: #fff;
+            margin: 0;
+        }
+
+        .stopwatch-info p {
+            margin: 4px 0 0 0;
+            font-size: 0.78rem;
+            color: #d1fae5;
+        }
+
+        .train-btn {
+            background: var(--accent-green);
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .train-btn:hover { opacity: 0.9; }
+
+        /* Daily Activity Tracking Grid */
+        .activity-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+        }
+
+        .activity-item {
+            background: #05080f;
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 12px 10px;
+            text-align: center;
+        }
+
+        .activity-item .act-label {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            margin-bottom: 6px;
+        }
+
+        .activity-item .act-val {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-white);
+        }
+
+        /* Mandatory Daily Drills */
+        .drills-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .drills-header h3 {
+            margin: 0;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .drill-row {
+            background: #05080f;
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 12px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 8px;
         }
 
-        .card-header-row h3 {
-            margin: 0;
-            color: var(--text-white);
-            font-size: 1rem;
+        .drill-row span {
+            font-size: 0.85rem;
+        }
+
+        .drill-badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-completed {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-green);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .badge-progress {
+            background: rgba(234, 179, 8, 0.15);
+            color: var(--accent-yellow);
+            border: 1px solid rgba(234, 179, 8, 0.3);
+        }
+
+        .badge-not {
+            background: rgba(148, 163, 184, 0.1);
+            color: var(--text-dim);
+            border: 1px solid var(--card-border);
+        }
+
+        /* Pro Gear Hub Card */
+        .gear-card {
+            background: linear-gradient(135deg, #0d131f, #06241a);
+            border: 1px solid #065f46;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 8px;
         }
 
-        .card-header-row span {
+        .gear-card h3 {
+            margin: 0 0 4px 0;
+            font-size: 0.95rem;
+        }
+
+        .gear-card p {
+            margin: 0;
+            color: var(--text-dim);
             font-size: 0.78rem;
-            color: var(--text-dim);
         }
 
-        .desc-text {
-            color: var(--text-dim);
-            font-size: 0.84rem;
-            margin-top: 0;
-            line-height: 1.5;
-            margin-bottom: 15px;
+        .gear-btn {
+            background: var(--accent-green);
+            color: #000;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            cursor: pointer;
+            white-space: nowrap;
         }
 
-        /* Question Input Bar */
+        /* TACTICAL FIELD STYLING (FOR THE TACTICAL TAB) */
         .question-bar {
             display: flex;
             gap: 10px;
@@ -150,11 +392,6 @@
             border-radius: 8px;
             font-size: 0.88rem;
             outline: none;
-            transition: border-color 0.2s;
-        }
-
-        .question-bar input:focus {
-            border-color: var(--accent-blue);
         }
 
         .run-btn {
@@ -166,227 +403,238 @@
             font-weight: 700;
             font-size: 0.85rem;
             cursor: pointer;
-            transition: opacity 0.2s;
             white-space: nowrap;
         }
 
-        .run-btn:hover {
-            opacity: 0.9;
-        }
-
-        /* FOOTBALL FIELD STYLING */
         .pro-pitch {
             background: linear-gradient(90deg, #064e3b 0%, #047857 50%, #064e3b 100%);
             border: 2px solid #34d399;
             border-radius: 10px;
-            height: 460px;
+            height: 440px;
             position: relative;
             overflow: hidden;
             box-shadow: inset 0 0 40px rgba(0,0,0,0.6);
         }
 
-        /* Pitch markings */
-        .pitch-halfway {
-            position: absolute;
-            top: 0; left: 50%;
-            width: 2px; height: 100%;
-            background: rgba(255,255,255,0.4);
-        }
-        .pitch-center-circle {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100px; height: 100px;
-            border: 2px solid rgba(255,255,255,0.4);
-            border-radius: 50%;
-        }
-        .penalty-box-left {
-            position: absolute;
-            top: 25%; left: 0;
-            width: 14%; height: 50%;
-            border: 2px solid rgba(255,255,255,0.4);
-            border-left: none;
-        }
-        .penalty-box-right {
-            position: absolute;
-            top: 25%; right: 0;
-            width: 14%; height: 50%;
-            border: 2px solid rgba(255,255,255,0.4);
-            border-right: none;
-        }
-        .goal-left {
-            position: absolute;
-            top: 38%; left: -6px;
-            width: 6px; height: 24%;
-            background: #fff;
-            border-radius: 2px;
-        }
-        .goal-right {
-            position: absolute;
-            top: 38%; right: -6px;
-            width: 6px; height: 24%;
-            background: #fff;
-            border-radius: 2px;
-        }
+        .pitch-halfway { position: absolute; top: 0; left: 50%; width: 2px; height: 100%; background: rgba(255,255,255,0.4); }
+        .pitch-center-circle { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100px; height: 100px; border: 2px solid rgba(255,255,255,0.4); border-radius: 50%; }
+        .penalty-box-left { position: absolute; top: 25%; left: 0; width: 14%; height: 50%; border: 2px solid rgba(255,255,255,0.4); border-left: none; }
+        .penalty-box-right { position: absolute; top: 25%; right: 0; width: 14%; height: 50%; border: 2px solid rgba(255,255,255,0.4); border-right: none; }
+        .goal-left { position: absolute; top: 38%; left: -6px; width: 6px; height: 24%; background: #fff; border-radius: 2px; }
+        .goal-right { position: absolute; top: 38%; right: -6px; width: 6px; height: 24%; background: #fff; border-radius: 2px; }
 
-        /* Player Nodes on Field */
         .player-node {
             position: absolute;
-            width: 30px;
-            height: 30px;
+            width: 28px; height: 28px;
             border-radius: 50%;
-            font-size: 0.7rem;
-            font-weight: 800;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            font-size: 0.65rem; font-weight: 800;
+            display: flex; justify-content: center; align-items: center;
             cursor: grab;
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
             transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            user-select: none;
-            z-index: 10;
+            user-select: none; z-index: 10;
             transform: translate(-50%, -50%);
         }
-        .player-node:active { cursor: grabbing; }
         .team-home { background: var(--accent-blue); border: 2px solid #ffffff; color: #000; }
         .team-away { background: var(--accent-pink); border: 2px solid #ffffff; color: #fff; }
 
-        /* Football Ball */
         .match-ball {
             position: absolute;
-            width: 18px;
-            height: 18px;
-            background: #ffffff;
-            border: 2px solid #000;
-            border-radius: 50%;
+            width: 18px; height: 18px;
+            background: #ffffff; border: 2px solid #000; border-radius: 50%;
             box-shadow: 0 0 12px rgba(255,255,255,0.9);
             z-index: 15;
             transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
             transform: translate(-50%, -50%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 9px;
+            display: flex; align-items: center; justify-content: center; font-size: 9px;
         }
 
-        /* SVG Tactical Lines Overlay */
         #tacticalSvgOverlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 5;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5;
         }
 
-        /* Bottom Guide Box */
         .guide-box {
             background: linear-gradient(135deg, #1b1603, #0d131f);
             border-left: 4px solid var(--accent-yellow);
-            padding: 15px;
+            padding: 14px;
             border-radius: 8px;
-            font-size: 0.85rem;
-            line-height: 1.6;
+            font-size: 0.83rem;
+            line-height: 1.5;
             color: #fef08a;
-            margin-top: 15px;
+            margin-top: 12px;
             display: flex;
             align-items: flex-start;
             gap: 12px;
-        }
-
-        /* General UI for other tabs */
-        .content-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 15px;
-        }
-        .inner-box {
-            background: #05080f;
-            border: 1px solid var(--card-border);
-            border-radius: 8px;
-            padding: 15px;
-        }
-        .inner-box h4 {
-            margin-top: 0;
-            color: var(--accent-blue);
-            font-size: 0.95rem;
-        }
-        .inner-box p {
-            color: var(--text-dim);
-            font-size: 0.85rem;
-            line-height: 1.5;
-            margin-bottom: 0;
         }
     </style>
 </head>
 <body>
 
     <div class="dashboard">
-        <!-- TOP COACH COMMAND TICKER -->
-        <div class="coach-ticker">
-            <span>🎙️</span>
-            <div><strong>Coach's Command:</strong> "Explore all Academy modules or test tactical questions on the live 11v11 pitch with dynamic arrows!"</div>
+        <!-- COACH MEMO TICKER -->
+        <div class="coach-memo">
+            <strong>Coach's Memo:</strong> "Listen up, Krit Sehrawat. We don't ask you to train—we command excellence. If you want to become an elite player, build yourself into an unbreakable wall. Grab your pro gear and let's work!"
         </div>
 
         <!-- TOP NAVIGATION TABS BAR -->
         <div class="nav-tabs">
-            <button class="tab-btn" onclick="switchTab(0, this)">⚡ Live Academy</button>
-            <button class="tab-btn" onclick="switchTab(1, this)">⏱️ Master Timeline</button>
-            <button class="tab-btn active" onclick="switchTab(2, this)">♟️ 11v11 Tactics & Field</button>
-            <button class="tab-btn" onclick="switchTab(3, this)">👟 Boots & Natural Diet</button>
-            <button class="tab-btn" onclick="switchTab(4, this)">🥗 Natural Diet Plan</button>
-            <button class="tab-btn" onclick="switchTab(5, this)">💬 Elite AI Q&A</button>
-            <button class="tab-btn" onclick="switchTab(6, this)">📊 Logs</button>
+            <button class="tab-btn active" onclick="switchTab(0, this)">⚡ Live Academy</button>
+            <button class="tab-btn" onclick="switchTab(1, this)">📋 Coach Daily Drills</button>
+            <button class="tab-btn" onclick="switchTab(2, this)">⭐ Tier & Yearly Audit</button>
+            <button class="tab-btn" onclick="switchTab(3, this)">🗺️ Pro Roadmap</button>
+            <button class="tab-btn" onclick="switchTab(4, this)">🥗 Pro Nutrition</button>
+            <button class="tab-btn" onclick="switchTab(5, this)">📊 Performance Logs</button>
+            <button class="tab-btn" onclick="switchTab(6, this)" style="color: var(--accent-blue);">♟️ 11v11 Tactical Field</button>
         </div>
 
-        <!-- TAB 1: LIVE ACADEMY -->
+        <!-- TAB 0: LIVE ACADEMY (DEFAULT ORIGINAL DASHBOARD) -->
+        <div class="tab-panel active-panel">
+            <!-- PROFILE CARD -->
+            <div class="card profile-card">
+                <div class="profile-left">
+                    <div class="rating-badge">
+                        <span class="lw-tag">LW</span>
+                        <span class="score">89</span>
+                        <span class="name-sub">Krit</span>
+                    </div>
+                    <div class="profile-info">
+                        <h2>Krit Sehrawat <span class="pro-tier-tag">Professional Tier</span></h2>
+                        <p>System actively logs your daily activities. 1-Year comprehensive evaluation runs silently in the background for tier upgrades.</p>
+                    </div>
+                </div>
+                <div class="profile-right">
+                    <span class="date-text">Mon, Aug 24, 2026, 10:11 PM</span>
+                    <div class="status-boxes">
+                        <div class="status-box">
+                            <div class="label">Yearly Audit</div>
+                            <div class="value">Day 42 / 365 Active</div>
+                        </div>
+                        <div class="status-box">
+                            <div class="label">Coach Status</div>
+                            <div class="value" style="color: var(--accent-green);">Watching Closely 🟢</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STOPWATCH SECTION -->
+            <div class="stopwatch-section">
+                <div class="stopwatch-info">
+                    <h4>Pitch Training Stopwatch</h4>
+                    <p class="stopwatch-timer" id="stopwatchDisplay">00:00:00</p>
+                    <p>Record your intense training minutes. Prove your grit!</p>
+                </div>
+                <button class="train-btn" id="startTrainingBtn" onclick="toggleTrainingTimer()">Start Training</button>
+            </div>
+
+            <!-- DAILY ACTIVITY TRACKING -->
+            <div class="card" style="padding: 15px 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                    <h3 style="margin: 0; font-size: 0.95rem; display: flex; align-items: center; gap: 8px;">⚡ Daily Activity Tracking</h3>
+                    <span style="font-size: 0.75rem; color: var(--text-dim);">Live Monitored</span>
+                </div>
+                <div class="activity-grid">
+                    <div class="activity-item">
+                        <div class="act-label">Steps</div>
+                        <div class="act-val">10,420</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="act-label">Distance</div>
+                        <div class="act-val">6.2 km</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="act-label">Sprints</div>
+                        <div class="act-val">22</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="act-label">Active Time</div>
+                        <div class="act-val">105 min</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="act-label">Drills</div>
+                        <div class="act-val">2/4</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="act-label">Discipline</div>
+                        <div class="act-val" style="color: var(--accent-green);">Elite</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COACH'S MANDATORY DAILY DRILLS -->
+            <div class="card">
+                <div class="drills-header">
+                    <h3>📋 Coach's Mandatory Daily Drills</h3>
+                    <span class="drill-badge badge-progress">2/4 Completed</span>
+                </div>
+                <div class="drill-row">
+                    <span>Wall Rebounder First Touch (100 Reps) — 25 min</span>
+                    <span class="drill-badge badge-completed">Completed ✓</span>
+                </div>
+                <div class="drill-row">
+                    <span>Explosive Cone Dribbling & Direction Change — 20 min</span>
+                    <span class="drill-badge badge-completed">Completed ✓</span>
+                </div>
+                <div class="drill-row">
+                    <span>Max Velocity 30m Sprints (8 Reps) — 15 min</span>
+                    <span class="drill-badge badge-progress">In Progress ⏳</span>
+                </div>
+                <div class="drill-row">
+                    <span>Weak Foot Finishing Under Fatigue — 30 min</span>
+                    <span class="drill-badge badge-not">Not Started ⏳</span>
+                </div>
+            </div>
+
+            <!-- PRO GEAR RECOMMENDATION HUB -->
+            <div class="card gear-card">
+                <div>
+                    <h3>👟 "Your Game Is Hard? Make It Harder with Pro Equipment!"</h3>
+                    <p>Elite players don't train with ordinary balls. Equip grip socks, resistance bands, and weighted training footballs from Amazon to evolve your game.</p>
+                </div>
+                <button class="gear-btn" onclick="alert('Redirecting to Pro Gear Hub...')">Equip Pro Gear Now ↗</button>
+            </div>
+        </div>
+
+        <!-- TAB 1: COACH DAILY DRILLS -->
         <div class="tab-panel card">
-            <div class="card-header-row">
-                <h3>⚡ Live Academy Sessions</h3>
-                <span>Real-time Training Broadcasts</span>
-            </div>
-            <p class="desc-text">Access scheduled masterclasses, technical ball-striking modules, and positional awareness breakdowns.</p>
-            <div class="content-grid">
-                <div class="inner-box">
-                    <h4>Module 1: Spatial Awareness</h4>
-                    <p>Learn scanning techniques to increase field vision by 40% before receiving possession.</p>
-                </div>
-                <div class="inner-box">
-                    <h4>Module 2: Pressing Triggers</h4>
-                    <p>Master defensive organization when to trigger collective team high press.</p>
-                </div>
-            </div>
+            <h3>Coach Daily Drills Breakdown</h3>
+            <p style="color: var(--text-dim); font-size: 0.85rem;">Detailed breakdown of technical mechanics for today's sessions, focusing on first-touch orientation and low-gravity shielding.</p>
         </div>
 
-        <!-- TAB 2: MASTER TIMELINE -->
+        <!-- TAB 2: TIER & YEARLY AUDIT -->
         <div class="tab-panel card">
-            <div class="card-header-row">
-                <h3>⏱️ Master Timeline & Career Progress</h3>
-                <span>Season 2026 Milestone Tracker</span>
-            </div>
-            <p class="desc-text">Track your physical load, tactical exam completions, and match fitness metrics across weeks.</p>
-            <div class="content-grid">
-                <div class="inner-box">
-                    <h4>Phase 1: Pre-Season Conditioning</h4>
-                    <p>Status: Completed (100% adherence score, peak VO2 max achieved).</p>
-                </div>
-                <div class="inner-box">
-                    <h4>Phase 2: Tactical Mastery</h4>
-                    <p>Status: In Progress (Advanced 4-3-3 shape analysis and transition speed optimization).</p>
-                </div>
-            </div>
+            <h3>Tier & Yearly Audit Status</h3>
+            <p style="color: var(--text-dim); font-size: 0.85rem;">Your evaluation metrics indicate a consistent trajectory toward elite professional tier qualification by end of year.</p>
         </div>
 
-        <!-- TAB 3: 11v11 TACTICS & FIELD (ACTIVE BY DEFAULT) -->
-        <div class="tab-panel active-panel card">
-            <div class="card-header-row">
-                <h3>♟️ 11v11 Tactical Field + Ball + Auto-Position Simulator</h3>
-                <span>Ask Situation & Watch Players Move With Ball</span>
-            </div>
+        <!-- TAB 3: PRO ROADMAP -->
+        <div class="tab-panel card">
+            <h3>Pro Career Roadmap 2026-2030</h3>
+            <p style="color: var(--text-dim); font-size: 0.85rem;">Milestones mapped for academy trial readiness, physical conditioning benchmarks, and tactical IQ examinations.</p>
+        </div>
 
-            <p class="desc-text">
-                Type any match question below (e.g. <em>"Opponent is overloading our right flank with a 3v2 buildup"</em>). The players, the <strong>football ball</strong>, and <strong>tactical directional arrows</strong> will instantly adapt on the pitch!
+        <!-- TAB 4: PRO NUTRITION -->
+        <div class="tab-panel card">
+            <h3>Pro Nutrition & Natural Fueling Protocol</h3>
+            <p style="color: var(--text-dim); font-size: 0.85rem;">Strict organic meal schedules optimized for glycogen replenishment and joint recovery post-training.</p>
+        </div>
+
+        <!-- TAB 5: PERFORMANCE LOGS -->
+        <div class="tab-panel card">
+            <h3>Performance Logs & Historical Audits</h3>
+            <p style="color: var(--text-dim); font-size: 0.85rem;">System logs confirm continuous activity tracking across 42 consecutive active days.</p>
+        </div>
+
+        <!-- TAB 6: 11v11 TACTICAL FIELD (WITH DYNAMIC ARROWS & ANALYZER) -->
+        <div class="tab-panel card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <h3 style="margin: 0; font-size: 1rem;">♟️ 11v11 Tactical Field + Auto-Position Simulator</h3>
+                <span style="font-size: 0.75rem; color: var(--text-dim);">Ask Situation & Watch Players Move With Ball</span>
+            </div>
+            <p style="color: var(--text-dim); font-size: 0.85rem; margin-top: 0; margin-bottom: 12px;">
+                Type any match question below (e.g., <em>"Opponent is overloading our right flank with a 3v2 buildup"</em>). The players, ball, and <strong>tactical arrows</strong> will instantly adapt!
             </p>
 
-            <!-- QUESTION INPUT -->
             <div class="question-bar">
                 <input type="text" id="matchQuestionInput" placeholder="e.g. Opponent is overloading our right flank with a 3v2 buildup">
                 <button class="run-btn" onclick="runTacticalSimulation()">Run Scenario 🧠</button>
@@ -401,7 +649,6 @@
                 <div class="goal-left"></div>
                 <div class="goal-right"></div>
 
-                <!-- SVG OVERLAY FOR ARROWS & LABELS -->
                 <svg id="tacticalSvgOverlay">
                     <defs>
                         <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="6" refY="3.5" orient="auto">
@@ -414,10 +661,9 @@
                     <g id="svgArrowsGroup"></g>
                 </svg>
 
-                <!-- FOOTBALL BALL -->
                 <div class="match-ball" id="fieldBall" style="top: 50%; left: 50%;">⚽</div>
 
-                <!-- HOME TEAM (11 BLUE PLAYERS) -->
+                <!-- HOME TEAM (11 BLUE) -->
                 <div class="player-node team-home" id="h1" style="top: 50%; left: 6%;">H1</div>
                 <div class="player-node team-home" id="h2" style="top: 18%; left: 24%;">H2</div>
                 <div class="player-node team-home" id="h3" style="top: 38%; left: 30%;">H3</div>
@@ -430,7 +676,7 @@
                 <div class="player-node team-home" id="h10" style="top: 50%; left: 62%;">H10</div>
                 <div class="player-node team-home" id="h11" style="top: 82%; left: 65%;">H11</div>
 
-                <!-- AWAY TEAM (11 RED PLAYERS) -->
+                <!-- AWAY TEAM (11 RED) -->
                 <div class="player-node team-away" id="a1" style="top: 50%; right: 6%;">A1</div>
                 <div class="player-node team-away" id="a2" style="top: 18%; right: 24%;">A2</div>
                 <div class="player-node team-away" id="a3" style="top: 38%; right: 30%;">A3</div>
@@ -444,79 +690,11 @@
                 <div class="player-node team-away" id="a11" style="top: 82%; right: 65%;">A11</div>
             </div>
 
-            <!-- TACTICAL ANALYSIS GUIDE BOX -->
             <div class="guide-box" id="guideAnalysisBox">
                 <div>♟️</div>
                 <div>
-                    <strong>Tactical Analysis Guide:</strong> Type any complex match scenario above to instantly trigger automated player shifts, vector directional arrows, and step-by-step execution guidance!
+                    <strong>Tactical Analysis Guide:</strong> Type any complex match scenario above to instantly trigger automated player shifts, vector directional arrows, and execution guidance!
                 </div>
-            </div>
-        </div>
-
-        <!-- TAB 4: BOOTS & NATURAL DIET -->
-        <div class="tab-panel card">
-            <div class="card-header-row">
-                <h3>👟 Boots & Natural Diet Engineering</h3>
-                <span>Equipment & Recovery Optimization</span>
-            </div>
-            <p class="desc-text">Discover footwear specifications for traction dynamics and organic dietary protocols for injury prevention.</p>
-            <div class="content-grid">
-                <div class="inner-box">
-                    <h4>Cleat Traction Mapping</h4>
-                    <p>Molded conical studs for rotational agility on firm natural grass surfaces.</p>
-                </div>
-                <div class="inner-box">
-                    <h4>Pre-Match Organic Fueling</h4>
-                    <p>Complex carbohydrates combined with natural electrolytes 3 hours prior to kickoff.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- TAB 5: NATURAL DIET PLAN -->
-        <div class="tab-panel card">
-            <div class="card-header-row">
-                <h3>🥗 Elite Natural Diet Plan</h3>
-                <span>Whole Foods Nutrition Strategy</span>
-            </div>
-            <p class="desc-text">Customized meal plans structured around high-intensity match recovery cycles.</p>
-            <div class="content-grid">
-                <div class="inner-box">
-                    <h4>Post-Match Regeneration</h4>
-                    <p>Anti-inflammatory superfoods, grass-fed proteins, and organic root vegetables.</p>
-                </div>
-                <div class="inner-box">
-                    <h4>Hydration Matrix</h4>
-                    <p>Coconut water infused with pink Himalayan salt for optimal muscle contraction.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- TAB 6: ELITE AI Q&A -->
-        <div class="tab-panel card">
-            <div class="card-header-row">
-                <h3>💬 Elite AI Tactical Q&A</h3>
-                <span>Direct Consultation with Pro Coach AI</span>
-            </div>
-            <p class="desc-text">Ask deep technical questions about positioning, mindset, and tactical periodization.</p>
-            <div class="question-bar">
-                <input type="text" placeholder="Ask AI anything about football tactics or training...">
-                <button class="run-btn">Ask AI 🤖</button>
-            </div>
-            <div class="inner-box">
-                <h4>Recent AI Insight</h4>
-                <p>"Compactness between the defensive and midfield line must never exceed 15 meters during low-block phases."</p>
-            </div>
-        </div>
-
-        <!-- TAB 7: LOGS -->
-        <div class="tab-panel card">
-            <div class="card-header-row">
-                <h3>📊 Performance System Logs</h3>
-                <span>System Audits & Analytics History</span>
-            </div>
-            <p class="desc-text">Review simulation history, scenario queries executed, and tactical adjustment records.</p>
-            <div class="inner-box">
-                <p><strong>[LOG 22:45]</strong> - Tactical Engine initialized successfully. Universal vector matcher ready.</p>
             </div>
         </div>
     </div>
@@ -534,6 +712,36 @@
             btnElement.classList.add('active');
         }
 
+        // Stopwatch Timer Logic
+        let timerInterval = null;
+        let secondsElapsed = 0;
+        let isTrainingRunning = false;
+
+        function toggleTrainingTimer() {
+            let btn = document.getElementById('startTrainingBtn');
+            let display = document.getElementById('stopwatchDisplay');
+
+            if (!isTrainingRunning) {
+                isTrainingRunning = true;
+                btn.textContent = "Stop Training";
+                btn.style.background = "#f43f5e";
+                btn.style.color = "#fff";
+                timerInterval = setInterval(() => {
+                    secondsElapsed++;
+                    let hrs = String(Math.floor(secondsElapsed / 3600)).padStart(2, '0');
+                    let mins = String(Math.floor((secondsElapsed % 3600) / 60)).padStart(2, '0');
+                    let secs = String(secondsElapsed % 60).padStart(2, '0');
+                    display.textContent = `${hrs}:${mins}:${secs}`;
+                }, 1000);
+            } else {
+                isTrainingRunning = false;
+                clearInterval(timerInterval);
+                btn.textContent = "Start Training";
+                btn.style.background = "var(--accent-green)";
+                btn.style.color = "#000";
+            }
+        }
+
         // Tactical Simulation Logic
         function setPos(id, top, left) {
             let el = document.getElementById(id);
@@ -547,6 +755,7 @@
 
         function drawVectorArrow(x1, y1, x2, y2, color="#38bdf8", text="") {
             let pitch = document.getElementById('tacticalPitch');
+            if (!pitch) return;
             let w = pitch.clientWidth;
             let h = pitch.clientHeight;
             let px1 = (x1/100)*w, py1 = (y1/100)*h;
@@ -576,17 +785,18 @@
         }
 
         function runTacticalSimulation() {
-            let inputVal = document.getElementById('matchQuestionInput').value.trim().toLowerCase();
+            let inputField = document.getElementById('matchQuestionInput');
+            if(!inputField) return;
+            let inputVal = inputField.value.trim().toLowerCase();
             let guideBox = document.getElementById('guideAnalysisBox');
             let svgGroup = document.getElementById('svgArrowsGroup');
-            svgGroup.innerHTML = ""; // Clear old arrows
+            svgGroup.innerHTML = "";
 
             if (!inputVal) {
                 guideBox.innerHTML = "<div>⚠️</div><div>Please type a tactical scenario or question in the box above.</div>";
                 return;
             }
 
-            // SCENARIO 1: Overload / Right Flank / 3v2 buildup
             if (inputVal.includes("overload") || inputVal.includes("flank") || inputVal.includes("right") || inputVal.includes("3v2")) {
                 setPos('a2', 22, 20);
                 setPos('a3', 30, 26);
@@ -611,9 +821,7 @@
                         <br>• <strong>Execution Guide:</strong> Maintain a strict 2-meter distance between defenders. Delay the attacker until secondary cover arrives.
                     </div>
                 `;
-            } 
-            // SCENARIO 2: High Press / A8 pressing H8
-            else if (inputVal.includes("press") || inputVal.includes("a8") || inputVal.includes("h8")) {
+            } else if (inputVal.includes("press") || inputVal.includes("a8") || inputVal.includes("h8")) {
                 setPos('a8', 50, 52);
                 setPos('h8', 50, 42);
                 setBall(50, 42);
@@ -634,9 +842,7 @@
                         <br>• <strong>Execution Guide:</strong> Use quick 1-touch vertical passes to wing midfielders <strong>H6</strong> or <strong>H7</strong> to break the pressing trap instantly.
                     </div>
                 `;
-            } 
-            // UNIVERSAL FALLBACK FOR ANY OTHER COMPLEX QUESTION (Guarantees Arrows + Written Guidance)
-            else {
+            } else {
                 setPos('a6', 40, 40);
                 setPos('a10', 45, 55);
                 setPos('h8', 48, 48);
@@ -652,7 +858,7 @@
                         <strong>Tactical Analysis for "${inputVal}":</strong>
                         <br>• <strong>On-Field Adjustment:</strong> Team shape has dynamically shifted to counter spatial threats and control central zones.
                         <br>• <strong>Directional Arrows:</strong> Notice the dotted vectors indicating defensive recovery lines and press triggers.
-                        <br>• <strong>Execution Guide:</strong> Keep defensive lines compact (maximum 25-30 meters), force opponents wide into low-percentage areas, and capitalize on transition turnovers.
+                        <br>• <strong>Execution Guide:</strong> Keep defensive lines compact (maximum 25-30 meters), force opponents wide, and capitalize on transition turnovers.
                     </div>
                 `;
             }
@@ -667,17 +873,19 @@
             });
         });
 
-        document.getElementById('tacticalPitch').addEventListener('mousemove', (e) => {
-            if (!draggedNode) return;
-            let pitch = document.getElementById('tacticalPitch');
-            let rect = pitch.getBoundingClientRect();
-            let x = ((e.clientX - rect.left) / rect.width) * 100;
-            let y = ((e.clientY - rect.top) / rect.height) * 100;
-            if(x >= 2 && x <= 98 && y >= 3 && y <= 97) {
-                draggedNode.style.left = x + '%';
-                draggedNode.style.top = y + '%';
-            }
-        });
+        let pitchEl = document.getElementById('tacticalPitch');
+        if(pitchEl) {
+            pitchEl.addEventListener('mousemove', (e) => {
+                if (!draggedNode) return;
+                let rect = pitchEl.getBoundingClientRect();
+                let x = ((e.clientX - rect.left) / rect.width) * 100;
+                let y = ((e.clientY - rect.top) / rect.height) * 100;
+                if(x >= 2 && x <= 98 && y >= 3 && y <= 97) {
+                    draggedNode.style.left = x + '%';
+                    draggedNode.style.top = y + '%';
+                }
+            });
+        }
 
         window.addEventListener('mouseup', () => {
             draggedNode = null;
