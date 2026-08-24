@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elite Football Academy - Tactical Web Dashboard</title>
+    <title>Elite Football Academy - Complete Tactical Web Dashboard</title>
     <style>
         :root {
             --bg-dark: #06090f;
@@ -86,6 +86,14 @@
             background: #151e30;
             color: var(--accent-blue);
             border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        /* Tab Content Panels */
+        .tab-panel {
+            display: none;
+        }
+        .tab-panel.active-panel {
+            display: block;
         }
 
         /* Card Container */
@@ -283,6 +291,30 @@
             align-items: flex-start;
             gap: 12px;
         }
+
+        /* General UI for other tabs */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+        }
+        .inner-box {
+            background: #05080f;
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 15px;
+        }
+        .inner-box h4 {
+            margin-top: 0;
+            color: var(--accent-blue);
+            font-size: 0.95rem;
+        }
+        .inner-box p {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            line-height: 1.5;
+            margin-bottom: 0;
+        }
     </style>
 </head>
 <body>
@@ -291,22 +323,60 @@
         <!-- TOP COACH COMMAND TICKER -->
         <div class="coach-ticker">
             <span>🎙️</span>
-            <div><strong>Coach's Command:</strong> "Type your match situation in the box below! Watch players & ball shift automatically with tactical directional arrows."</div>
+            <div><strong>Coach's Command:</strong> "Explore all Academy modules or test tactical questions on the live 11v11 pitch with dynamic arrows!"</div>
         </div>
 
         <!-- TOP NAVIGATION TABS BAR -->
         <div class="nav-tabs">
-            <button class="tab-btn">⚡ Live Academy</button>
-            <button class="tab-btn">⏱️ Master Timeline</button>
-            <button class="tab-btn active">♟️ 11v11 Tactics & Field</button>
-            <button class="tab-btn">👟 Boots & Natural Diet</button>
-            <button class="tab-btn">🥗 Natural Diet Plan</button>
-            <button class="tab-btn">💬 Elite AI Q&A</button>
-            <button class="tab-btn">📊 Logs</button>
+            <button class="tab-btn" onclick="switchTab(0, this)">⚡ Live Academy</button>
+            <button class="tab-btn" onclick="switchTab(1, this)">⏱️ Master Timeline</button>
+            <button class="tab-btn active" onclick="switchTab(2, this)">♟️ 11v11 Tactics & Field</button>
+            <button class="tab-btn" onclick="switchTab(3, this)">👟 Boots & Natural Diet</button>
+            <button class="tab-btn" onclick="switchTab(4, this)">🥗 Natural Diet Plan</button>
+            <button class="tab-btn" onclick="switchTab(5, this)">💬 Elite AI Q&A</button>
+            <button class="tab-btn" onclick="switchTab(6, this)">📊 Logs</button>
         </div>
 
-        <!-- MAIN TACTICAL FIELD CARD -->
-        <div class="card">
+        <!-- TAB 1: LIVE ACADEMY -->
+        <div class="tab-panel card">
+            <div class="card-header-row">
+                <h3>⚡ Live Academy Sessions</h3>
+                <span>Real-time Training Broadcasts</span>
+            </div>
+            <p class="desc-text">Access scheduled masterclasses, technical ball-striking modules, and positional awareness breakdowns.</p>
+            <div class="content-grid">
+                <div class="inner-box">
+                    <h4>Module 1: Spatial Awareness</h4>
+                    <p>Learn scanning techniques to increase field vision by 40% before receiving possession.</p>
+                </div>
+                <div class="inner-box">
+                    <h4>Module 2: Pressing Triggers</h4>
+                    <p>Master defensive organization when to trigger collective team high press.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: MASTER TIMELINE -->
+        <div class="tab-panel card">
+            <div class="card-header-row">
+                <h3>⏱️ Master Timeline & Career Progress</h3>
+                <span>Season 2026 Milestone Tracker</span>
+            </div>
+            <p class="desc-text">Track your physical load, tactical exam completions, and match fitness metrics across weeks.</p>
+            <div class="content-grid">
+                <div class="inner-box">
+                    <h4>Phase 1: Pre-Season Conditioning</h4>
+                    <p>Status: Completed (100% adherence score, peak VO2 max achieved).</p>
+                </div>
+                <div class="inner-box">
+                    <h4>Phase 2: Tactical Mastery</h4>
+                    <p>Status: In Progress (Advanced 4-3-3 shape analysis and transition speed optimization).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: 11v11 TACTICS & FIELD (ACTIVE BY DEFAULT) -->
+        <div class="tab-panel active-panel card">
             <div class="card-header-row">
                 <h3>♟️ 11v11 Tactical Field + Ball + Auto-Position Simulator</h3>
                 <span>Ask Situation & Watch Players Move With Ball</span>
@@ -382,9 +452,89 @@
                 </div>
             </div>
         </div>
+
+        <!-- TAB 4: BOOTS & NATURAL DIET -->
+        <div class="tab-panel card">
+            <div class="card-header-row">
+                <h3>👟 Boots & Natural Diet Engineering</h3>
+                <span>Equipment & Recovery Optimization</span>
+            </div>
+            <p class="desc-text">Discover footwear specifications for traction dynamics and organic dietary protocols for injury prevention.</p>
+            <div class="content-grid">
+                <div class="inner-box">
+                    <h4>Cleat Traction Mapping</h4>
+                    <p>Molded conical studs for rotational agility on firm natural grass surfaces.</p>
+                </div>
+                <div class="inner-box">
+                    <h4>Pre-Match Organic Fueling</h4>
+                    <p>Complex carbohydrates combined with natural electrolytes 3 hours prior to kickoff.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 5: NATURAL DIET PLAN -->
+        <div class="tab-panel card">
+            <div class="card-header-row">
+                <h3>🥗 Elite Natural Diet Plan</h3>
+                <span>Whole Foods Nutrition Strategy</span>
+            </div>
+            <p class="desc-text">Customized meal plans structured around high-intensity match recovery cycles.</p>
+            <div class="content-grid">
+                <div class="inner-box">
+                    <h4>Post-Match Regeneration</h4>
+                    <p>Anti-inflammatory superfoods, grass-fed proteins, and organic root vegetables.</p>
+                </div>
+                <div class="inner-box">
+                    <h4>Hydration Matrix</h4>
+                    <p>Coconut water infused with pink Himalayan salt for optimal muscle contraction.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 6: ELITE AI Q&A -->
+        <div class="tab-panel card">
+            <div class="card-header-row">
+                <h3>💬 Elite AI Tactical Q&A</h3>
+                <span>Direct Consultation with Pro Coach AI</span>
+            </div>
+            <p class="desc-text">Ask deep technical questions about positioning, mindset, and tactical periodization.</p>
+            <div class="question-bar">
+                <input type="text" placeholder="Ask AI anything about football tactics or training...">
+                <button class="run-btn">Ask AI 🤖</button>
+            </div>
+            <div class="inner-box">
+                <h4>Recent AI Insight</h4>
+                <p>"Compactness between the defensive and midfield line must never exceed 15 meters during low-block phases."</p>
+            </div>
+        </div>
+
+        <!-- TAB 7: LOGS -->
+        <div class="tab-panel card">
+            <div class="card-header-row">
+                <h3>📊 Performance System Logs</h3>
+                <span>System Audits & Analytics History</span>
+            </div>
+            <p class="desc-text">Review simulation history, scenario queries executed, and tactical adjustment records.</p>
+            <div class="inner-box">
+                <p><strong>[LOG 22:45]</strong> - Tactical Engine initialized successfully. Universal vector matcher ready.</p>
+            </div>
+        </div>
     </div>
 
     <script>
+        // Tab Switching Logic
+        function switchTab(index, btnElement) {
+            let panels = document.querySelectorAll('.tab-panel');
+            let buttons = document.querySelectorAll('.nav-tabs .tab-btn');
+
+            panels.forEach(p => p.classList.remove('active-panel'));
+            buttons.forEach(b => b.classList.remove('active'));
+
+            panels[index].classList.add('active-panel');
+            btnElement.classList.add('active');
+        }
+
+        // Tactical Simulation Logic
         function setPos(id, top, left) {
             let el = document.getElementById(id);
             if(el) { el.style.top = top + "%"; el.style.left = left + "%"; }
