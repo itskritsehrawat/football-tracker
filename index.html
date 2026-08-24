@@ -26,6 +26,8 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 2px solid #334155;
+            flex-wrap: wrap;
+            gap: 15px;
         }
         .brand h1 { margin: 0; font-size: 24px; }
         .subtitle { margin: 5px 0 0; color: #94a3b8; font-size: 14px; }
@@ -57,14 +59,14 @@
         .hidden { display: none; }
         label { display: block; font-size: 13px; color: #94a3b8; margin-bottom: 5px; }
         input, select { width: 100%; padding: 10px; background: #0f172a; border: 1px solid #334155; color: #fff; border-radius: 6px; margin-bottom: 12px; box-sizing: border-box; }
-        .btn-primary, .btn-success, .btn-secondary, .btn-dark, .btn-danger { width: 100%; padding: 12px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; color: #fff; }
-        .btn-primary { background: #3b82f6; }
-        .btn-success { background: #10b981; }
-        .btn-secondary { background: #64748b; width: auto; padding: 6px 12px; font-size: 12px; }
+        .btn-primary, .btn-success, .btn-secondary, .btn-dark, .btn-danger { border: none; border-radius: 6px; font-weight: bold; cursor: pointer; color: #fff; }
+        .btn-primary { background: #3b82f6; width: 100%; padding: 12px; }
+        .btn-success { background: #10b981; width: 100%; padding: 12px; }
+        .btn-secondary { background: #64748b; padding: 6px 12px; font-size: 12px; }
         .btn-dark { background: #334155; }
-        .btn-danger { background: #ef4444; width: auto; padding: 6px 12px; font-size: 12px; }
+        .btn-danger { background: #ef4444; padding: 6px 12px; font-size: 12px; }
         .match-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .section-header { display: flex; justify-content: space-between; align-items: center; }
+        .section-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
         .goal-input-group { display: flex; gap: 10px; margin-top: 10px; }
         .goal-status { margin: 10px 0 5px; font-weight: bold; }
         #goalBar { background: #334155; height: 8px; border-radius: 4px; overflow: hidden; margin-top: 8px; }
@@ -94,28 +96,28 @@
         <div class="section">
             <h2>⚙️ Player Profile & Preferences</h2>
             <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;">
-                <input type="text" id="playerNameInput" placeholder="Player Name" style="flex: 1;">
-                <select id="playerPositionInput" style="flex: 1;">
+                <input type="text" id="playerNameInput" placeholder="Player Name" style="flex: 1; min-width: 150px;">
+                <select id="playerPositionInput" style="flex: 1; min-width: 150px;">
                     <option value="ST">Striker (ST)</option>
                     <option value="WINGER">Winger</option>
                     <option value="MIDFIELDER">Midfielder</option>
                     <option value="DEFENDER">Defender</option>
                     <option value="GK">Goalkeeper</option>
                 </select>
-                <select id="playerFootInput" style="flex: 1;">
+                <select id="playerFootInput" style="flex: 1; min-width: 150px;">
                     <option value="Right Foot">Right Footed</option>
                     <option value="Left Foot">Left Footed</option>
                     <option value="Both">Both Feet</option>
                 </select>
-                <button id="saveProfileBtn" class="btn-primary" style="padding: 10px 20px; cursor: pointer;">Save Profile</button>
+                <button id="saveProfileBtn" class="btn-primary" style="padding: 10px 20px; width: auto; cursor: pointer;">Save Profile</button>
             </div>
         </div>
 
         <div class="section">
             <h2>📝 Daily Training Tasks</h2>
-            <div style="display: flex; gap: 10px; margin-top: 10px;">
-                <input type="text" id="taskInput" placeholder="Add a daily task (e.g. 50 juggles)" style="flex: 1;">
-                <button id="addTaskBtn" class="btn-success" style="padding: 10px 20px; cursor: pointer; width: auto;">Add Task</button>
+            <div style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
+                <input type="text" id="taskInput" placeholder="Add a daily task (e.g. 50 juggles)" style="flex: 1; min-width: 200px;">
+                <button id="addTaskBtn" class="btn-success" style="padding: 10px 20px; width: auto; cursor: pointer;">Add Task</button>
             </div>
             <ul id="taskList" style="list-style: none; padding: 0; margin-top: 15px;"></ul>
         </div>
@@ -256,7 +258,12 @@
         <div class="section">
             <div class="section-header">
                 <h2>📋 Recent Activity Log</h2>
-                <button id="resetButton" class="btn-danger">Reset All Data</button>
+                <div style="display: flex; gap: 5px; flex-wrap: wrap;">
+                    <button id="backupBtn" class="btn-secondary" style="background: #3b82f6;">Backup</button>
+                    <button id="restoreBtn" class="btn-secondary" style="background: #10b981;">Restore</button>
+                    <input type="file" id="restoreFile" style="display: none;" accept=".json">
+                    <button id="resetButton" class="btn-danger">Reset</button>
+                </div>
             </div>
             <ul id="history"></ul>
         </div>
@@ -313,7 +320,7 @@
             taskList.innerHTML = '';
             tasks.forEach((task, index) => {
                 const li = document.createElement('li');
-                li.style.cssText = "display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); padding: 10px; margin-top: 8px; border-radius: 5px;";
+                li.style.cssText = "display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); padding: 10px; margin-top: 8px; border-radius: 5px; flex-wrap: wrap; gap: 10px;";
                 li.innerHTML = `
                     <span style="${task.completed ? 'text-decoration: line-through; opacity: 0.6;' : ''}; color: #fff;">${task.text}</span>
                     <div>
@@ -578,6 +585,79 @@
                 let percent = Math.min(100, (totalMinutes / weeklyGoal) * 100);
                 document.getElementById('goalFill').style.width = `${percent}%`;
             }
+        }
+
+        // --- BACKUP & RESTORE LOGIC ---
+        const backupBtn = document.getElementById('backupBtn');
+        if (backupBtn) {
+            backupBtn.addEventListener('click', function() {
+                const data = {
+                    totalMinutes, streak, totalMatches, totalGoals, totalAssists, xp, weeklyGoal,
+                    playerName, playerPosition, playerFoot,
+                    tasks, historyLog
+                };
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data));
+                const downloadAnchor = document.createElement('a');
+                downloadAnchor.setAttribute("href", dataStr);
+                downloadAnchor.setAttribute("download", "football_tracker_backup.json");
+                document.body.appendChild(downloadAnchor);
+                downloadAnchor.click();
+                downloadAnchor.remove();
+                alert('Backup file downloaded successfully!');
+            });
+        }
+
+        const restoreBtn = document.getElementById('restoreBtn');
+        const restoreFile = document.getElementById('restoreFile');
+        if (restoreBtn && restoreFile) {
+            restoreBtn.addEventListener('click', function() {
+                restoreFile.click();
+            });
+
+            restoreFile.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const importedData = JSON.parse(e.target.result);
+                        
+                        totalMinutes = importedData.totalMinutes || 0;
+                        streak = importedData.streak || 0;
+                        totalMatches = importedData.totalMatches || 0;
+                        totalGoals = importedData.totalGoals || 0;
+                        totalAssists = importedData.totalAssists || 0;
+                        xp = importedData.xp || 0;
+                        weeklyGoal = importedData.weeklyGoal || 0;
+                        playerName = importedData.playerName || "PRO PLAYER";
+                        playerPosition = importedData.playerPosition || "ST";
+                        playerFoot = importedData.playerFoot || "Right Foot";
+                        tasks = importedData.tasks || [];
+                        historyLog = importedData.historyLog || [];
+
+                        localStorage.setItem('totalMinutes', totalMinutes);
+                        localStorage.setItem('streak', streak);
+                        localStorage.setItem('totalMatches', totalMatches);
+                        localStorage.setItem('totalGoals', totalGoals);
+                        localStorage.setItem('totalAssists', totalAssists);
+                        localStorage.setItem('xp', xp);
+                        localStorage.setItem('weeklyGoal', weeklyGoal);
+                        localStorage.setItem('playerName', playerName);
+                        localStorage.setItem('playerPosition', playerPosition);
+                        localStorage.setItem('playerFoot', playerFoot);
+                        localStorage.setItem('tasks', JSON.stringify(tasks));
+                        localStorage.setItem('historyLog', JSON.stringify(historyLog));
+
+                        updateUI();
+                        renderTasks();
+                        alert('Data Restored Successfully!');
+                    } catch (err) {
+                        alert('Invalid backup file!');
+                    }
+                };
+                reader.readAsText(file);
+            });
         }
 
         const resetButton = document.getElementById('resetButton');
