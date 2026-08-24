@@ -7,6 +7,31 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
+        /* --- STEP 1: MOBILE & UI POLISH --- */
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        button, input, select {
+            transition: all 0.2s ease-in-out;
+        }
+
+        button:active {
+            transform: scale(0.97);
+        }
+
+        .section {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .section:hover {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             background-color: #0f172a;
             color: #f8fafc;
@@ -587,7 +612,6 @@
             }
         }
 
-        // --- BACKUP & RESTORE LOGIC ---
         const backupBtn = document.getElementById('backupBtn');
         if (backupBtn) {
             backupBtn.addEventListener('click', function() {
