@@ -54,7 +54,7 @@ function renderTasks() {
         const li = document.createElement('li');
         li.style.cssText = "display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); padding: 10px; margin-top: 8px; border-radius: 5px;";
         li.innerHTML = `
-            <span style="${task.completed ? 'text-decoration: line-through; opacity: 0.6;' : ''}">${task.text}</span>
+            <span style="${task.completed ? 'text-decoration: line-through; opacity: 0.6;' : ''}; color: #fff;">${task.text}</span>
             <div>
                 <button onclick="toggleTask(${index})" style="background: ${task.completed ? '#f39c12' : '#2ecc71'}; border: none; padding: 5px 10px; border-radius: 4px; color: #fff; cursor: pointer; margin-right: 5px;">${task.completed ? 'Undo' : 'Done'}</button>
                 <button onclick="deleteTask(${index})" style="background: #e74c3c; border: none; padding: 5px 10px; border-radius: 4px; color: #fff; cursor: pointer;">Delete</button>
@@ -118,7 +118,6 @@ function initRadarChart() {
     const ctx = document.getElementById('skillRadar');
     if (!ctx) return;
     
-    // Calculate skills based on total minutes and activities
     let baseVal = Math.min(95, 50 + Math.floor(totalMinutes / 30));
     
     if (skillRadarChart) {
