@@ -7,9 +7,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* --- STEP 1: MOBILE & UI POLISH --- */
+        /* --- STEP 1 & 2: UI POLISH & OPTIMIZED STYLES --- */
         * {
             -webkit-tap-highlight-color: transparent;
+            box-sizing: border-box;
         }
 
         button, input, select {
@@ -83,7 +84,7 @@
         .tab-btn.active { background: #3b82f6; }
         .hidden { display: none; }
         label { display: block; font-size: 13px; color: #94a3b8; margin-bottom: 5px; }
-        input, select { width: 100%; padding: 10px; background: #0f172a; border: 1px solid #334155; color: #fff; border-radius: 6px; margin-bottom: 12px; box-sizing: border-box; }
+        input, select { width: 100%; padding: 10px; background: #0f172a; border: 1px solid #334155; color: #fff; border-radius: 6px; margin-bottom: 12px; }
         .btn-primary, .btn-success, .btn-secondary, .btn-dark, .btn-danger { border: none; border-radius: 6px; font-weight: bold; cursor: pointer; color: #fff; }
         .btn-primary { background: #3b82f6; width: 100%; padding: 12px; }
         .btn-success { background: #10b981; width: 100%; padding: 12px; }
@@ -134,7 +135,7 @@
                     <option value="Left Foot">Left Footed</option>
                     <option value="Both">Both Feet</option>
                 </select>
-                <button id="saveProfileBtn" class="btn-primary" style="padding: 10px 20px; width: auto; cursor: pointer;">Save Profile</button>
+                <button id="saveProfileBtn" class="btn-primary" style="padding: 10px 20px; width: auto;">Save Profile</button>
             </div>
         </div>
 
@@ -142,7 +143,7 @@
             <h2>📝 Daily Training Tasks</h2>
             <div style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
                 <input type="text" id="taskInput" placeholder="Add a daily task (e.g. 50 juggles)" style="flex: 1; min-width: 200px;">
-                <button id="addTaskBtn" class="btn-success" style="padding: 10px 20px; width: auto; cursor: pointer;">Add Task</button>
+                <button id="addTaskBtn" class="btn-success" style="padding: 10px 20px; width: auto;">Add Task</button>
             </div>
             <ul id="taskList" style="list-style: none; padding: 0; margin-top: 15px;"></ul>
         </div>
@@ -236,7 +237,7 @@
                         </div>
                     </div>
                     <label for="matchRating" style="margin-top: 10px; display: block;">Match Rating:</label>
-                    <select id="matchRating" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #444; background: #222; color: #fff; margin-bottom: 10px;">
+                    <select id="matchRating">
                         <option value="10">10/10 - Legendary (MOTM)</option>
                         <option value="9">9/10 - World Class</option>
                         <option value="8">8/10 - Excellent</option>
@@ -315,15 +316,12 @@
         document.getElementById('futName').innerText = playerName;
         document.getElementById('futPos').innerText = playerPosition;
 
-        document.getElementById('saveProfileBtn').addEventListener('click', function() {
+        document.getElementById('saveProfileBtn').addEventListener('click', () => {
             const nameInput = document.getElementById('playerNameInput').value.trim();
-            const posInput = document.getElementById('playerPositionInput').value;
-            const footInput = document.getElementById('playerFootInput').value;
-
             if (nameInput) {
                 playerName = nameInput;
-                playerPosition = posInput;
-                playerFoot = footInput;
+                playerPosition = document.getElementById('playerPositionInput').value;
+                playerFoot = document.getElementById('playerFootInput').value;
 
                 localStorage.setItem('playerName', playerName);
                 localStorage.setItem('playerPosition', playerPosition);
@@ -357,26 +355,23 @@
             });
         }
 
-        const addTaskBtn = document.getElementById('addTaskBtn');
-        if (addTaskBtn) {
-            addTaskBtn.addEventListener('click', function() {
-                const taskText = document.getElementById('taskInput').value.trim();
-                if (taskText) {
-                    tasks.push({ text: taskText, completed: false });
-                    localStorage.setItem('tasks', JSON.stringify(tasks));
-                    document.getElementById('taskInput').value = '';
-                    renderTasks();
-                }
-            });
-        }
+        document.getElementById('addTaskBtn')?.addEventListener('click', () => {
+            const taskText = document.getElementById('taskInput').value.trim();
+            if (taskText) {
+                tasks.push({ text: taskText, completed: false });
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+                document.getElementById('taskInput').value = '';
+                renderTasks();
+            }
+        });
 
-        window.toggleTask = function(index) {
+        window.toggleTask = (index) => {
             tasks[index].completed = !tasks[index].completed;
             localStorage.setItem('tasks', JSON.stringify(tasks));
             renderTasks();
         };
 
-        window.deleteTask = function(index) {
+        window.deleteTask = (index) => {
             tasks.splice(index, 1);
             localStorage.setItem('tasks', JSON.stringify(tasks));
             renderTasks();
@@ -387,21 +382,19 @@
         const trainingForm = document.getElementById('trainingForm');
         const matchForm = document.getElementById('matchForm');
 
-        if (tabTrainingBtn && tabMatchBtn) {
-            tabTrainingBtn.addEventListener('click', () => {
-                tabTrainingBtn.classList.add('active');
-                tabMatchBtn.classList.remove('active');
-                trainingForm.classList.remove('hidden');
-                matchForm.classList.add('hidden');
-            });
+        tabTrainingBtn?.addEventListener('click', () => {
+            tabTrainingBtn.classList.add('active');
+            tabMatchBtn.classList.remove('active');
+            trainingForm.classList.remove('hidden');
+            matchForm.classList.add('hidden');
+        });
 
-            tabMatchBtn.addEventListener('click', () => {
-                tabMatchBtn.classList.add('active');
-                tabTrainingBtn.classList.remove('active');
-                matchForm.classList.remove('hidden');
-                trainingForm.classList.add('hidden');
-            });
-        }
+        tabMatchBtn?.addEventListener('click', () => {
+            tabMatchBtn.classList.add('active');
+            tabTrainingBtn.classList.remove('active');
+            matchForm.classList.remove('hidden');
+            trainingForm.classList.add('hidden');
+        });
 
         let skillRadarChart = null;
         function initRadarChart() {
@@ -445,23 +438,12 @@
         function checkBadges() {
             const badges = document.querySelectorAll('.achievement');
             if (badges.length >= 6) {
-                if (totalMinutes > 0) badges[0].classList.remove('locked');
-                else badges[0].classList.add('locked');
-
-                if (totalMinutes >= 100) badges[1].classList.remove('locked');
-                else badges[1].classList.add('locked');
-
-                if (totalMinutes >= 500) badges[2].classList.remove('locked');
-                else badges[2].classList.add('locked');
-
-                if (streak >= 7) badges[3].classList.remove('locked');
-                else badges[3].classList.add('locked');
-
-                if (totalMatches > 0) badges[4].classList.remove('locked');
-                else badges[4].classList.add('locked');
-
-                if (totalMinutes >= 1000) badges[5].classList.remove('locked');
-                else badges[5].classList.add('locked');
+                badges[0].classList.toggle('locked', totalMinutes <= 0);
+                badges[1].classList.toggle('locked', totalMinutes < 100);
+                badges[2].classList.toggle('locked', totalMinutes < 500);
+                badges[3].classList.toggle('locked', streak < 7);
+                badges[4].classList.toggle('locked', totalMatches <= 0);
+                badges[5].classList.toggle('locked', totalMinutes < 1000);
             }
         }
 
@@ -543,65 +525,56 @@
             checkBadges();
         }
 
-        const addButton = document.getElementById('addButton');
-        if (addButton) {
-            addButton.addEventListener('click', function() {
-                const type = document.getElementById('trainingType').value;
-                const mins = parseInt(document.getElementById('minutes').value);
+        document.getElementById('addButton')?.addEventListener('click', () => {
+            const type = document.getElementById('trainingType').value;
+            const mins = parseInt(document.getElementById('minutes').value);
 
-                if (!mins || mins <= 0) {
-                    alert('Please enter valid training minutes.');
-                    return;
-                }
+            if (!mins || mins <= 0) {
+                alert('Please enter valid training minutes.');
+                return;
+            }
 
-                totalMinutes += mins;
-                xp += 20;
-                streak += 1;
+            totalMinutes += mins;
+            xp += 20;
+            streak += 1;
 
-                let currentDate = new Date().toISOString().split('T')[0];
-                historyLog.unshift({ text: `${type} — ${mins} mins (${currentDate})`, type: 'training', mins: mins, date: currentDate });
+            let currentDate = new Date().toISOString().split('T')[0];
+            historyLog.unshift({ text: `${type} — ${mins} mins (${currentDate})`, type: 'training', mins: mins, date: currentDate });
 
-                document.getElementById('minutes').value = '';
-                updateUI();
-                alert('Training Session Logged Successfully! (+20 XP)');
-            });
-        }
+            document.getElementById('minutes').value = '';
+            updateUI();
+            alert('Training Session Logged Successfully! (+20 XP)');
+        });
 
-        const addMatchButton = document.getElementById('addMatchButton');
-        if (addMatchButton) {
-            addMatchButton.addEventListener('click', function() {
-                const goals = parseInt(document.getElementById('matchGoals').value) || 0;
-                const assists = parseInt(document.getElementById('matchAssists').value) || 0;
-                const rating = document.getElementById('matchRating').value;
+        document.getElementById('addMatchButton')?.addEventListener('click', () => {
+            const goals = parseInt(document.getElementById('matchGoals').value) || 0;
+            const assists = parseInt(document.getElementById('matchAssists').value) || 0;
+            const rating = document.getElementById('matchRating').value;
 
-                totalMatches += 1;
-                totalGoals += goals;
-                totalAssists += assists;
-                xp += 50;
+            totalMatches += 1;
+            totalGoals += goals;
+            totalAssists += assists;
+            xp += 50;
 
-                let motmText = rating == "10" ? " ⭐ [MOTM]" : "";
-                let currentDate = new Date().toISOString().split('T')[0];
-                historyLog.unshift({ text: `Match — ${goals} Goals, ${assists} Assists, Rating: ${rating}/10${motmText} (${currentDate})`, type: 'match' });
+            let motmText = rating == "10" ? " ⭐ [MOTM]" : "";
+            let currentDate = new Date().toISOString().split('T')[0];
+            historyLog.unshift({ text: `Match — ${goals} Goals, ${assists} Assists, Rating: ${rating}/10${motmText} (${currentDate})`, type: 'match' });
 
-                document.getElementById('matchGoals').value = 0;
-                document.getElementById('matchAssists').value = 0;
-                updateUI();
-                alert(`Match Logged Successfully! Rating: ${rating}/10 (+50 XP)`);
-            });
-        }
+            document.getElementById('matchGoals').value = 0;
+            document.getElementById('matchAssists').value = 0;
+            updateUI();
+            alert(`Match Logged Successfully! Rating: ${rating}/10 (+50 XP)`);
+        });
 
-        const saveGoalButton = document.getElementById('saveGoalButton');
-        if (saveGoalButton) {
-            saveGoalButton.addEventListener('click', function() {
-                const goalVal = parseInt(document.getElementById('goalInput').value);
-                if (goalVal > 0) {
-                    weeklyGoal = goalVal;
-                    localStorage.setItem('weeklyGoal', weeklyGoal);
-                    updateWeeklyGoalUI();
-                    alert('Weekly Target Set Successfully!');
-                }
-            });
-        }
+        document.getElementById('saveGoalButton')?.addEventListener('click', () => {
+            const goalVal = parseInt(document.getElementById('goalInput').value);
+            if (goalVal > 0) {
+                weeklyGoal = goalVal;
+                localStorage.setItem('weeklyGoal', weeklyGoal);
+                updateWeeklyGoalUI();
+                alert('Weekly Target Set Successfully!');
+            }
+        });
 
         function updateWeeklyGoalUI() {
             if (weeklyGoal > 0) {
@@ -612,89 +585,77 @@
             }
         }
 
-        const backupBtn = document.getElementById('backupBtn');
-        if (backupBtn) {
-            backupBtn.addEventListener('click', function() {
-                const data = {
-                    totalMinutes, streak, totalMatches, totalGoals, totalAssists, xp, weeklyGoal,
-                    playerName, playerPosition, playerFoot,
-                    tasks, historyLog
-                };
-                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data));
-                const downloadAnchor = document.createElement('a');
-                downloadAnchor.setAttribute("href", dataStr);
-                downloadAnchor.setAttribute("download", "football_tracker_backup.json");
-                document.body.appendChild(downloadAnchor);
-                downloadAnchor.click();
-                downloadAnchor.remove();
-                alert('Backup file downloaded successfully!');
-            });
-        }
+        document.getElementById('backupBtn')?.addEventListener('click', () => {
+            const data = {
+                totalMinutes, streak, totalMatches, totalGoals, totalAssists, xp, weeklyGoal,
+                playerName, playerPosition, playerFoot, tasks, historyLog
+            };
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "football_tracker_backup.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+            alert('Backup file downloaded successfully!');
+        });
 
-        const restoreBtn = document.getElementById('restoreBtn');
         const restoreFile = document.getElementById('restoreFile');
-        if (restoreBtn && restoreFile) {
-            restoreBtn.addEventListener('click', function() {
-                restoreFile.click();
-            });
+        document.getElementById('restoreBtn')?.addEventListener('click', () => restoreFile.click());
 
-            restoreFile.addEventListener('change', function(event) {
-                const file = event.target.files[0];
-                if (!file) return;
+        restoreFile?.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
 
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    try {
-                        const importedData = JSON.parse(e.target.result);
-                        
-                        totalMinutes = importedData.totalMinutes || 0;
-                        streak = importedData.streak || 0;
-                        totalMatches = importedData.totalMatches || 0;
-                        totalGoals = importedData.totalGoals || 0;
-                        totalAssists = importedData.totalAssists || 0;
-                        xp = importedData.xp || 0;
-                        weeklyGoal = importedData.weeklyGoal || 0;
-                        playerName = importedData.playerName || "PRO PLAYER";
-                        playerPosition = importedData.playerPosition || "ST";
-                        playerFoot = importedData.playerFoot || "Right Foot";
-                        tasks = importedData.tasks || [];
-                        historyLog = importedData.historyLog || [];
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    
+                    totalMinutes = importedData.totalMinutes || 0;
+                    streak = importedData.streak || 0;
+                    totalMatches = importedData.totalMatches || 0;
+                    totalGoals = importedData.totalGoals || 0;
+                    totalAssists = importedData.totalAssists || 0;
+                    xp = importedData.xp || 0;
+                    weeklyGoal = importedData.weeklyGoal || 0;
+                    playerName = importedData.playerName || "PRO PLAYER";
+                    playerPosition = importedData.playerPosition || "ST";
+                    playerFoot = importedData.playerFoot || "Right Foot";
+                    tasks = importedData.tasks || [];
+                    historyLog = importedData.historyLog || [];
 
-                        localStorage.setItem('totalMinutes', totalMinutes);
-                        localStorage.setItem('streak', streak);
-                        localStorage.setItem('totalMatches', totalMatches);
-                        localStorage.setItem('totalGoals', totalGoals);
-                        localStorage.setItem('totalAssists', totalAssists);
-                        localStorage.setItem('xp', xp);
-                        localStorage.setItem('weeklyGoal', weeklyGoal);
-                        localStorage.setItem('playerName', playerName);
-                        localStorage.setItem('playerPosition', playerPosition);
-                        localStorage.setItem('playerFoot', playerFoot);
-                        localStorage.setItem('tasks', JSON.stringify(tasks));
-                        localStorage.setItem('historyLog', JSON.stringify(historyLog));
+                    localStorage.setItem('totalMinutes', totalMinutes);
+                    localStorage.setItem('streak', streak);
+                    localStorage.setItem('totalMatches', totalMatches);
+                    localStorage.setItem('totalGoals', totalGoals);
+                    localStorage.setItem('totalAssists', totalAssists);
+                    localStorage.setItem('xp', xp);
+                    localStorage.setItem('weeklyGoal', weeklyGoal);
+                    localStorage.setItem('playerName', playerName);
+                    localStorage.setItem('playerPosition', playerPosition);
+                    localStorage.setItem('playerFoot', playerFoot);
+                    localStorage.setItem('tasks', JSON.stringify(tasks));
+                    localStorage.setItem('historyLog', JSON.stringify(historyLog));
 
-                        updateUI();
-                        renderTasks();
-                        alert('Data Restored Successfully!');
-                    } catch (err) {
-                        alert('Invalid backup file!');
-                    }
-                };
-                reader.readAsText(file);
-            });
-        }
-
-        const resetButton = document.getElementById('resetButton');
-        if (resetButton) {
-            resetButton.addEventListener('click', function() {
-                if (confirm('Are you sure you want to reset all data?')) {
-                    localStorage.clear();
-                    location.reload();
+                    updateUI();
+                    renderTasks();
+                    alert('Data Restored Successfully!');
+                } catch (err) {
+                    alert('Invalid backup file!');
                 }
-            });
-        }
+            };
+            reader.readAsText(file);
+        });
 
-        window.deleteLog = function(index) {
+        document.getElementById('resetButton')?.addEventListener('click', () => {
+            if (confirm('Are you sure you want to reset all data?')) {
+                localStorage.clear();
+                location.reload();
+            }
+        });
+
+        window.deleteLog = (index) => {
             historyLog.splice(index, 1);
             updateUI();
         };
