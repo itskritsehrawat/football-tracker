@@ -27,7 +27,7 @@
 
     <div class="container">
 
-        <!-- PLAYER PROFILE SETUP SECTION -->
+        <!-- PLAYER PROFILE SETUP SECTION (TOP) -->
         <div class="section">
             <h2>⚙️ Player Profile & Preferences</h2>
             <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;">
@@ -58,6 +58,17 @@
             <ul id="taskList" style="list-style: none; padding: 0; margin-top: 15px;">
                 <!-- Tasks will show here -->
             </ul>
+        </div>
+
+        <!-- XP & LEVEL PROGRESS -->
+        <div class="xp-card">
+            <div class="xp-info">
+                <span>SEASON XP PROGRESS</span>
+                <span id="xpText">0 / 100 XP</span>
+            </div>
+            <div class="xp-bar">
+                <div id="xpFill"></div>
+            </div>
         </div>
 
         <!-- QUICK STATS DASHBOARD -->
@@ -174,6 +185,45 @@
                 </div>
             </div>
 
+        </div>
+
+        <!-- WEEKLY GOAL -->
+        <div class="section">
+            <div class="section-header">
+                <h2>🎯 Weekly Target</h2>
+                <button id="exportBtn" class="btn-secondary">📥 Export PDF Summary</button>
+            </div>
+
+            <div class="goal-input-group">
+                <input id="goalInput" type="number" placeholder="Set Weekly Goal (Mins)" min="1">
+                <button id="saveGoalButton" class="btn-dark">Set Target</button>
+            </div>
+
+            <p id="goalText" class="goal-status">Target: Not Set</p>
+            <p id="goalProgress">0 / 0 minutes completed</p>
+
+            <div id="goalBar">
+                <div id="goalFill"></div>
+            </div>
+        </div>
+
+        <!-- WEEKLY ACTIVITY BAR CHART -->
+        <div class="section">
+            <h2>📈 Weekly Activity Breakdown</h2>
+            <div id="weeklyChart"></div>
+        </div>
+
+        <!-- ACHIEVEMENTS -->
+        <div class="section">
+            <h2>🏆 Trophies & Badges</h2>
+            <div id="achievements">
+                <div class="achievement locked">🥉 First Session</div>
+                <div class="achievement locked">🥈 100 Mins Grind</div>
+                <div class="achievement locked">🥇 500 Mins Master</div>
+                <div class="achievement locked">🔥 7-Day Streak</div>
+                <div class="achievement locked">⚽ Debut Match</div>
+                <div class="achievement locked">👑 1000 Mins Legend</div>
+            </div>
         </div>
 
         <!-- HISTORY LOG -->
