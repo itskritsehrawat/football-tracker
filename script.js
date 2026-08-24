@@ -12,7 +12,6 @@ let playerName = localStorage.getItem('playerName') || "PRO PLAYER";
 let playerPosition = localStorage.getItem('playerPosition') || "ST";
 let playerFoot = localStorage.getItem('playerFoot') || "Right Foot";
 
-// Initialize Profile UI Inputs & FUT Card
 if (document.getElementById('playerNameInput')) {
     document.getElementById('playerNameInput').value = playerName !== "PRO PLAYER" ? playerName : "";
     document.getElementById('playerPositionInput').value = playerPosition;
@@ -112,6 +111,49 @@ if (tabTrainingBtn && tabMatchBtn) {
     });
 }
 
+// --- CHARTS & RADAR INITIALIZATION ---
+let skillRadarChart = null;
+
+function initRadarChart() {
+    const ctx = document.getElementById('skillRadar');
+    if (!ctx) return;
+    
+    // Calculate skills based on total minutes and activities
+    let baseVal = Math.min(95, 50 + Math.floor(totalMinutes / 30));
+    
+    if (skillRadarChart) {
+        skillRadarChart.data.datasets[0].data = [baseVal, baseVal, baseVal, baseVal, baseVal, baseVal];
+        skillRadarChart.update();
+        return;
+    }
+
+    skillRadarChart = new Chart(ctx, {
+        type: 'radar',
+        data: {
+            labels: ['Shooting', 'Passing', 'Dribbling', 'Pace', 'Physical', 'Defending'],
+            datasets: [{
+                label: 'Player Attributes',
+                data: [baseVal, baseVal, baseVal, baseVal, baseVal, baseVal],
+                backgroundColor: 'rgba(52, 152, 219, 0.2)',
+                borderColor: '#3498db',
+                borderWidth: 2,
+                pointBackgroundColor: '#3498db'
+            }]
+        },
+        options: {
+            scales: {
+                r: {
+                    angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                    grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                    pointLabels: { color: '#fff', font: { size: 11 } },
+                    ticks: { display: false, max: 99, min: 40 }
+                }
+            },
+            plugins: { legend: { display: false } }
+        }
+    });
+}
+
 // --- ACTIVITY HISTORY & STATS LOGIC ---
 let historyLog = JSON.parse(localStorage.getItem('historyLog')) || [];
 
@@ -128,14 +170,36 @@ function updateUI() {
     document.getElementById('xpFill').style.width = `${currentLevelXP}%`;
     document.getElementById('playerLevel').innerText = `⚡ LEVEL ${currentLevel}`;
 
+    // FUT Card OVR Update
+    let calculatedOvr = Math.min(99, 50 + Math.floor(totalMinutes / 40) + Math.floor(totalGoals * 2));
+    document.getElementById('futOvr').innerText = calculatedOvr;
+    document.getElementById('futPace').innerText = calculatedOvr;
+    document.getElementById('futSho').innerText = calculatedOvr;
+    document.getElementById('futPas').innerText = calculatedOvr;
+    document.getElementById('futDri').innerText = calculatedOvr;
+    document.getElementById('futPhy').innerText = calculatedOvr;
+    document.getElementById('futDef').innerText = Math.max(40, calculatedOvr - 10);
+
     // Update History List
     const historyEl = document.getElementById('history');
-    historyEl.innerHTML = '';
-    historyLog.forEach((item, index) => {
-        const li = document.createElement('li');
-        li.innerHTML = `<span>${item.text}</span> <button onclick="deleteLog(${index})" class="delete-btn">×</button>`;
-        historyEl.appendChild(li);
-    });
+    if (historyEl) {
+        historyEl.innerHTML = '';
+        historyLog.forEach((item, index) => {
+            const li = document.createElement('li');
+            li.innerHTML = `<span>${item.text}</span> <button onclick="deleteLog(${index})" class="delete-btn">×</button>`;
+            historyEl.appendChild(li);
+        });
+    }
+
+    // Weekly Breakdown Simple Chart Update
+    const weeklyChartEl = document.getElementById('weeklyChart');
+    if (weeklyChartEl) {
+        weeklyChartEl.innerHTML = `
+            <div style="display: flex; justify-content: space-around; align-items: flex-end; height: 120px; padding-top: 10px;">
+                <div style="text-align:center;"><div style="height: ${Math.min(100, totalMinutes)}px; background: #3498db; width: 25px; border-radius: 4px; margin: 0 auto;"></div><small style="color:#aaa;">Total</small></div>
+            </div>
+        `;
+    }
 
     // Save state
     localStorage.setItem('totalMinutes', totalMinutes);
@@ -145,6 +209,8 @@ function updateUI() {
     localStorage.setItem('totalAssists', totalAssists);
     localStorage.setItem('xp', xp);
     localStorage.setItem('historyLog', JSON.stringify(historyLog));
+
+    initRadarChart();
 }
 
 // Log Training Session
@@ -196,12 +262,42 @@ if (addMatchButton) {
     });
 }
 
+// Weekly Goal Logic
+const saveGoalButton = document.getElementById('saveGoalButton');
+if (saveGoalButton) {
+    saveGoalButton.addEventListener('click', function() {
+        const goalVal = parseInt(document.getElementById('goalInput').value);
+        if (goalVal > 0) {
+            weeklyGoal = goalVal;
+            localStorage.setItem('weeklyGoal', weeklyGoal);
+            updateWeeklyGoalUI();
+            alert('Weekly Target Set Successfully!');
+        }
+    });
+}
+
+function updateWeeklyGoalUI() {
+    if (weeklyGoal > 0) {
+        document.getElementById('goalText').innerText = `Target: ${weeklyGoal} mins`;
+        document.getElementById('goalProgress').innerText = `${totalMinutes} / ${weeklyGoal} minutes completed`;
+        let percent = Math.min(100, (totalMinutes / weeklyGoal) * 100);
+        document.getElementById('goalFill').style.width = `${percent}%`;
+    }
+}
+
+// Reset Data Button
+const resetButton = document.getElementById('resetButton');
+if (resetButton) {
+    resetButton.addEventListener('click', function() {
+        if (confirm('Are you sure you want to reset all data?')) {
+            localStorage.clear();
+            location.reload();
+        }
+    });
+}
+
 // Delete Single Log
 window.deleteLog = function(index) {
-    let item = historyLog[index];
-    if (item.type === 'training') {
-        // basic deduction logic if needed
-    }
     historyLog.splice(index, 1);
     updateUI();
 };
@@ -209,3 +305,4 @@ window.deleteLog = function(index) {
 // Initial setup call
 renderTasks();
 updateUI();
+updateWeeklyGoalUI();
