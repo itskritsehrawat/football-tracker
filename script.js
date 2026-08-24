@@ -1,20 +1,23 @@
-// Load Data or Initialize defaults
+// --- LOAD DATA OR INITIALIZE DEFAULTS ---
 let totalMinutes = parseInt(localStorage.getItem('totalMinutes')) || 0;
 let streak = parseInt(localStorage.getItem('streak')) || 0;
 let totalMatches = parseInt(localStorage.getItem('totalMatches')) || 0;
 let totalGoals = parseInt(localStorage.getItem('totalGoals')) || 0;
 let totalAssists = parseInt(localStorage.getItem('totalAssists')) || 0;
 let xp = parseInt(localStorage.getItem('xp')) || 0;
+let weeklyGoal = parseInt(localStorage.getItem('weeklyGoal')) || 0;
 
-// Load Profile Data
+// --- LOAD PLAYER PROFILE ---
 let playerName = localStorage.getItem('playerName') || "PRO PLAYER";
 let playerPosition = localStorage.getItem('playerPosition') || "ST";
 let playerFoot = localStorage.getItem('playerFoot') || "Right Foot";
 
-// Initialize Profile UI Inputs if they exist
-document.getElementById('playerNameInput').value = playerName !== "PRO PLAYER" ? playerName : "";
-document.getElementById('playerPositionInput').value = playerPosition;
-document.getElementById('playerFootInput').value = playerFoot;
+// Initialize Profile UI Inputs & FUT Card
+if (document.getElementById('playerNameInput')) {
+    document.getElementById('playerNameInput').value = playerName !== "PRO PLAYER" ? playerName : "";
+    document.getElementById('playerPositionInput').value = playerPosition;
+    document.getElementById('playerFootInput').value = playerFoot;
+}
 document.getElementById('futName').innerText = playerName;
 document.getElementById('futPos').innerText = playerPosition;
 
@@ -41,11 +44,12 @@ document.getElementById('saveProfileBtn').addEventListener('click', function() {
     }
 });
 
-// Daily Tasks Logic
+// --- DAILY TASKS LOGIC ---
 let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 
 function renderTasks() {
     const taskList = document.getElementById('taskList');
+    if (!taskList) return;
     taskList.innerHTML = '';
     tasks.forEach((task, index) => {
         const li = document.createElement('li');
@@ -61,15 +65,18 @@ function renderTasks() {
     });
 }
 
-document.getElementById('addTaskBtn').addEventListener('click', function() {
-    const taskText = document.getElementById('taskInput').value.trim();
-    if (taskText) {
-        tasks.push({ text: taskText, completed: false });
-        localStorage.setItem('tasks', JSON.stringify(tasks));
-        document.getElementById('taskInput').value = '';
-        renderTasks();
-    }
-});
+const addTaskBtn = document.getElementById('addTaskBtn');
+if (addTaskBtn) {
+    addTaskBtn.addEventListener('click', function() {
+        const taskText = document.getElementById('taskInput').value.trim();
+        if (taskText) {
+            tasks.push({ text: taskText, completed: false });
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            document.getElementById('taskInput').value = '';
+            renderTasks();
+        }
+    });
+}
 
 window.toggleTask = function(index) {
     tasks[index].completed = !tasks[index].completed;
@@ -83,7 +90,7 @@ window.deleteTask = function(index) {
     renderTasks();
 };
 
-// Tabs Switching Logic for Training & Match forms
+// --- TABS SWITCHING LOGIC ---
 const tabTrainingBtn = document.getElementById('tabTrainingBtn');
 const tabMatchBtn = document.getElementById('tabMatchBtn');
 const trainingForm = document.getElementById('trainingForm');
@@ -105,5 +112,100 @@ if (tabTrainingBtn && tabMatchBtn) {
     });
 }
 
-// Initial UI Render
+// --- ACTIVITY HISTORY & STATS LOGIC ---
+let historyLog = JSON.parse(localStorage.getItem('historyLog')) || [];
+
+function updateUI() {
+    document.getElementById('total').innerText = totalMinutes + " mins";
+    document.getElementById('streak').innerText = streak + " days";
+    document.getElementById('totalMatches').innerText = totalMatches + " played";
+    document.getElementById('totalG_A').innerText = `${totalGoals} G / ${totalAssists} A`;
+
+    // XP Progress Calculation
+    let currentLevelXP = xp % 100;
+    let currentLevel = Math.floor(xp / 100) + 1;
+    document.getElementById('xpText').innerText = `${currentLevelXP} / 100 XP`;
+    document.getElementById('xpFill').style.width = `${currentLevelXP}%`;
+    document.getElementById('playerLevel').innerText = `⚡ LEVEL ${currentLevel}`;
+
+    // Update History List
+    const historyEl = document.getElementById('history');
+    historyEl.innerHTML = '';
+    historyLog.forEach((item, index) => {
+        const li = document.createElement('li');
+        li.innerHTML = `<span>${item.text}</span> <button onclick="deleteLog(${index})" class="delete-btn">×</button>`;
+        historyEl.appendChild(li);
+    });
+
+    // Save state
+    localStorage.setItem('totalMinutes', totalMinutes);
+    localStorage.setItem('streak', streak);
+    localStorage.setItem('totalMatches', totalMatches);
+    localStorage.setItem('totalGoals', totalGoals);
+    localStorage.setItem('totalAssists', totalAssists);
+    localStorage.setItem('xp', xp);
+    localStorage.setItem('historyLog', JSON.stringify(historyLog));
+}
+
+// Log Training Session
+const addButton = document.getElementById('addButton');
+if (addButton) {
+    addButton.addEventListener('click', function() {
+        const type = document.getElementById('trainingType').value;
+        const mins = parseInt(document.getElementById('minutes').value);
+
+        if (!mins || mins <= 0) {
+            alert('Please enter valid training minutes.');
+            return;
+        }
+
+        totalMinutes += mins;
+        xp += 20;
+        streak += 1;
+
+        let currentDate = new Date().toISOString().split('T')[0];
+        historyLog.unshift({ text: `${type} — ${mins} mins (${currentDate})`, type: 'training' });
+
+        document.getElementById('minutes').value = '';
+        updateUI();
+        alert('Training Session Logged Successfully! (+20 XP)');
+    });
+}
+
+// Log Match with Rating & MOTM
+const addMatchButton = document.getElementById('addMatchButton');
+if (addMatchButton) {
+    addMatchButton.addEventListener('click', function() {
+        const goals = parseInt(document.getElementById('matchGoals').value) || 0;
+        const assists = parseInt(document.getElementById('matchAssists').value) || 0;
+        const rating = document.getElementById('matchRating').value;
+
+        totalMatches += 1;
+        totalGoals += goals;
+        totalAssists += assists;
+        xp += 50;
+
+        let motmText = rating == "10" ? " ⭐ [MOTM]" : "";
+        let currentDate = new Date().toISOString().split('T')[0];
+        historyLog.unshift({ text: `Match — ${goals} Goals, ${assists} Assists, Rating: ${rating}/10${motmText} (${currentDate})`, type: 'match' });
+
+        document.getElementById('matchGoals').value = 0;
+        document.getElementById('matchAssists').value = 0;
+        updateUI();
+        alert(`Match Logged Successfully! Rating: ${rating}/10 (+50 XP)`);
+    });
+}
+
+// Delete Single Log
+window.deleteLog = function(index) {
+    let item = historyLog[index];
+    if (item.type === 'training') {
+        // basic deduction logic if needed
+    }
+    historyLog.splice(index, 1);
+    updateUI();
+};
+
+// Initial setup call
 renderTasks();
+updateUI();
