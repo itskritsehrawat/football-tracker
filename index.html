@@ -70,8 +70,8 @@
         #goalBar { background: #334155; height: 8px; border-radius: 4px; overflow: hidden; margin-top: 8px; }
         #goalFill { background: #10b981; height: 100%; width: 0%; }
         #achievements { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-top: 10px; }
-        .achievement { background: #0f172a; padding: 10px; border-radius: 6px; text-align: center; font-size: 12px; border: 1px solid #334155; }
-        .achievement.locked { opacity: 0.4; }
+        .achievement { background: #0f172a; padding: 10px; border-radius: 6px; text-align: center; font-size: 12px; border: 1px solid #334155; color: #10b981; font-weight: bold; }
+        .achievement.locked { opacity: 0.3; color: #94a3b8; filter: grayscale(1); }
         #history { list-style: none; padding: 0; margin-top: 10px; }
         #history li { background: #0f172a; padding: 10px; border-radius: 6px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #334155; font-size: 13px; }
         .delete-btn { background: #ef4444; border: none; color: white; padding: 2px 8px; border-radius: 4px; cursor: pointer; }
@@ -410,6 +410,29 @@
 
         let historyLog = JSON.parse(localStorage.getItem('historyLog')) || [];
 
+        function checkBadges() {
+            const badges = document.querySelectorAll('.achievement');
+            if (badges.length >= 6) {
+                if (totalMinutes > 0) badges[0].classList.remove('locked');
+                else badges[0].classList.add('locked');
+
+                if (totalMinutes >= 100) badges[1].classList.remove('locked');
+                else badges[1].classList.add('locked');
+
+                if (totalMinutes >= 500) badges[2].classList.remove('locked');
+                else badges[2].classList.add('locked');
+
+                if (streak >= 7) badges[3].classList.remove('locked');
+                else badges[3].classList.add('locked');
+
+                if (totalMatches > 0) badges[4].classList.remove('locked');
+                else badges[4].classList.add('locked');
+
+                if (totalMinutes >= 1000) badges[5].classList.remove('locked');
+                else badges[5].classList.add('locked');
+            }
+        }
+
         function updateUI() {
             document.getElementById('total').innerText = totalMinutes + " mins";
             document.getElementById('streak').innerText = streak + " days";
@@ -485,6 +508,7 @@
 
             initRadarChart();
             updateWeeklyGoalUI();
+            checkBadges();
         }
 
         const addButton = document.getElementById('addButton');
