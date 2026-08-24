@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>11v11 Full Tactical Field (Dynamic Arrows & Universal Scenarios)</title>
+    <title>Elite Football Academy - Tactical Web Dashboard</title>
     <style>
         :root {
             --bg-dark: #06090f;
@@ -29,29 +29,66 @@
 
         .dashboard {
             width: 100%;
-            max-width: 1050px;
+            max-width: 1100px;
             display: flex;
             flex-direction: column;
             gap: 15px;
         }
 
-        .top-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        /* Top Yellow Coach Command Ticker */
+        .coach-ticker {
+            background: linear-gradient(135deg, #2b2304, #1b1603);
+            border: 1px solid rgba(234, 179, 8, 0.3);
+            border-radius: 8px;
+            padding: 10px 16px;
             font-size: 0.85rem;
-            color: var(--text-dim);
-        }
-
-        .top-header h2 {
-            margin: 0;
-            color: var(--text-white);
-            font-size: 1.1rem;
+            color: var(--accent-yellow);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
 
+        /* Top Navigation Tabs Bar */
+        .nav-tabs {
+            display: flex;
+            gap: 8px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            padding: 8px 12px;
+            border-radius: 10px;
+            overflow-x: auto;
+            align-items: center;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-dim);
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-white);
+            background: rgba(255,255,255,0.03);
+        }
+
+        .tab-btn.active {
+            background: #151e30;
+            color: var(--accent-blue);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        /* Card Container */
         .card {
             background-color: var(--card-bg);
             border: 1px solid var(--card-border);
@@ -60,15 +97,33 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
         }
 
-        .desc-text {
-            color: var(--text-dim);
-            font-size: 0.88rem;
-            margin-top: 0;
-            line-height: 1.5;
+        .card-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
         }
 
-        .desc-text strong {
+        .card-header-row h3 {
+            margin: 0;
             color: var(--text-white);
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-header-row span {
+            font-size: 0.78rem;
+            color: var(--text-dim);
+        }
+
+        .desc-text {
+            color: var(--text-dim);
+            font-size: 0.84rem;
+            margin-top: 0;
+            line-height: 1.5;
+            margin-bottom: 15px;
         }
 
         /* Question Input Bar */
@@ -85,7 +140,7 @@
             color: #fff;
             padding: 12px 16px;
             border-radius: 8px;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             outline: none;
             transition: border-color 0.2s;
         }
@@ -116,7 +171,7 @@
             background: linear-gradient(90deg, #064e3b 0%, #047857 50%, #064e3b 100%);
             border: 2px solid #34d399;
             border-radius: 10px;
-            height: 480px;
+            height: 460px;
             position: relative;
             overflow: hidden;
             box-shadow: inset 0 0 40px rgba(0,0,0,0.6);
@@ -133,7 +188,7 @@
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 110px; height: 110px;
+            width: 100px; height: 100px;
             border: 2px solid rgba(255,255,255,0.4);
             border-radius: 50%;
         }
@@ -169,10 +224,10 @@
         /* Player Nodes on Field */
         .player-node {
             position: absolute;
-            width: 32px;
-            height: 32px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 800;
             display: flex;
             justify-content: center;
@@ -191,8 +246,8 @@
         /* Football Ball */
         .match-ball {
             position: absolute;
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             background: #ffffff;
             border: 2px solid #000;
             border-radius: 50%;
@@ -203,7 +258,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 10px;
+            font-size: 9px;
         }
 
         /* SVG Tactical Lines Overlay */
@@ -218,9 +273,9 @@
         .guide-box {
             background: linear-gradient(135deg, #1b1603, #0d131f);
             border-left: 4px solid var(--accent-yellow);
-            padding: 16px;
+            padding: 15px;
             border-radius: 8px;
-            font-size: 0.88rem;
+            font-size: 0.85rem;
             line-height: 1.6;
             color: #fef08a;
             margin-top: 15px;
@@ -233,14 +288,32 @@
 <body>
 
     <div class="dashboard">
-        <div class="top-header">
-            <h2>🏆 11v11 Full Tactical Field (Universal Scenario Simulator)</h2>
-            <span>Smart Automated Tactical Arrows & Player Shifts</span>
+        <!-- TOP COACH COMMAND TICKER -->
+        <div class="coach-ticker">
+            <span>🎙️</span>
+            <div><strong>Coach's Command:</strong> "Type your match situation in the box below! Watch players & ball shift automatically with tactical directional arrows."</div>
         </div>
 
-        <div class="card" style="padding-bottom: 15px;">
+        <!-- TOP NAVIGATION TABS BAR -->
+        <div class="nav-tabs">
+            <button class="tab-btn">⚡ Live Academy</button>
+            <button class="tab-btn">⏱️ Master Timeline</button>
+            <button class="tab-btn active">♟️ 11v11 Tactics & Field</button>
+            <button class="tab-btn">👟 Boots & Natural Diet</button>
+            <button class="tab-btn">🥗 Natural Diet Plan</button>
+            <button class="tab-btn">💬 Elite AI Q&A</button>
+            <button class="tab-btn">📊 Logs</button>
+        </div>
+
+        <!-- MAIN TACTICAL FIELD CARD -->
+        <div class="card">
+            <div class="card-header-row">
+                <h3>♟️ 11v11 Tactical Field + Ball + Auto-Position Simulator</h3>
+                <span>Ask Situation & Watch Players Move With Ball</span>
+            </div>
+
             <p class="desc-text">
-                Type any match question below (e.g. <em>"Opponent is overloading our right flank"</em> or <em>"High press counter"</em>). The players, ball, and <strong>tactical directional arrows with written guidance</strong> will instantly adapt!
+                Type any match question below (e.g. <em>"Opponent is overloading our right flank with a 3v2 buildup"</em>). The players, the <strong>football ball</strong>, and <strong>tactical directional arrows</strong> will instantly adapt on the pitch!
             </p>
 
             <!-- QUESTION INPUT -->
@@ -303,9 +376,9 @@
 
             <!-- TACTICAL ANALYSIS GUIDE BOX -->
             <div class="guide-box" id="guideAnalysisBox">
-                <div>💡</div>
+                <div>♟️</div>
                 <div>
-                    <strong>Tactical Analysis Guide:</strong> Type any match scenario above (e.g., <em>"overload right flank"</em>, <em>"high press"</em>, or <em>"counter attack"</em>) to see automated player shifts, vector directional arrows, and step-by-step execution!
+                    <strong>Tactical Analysis Guide:</strong> Type any complex match scenario above to instantly trigger automated player shifts, vector directional arrows, and step-by-step execution guidance!
                 </div>
             </div>
         </div>
@@ -365,18 +438,15 @@
 
             // SCENARIO 1: Overload / Right Flank / 3v2 buildup
             if (inputVal.includes("overload") || inputVal.includes("flank") || inputVal.includes("right") || inputVal.includes("3v2")) {
-                // Move away attackers to overload right flank (left side of field coordinates from viewer perspective)
                 setPos('a2', 22, 20);
                 setPos('a3', 30, 26);
                 setPos('a9', 40, 22);
                 setBall(28, 24);
 
-                // Defensive shifting for Home team
                 setPos('h2', 25, 22);
                 setPos('h3', 35, 28);
                 setPos('h6', 42, 34);
 
-                // Draw tactical directional arrows
                 drawVectorArrow(24, 18, 22, 22, "#f43f5e", "A2 Overload");
                 drawVectorArrow(30, 38, 26, 30, "#f43f5e", "A3 Support");
                 drawVectorArrow(18, 24, 22, 22, "#38bdf8", "H2 Compact Block");
@@ -385,10 +455,10 @@
                 guideBox.innerHTML = `
                     <div>🔥</div>
                     <div>
-                        <strong>Tactical Analysis & Execution (Flank Overload):</strong>
+                        <strong>Tactical Analysis for "${inputVal}":</strong>
                         <br>• <strong>On-Field Adjustment:</strong> Opponent has shifted <strong>A2, A3, and A9</strong> toward the flank to create a 3v2 numerical advantage.
-                        <br>• <strong>Player Shift:</strong> Fullback <strong>H2</strong> and Center-back <strong>H3</strong> slide across compactly, while midfielder <strong>H6</strong> drops to close passing lanes.
-                        <br>• <strong>Execution Guide:</strong> Maintain a strict 2-meter distance between defenders. Do not dive in; delay the attacker until secondary defensive cover arrives.
+                        <br>• <strong>Player Shift:</strong> Fullback <strong>H2</strong> and Center-back <strong>H3</strong> slide across compactly, while midfielder <strong>H6</strong> closes passing lanes.
+                        <br>• <strong>Execution Guide:</strong> Maintain a strict 2-meter distance between defenders. Delay the attacker until secondary cover arrives.
                     </div>
                 `;
             } 
@@ -408,7 +478,7 @@
                 guideBox.innerHTML = `
                     <div>⚡</div>
                     <div>
-                        <strong>Tactical Analysis & Execution (High Press Counter):</strong>
+                        <strong>Tactical Analysis for "${inputVal}":</strong>
                         <br>• <strong>On-Field Adjustment:</strong> Red player <strong>A8</strong> is stepping up aggressively to block central distribution.
                         <br>• <strong>Player Shift:</strong> <strong>H8</strong> drops into an open pocket to receive safely.
                         <br>• <strong>Execution Guide:</strong> Use quick 1-touch vertical passes to wing midfielders <strong>H6</strong> or <strong>H7</strong> to break the pressing trap instantly.
@@ -417,7 +487,6 @@
             } 
             // UNIVERSAL FALLBACK FOR ANY OTHER COMPLEX QUESTION (Guarantees Arrows + Written Guidance)
             else {
-                // Dynamic shifting based on query hash/length to look natural
                 setPos('a6', 40, 40);
                 setPos('a10', 45, 55);
                 setPos('h8', 48, 48);
@@ -431,9 +500,9 @@
                     <div>🎯</div>
                     <div>
                         <strong>Tactical Analysis for "${inputVal}":</strong>
-                        <br>• <strong>On-Field Adjustment:</strong> Team shape has dynamically shifted to counter spatial threats and control central midfield zones.
+                        <br>• <strong>On-Field Adjustment:</strong> Team shape has dynamically shifted to counter spatial threats and control central zones.
                         <br>• <strong>Directional Arrows:</strong> Notice the dotted vectors indicating defensive recovery lines and press triggers.
-                        <br>• <strong>Execution Guide:</strong> Keep defensive lines compact (maximum 25-30 meters between defence and attack), force opponents wide into low-percentage areas, and capitalize on transition turnovers.
+                        <br>• <strong>Execution Guide:</strong> Keep defensive lines compact (maximum 25-30 meters), force opponents wide into low-percentage areas, and capitalize on transition turnovers.
                     </div>
                 `;
             }
