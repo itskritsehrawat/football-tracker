@@ -32,15 +32,16 @@
             min-height: 100vh;
         }
 
-        /* Login Modal / Screen Overlay */
+        /* Professional Club Dossier Login Overlay */
         #loginOverlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(11, 15, 25, 0.95);
+            background-color: rgba(11, 15, 25, 0.98);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 9999;
+            padding: 20px;
         }
 
         .login-card {
@@ -49,37 +50,51 @@
             padding: 30px;
             border-radius: 12px;
             width: 100%;
-            max-width: 400px;
-            text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            max-width: 480px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.7);
         }
 
         .login-title {
             color: var(--accent-gold);
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 700;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            text-align: center;
         }
 
         .login-desc {
             color: var(--text-muted);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             margin-bottom: 20px;
+            text-align: center;
+            line-height: 1.4;
         }
 
-        .login-input {
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--accent-yellow);
+            margin-bottom: 4px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .login-input, .login-select {
             width: 100%;
             background-color: #030712;
             border: 1px solid var(--border-color);
             border-radius: 6px;
-            padding: 12px 15px;
+            padding: 10px 14px;
             color: var(--text-main);
-            font-size: 1rem;
-            margin-bottom: 15px;
+            font-size: 0.95rem;
             outline: none;
         }
 
-        .login-input:focus {
+        .login-input:focus, .login-select:focus {
             border-color: var(--accent-gold);
         }
 
@@ -94,6 +109,7 @@
             font-size: 1rem;
             cursor: pointer;
             transition: background 0.2s;
+            margin-top: 10px;
         }
 
         .login-btn:hover {
@@ -115,6 +131,7 @@
         .memo-content {
             display: flex;
             gap: 10px;
+            align-items: center;
         }
 
         .memo-title {
@@ -221,7 +238,7 @@
             background-color: var(--accent-gold);
             color: #000;
             font-weight: 800;
-            padding: 15px 20px;
+            padding: 12px 18px;
             border-radius: 8px;
             text-align: center;
         }
@@ -248,6 +265,7 @@
             cursor: pointer;
             text-decoration: none;
             transition: background 0.2s;
+            white-space: nowrap;
         }
 
         .amazon-btn:hover {
@@ -293,7 +311,7 @@
         .player-node.gk { background-color: #f59e0b; border-color: #fcd34d; }
         .player-node.dm { background-color: #ef4444; border-color: #fca5a5; }
 
-        /* Timeline & Diet list */
+        /* Timeline & Diet cards */
         .routine-card, .diet-card {
             background-color: #030712;
             border: 1px solid var(--border-color);
@@ -317,7 +335,9 @@
             margin-bottom: 15px;
             resize: none;
             height: 100px;
+            outline: none;
         }
+        .ai-input:focus { border-color: var(--cyan-accent); }
 
         .ai-btn {
             background-color: var(--cyan-accent);
@@ -354,13 +374,47 @@
 </head>
 <body>
 
-    <!-- One-Time Secure Login Overlay -->
+    <!-- Professional Club Dossier Login Overlay -->
     <div id="loginOverlay">
         <div class="login-card">
-            <div class="login-title">⚡ Elite Player Portal</div>
-            <div class="login-desc">Enter your unique Player ID or Username. Each elite ID creates your secure, personal profile database.</div>
-            <input type="text" id="playerIdInput" class="login-input" placeholder="e.g. Krit Sehrawat">
-            <button class="login-btn" onclick="handleLogin()">Initialize Profile & Enter Hub</button>
+            <div class="login-title">🛡️ Professional Club Scouting & Dossier</div>
+            <div class="login-desc">Enter your exact player metrics. The web engine builds your elite tactical profile just like European professional club academies.</div>
+            
+            <div class="form-group">
+                <label>Player Full Name</label>
+                <input type="text" id="regName" class="login-input" placeholder="e.g. Krit Sehrawat">
+            </div>
+
+            <div class="form-group">
+                <label>Primary Playing Position</label>
+                <select id="regPosition" class="login-select">
+                    <option value="LW">Left Winger (LW)</option>
+                    <option value="RW">Right Winger (RW)</option>
+                    <option value="ST">Striker (ST)</option>
+                    <option value="CM">Central Midfielder (CM)</option>
+                    <option value="DM">Defensive Midfielder (DM)</option>
+                    <option value="CB">Center Back (CB)</option>
+                    <option value="LB">Left Back (LB)</option>
+                    <option value="RB">Right Back (RB)</option>
+                    <option value="GK">Goalkeeper (GK)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Current Tier / Level</label>
+                <select id="regTier" class="login-select">
+                    <option value="Professional Tier">Professional Academy Tier</option>
+                    <option value="Elite Pro Prospect">Elite Pro Prospect</option>
+                    <option value="Under-19 Academy">U-19 Academy Squad</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Main Weakness / Challenge You Want to Conquer</label>
+                <input type="text" id="regGoal" class="login-input" placeholder="e.g. Panic under high defensive pressure">
+            </div>
+
+            <button class="login-btn" onclick="handleProLogin()">Initialize Elite Club Dossier ⚡</button>
         </div>
     </div>
 
@@ -370,7 +424,7 @@
             <div class="memo-title">Coach's Command:</div>
             <div class="memo-text" id="coachCommandText">"Listen up! Elite players rely on natural whole foods and professional tactical vision. Push your limits harder every second!"</div>
         </div>
-        <button class="logout-btn" onclick="handleLogout()">Switch Player / Logout</button>
+        <button class="logout-btn" onclick="handleLogout()">Switch Dossier / Logout</button>
     </div>
 
     <!-- Navigation Tabs -->
@@ -389,11 +443,11 @@
         <div class="profile-box">
             <div>
                 <div style="font-size: 1.5rem; font-weight: 700; color: var(--text-main);" id="displayName">Player</div>
-                <div style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;">Professional Tier Active • System tracks your discipline second by second.</div>
+                <div style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;" id="displayTier">Professional Tier Active • System tracks discipline second by second.</div>
             </div>
             <div class="player-badge">
-                <div style="font-size: 1.8rem;">89</div>
-                <div style="font-size: 0.75rem; text-transform: uppercase;">LW Elite</div>
+                <div style="font-size: 1.8rem;" id="displayRating">89</div>
+                <div style="font-size: 0.75rem; text-transform: uppercase;" id="displayBadgePos">LW Elite</div>
             </div>
         </div>
 
@@ -450,7 +504,7 @@
         <div class="panel-title">Smart Boot Matcher & 100% Natural Fuel Hub</div>
         <div class="panel-desc">The web senses your position and recommends the exact boot category. Zero supplements rule enforced:</div>
         
-        <div class="routine-card">
+        <div class="routine-card" id="bootRecommendationBox">
             <strong style="color: var(--accent-gold);">⚡ Position Boot Match:</strong>
             <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">Speed Boots Recommended: Lightweight synthetic upper with aggressive blade stud configuration for explosive acceleration down the flanks.</p>
         </div>
@@ -518,30 +572,58 @@
     </div>
 
     <script>
-        // --- SECURE ONE-TIME LOGIN SYSTEM ---
+        // --- PROFESSIONAL CLUB DOSSIER SYSTEM ---
         window.onload = function() {
-            const savedPlayer = localStorage.getItem('elite_player_id');
-            if (savedPlayer) {
-                document.getElementById('loginOverlay').style.display = 'none';
-                document.getElementById('displayName').innerText = savedPlayer;
-                document.getElementById('coachCommandText').innerText = `"Listen up, ${savedPlayer}! Elite players rely on whole foods and professional tactical vision. Push harder every second!"`;
+            const savedName = localStorage.getItem('pro_player_name');
+            if (savedName) {
+                applyPlayerData({
+                    name: savedName,
+                    position: localStorage.getItem('pro_player_pos'),
+                    tier: localStorage.getItem('pro_player_tier'),
+                    goal: localStorage.getItem('pro_player_goal')
+                });
             }
         };
 
-        function handleLogin() {
-            const idInput = document.getElementById('playerIdInput').value.trim();
-            if(!idInput) {
-                alert('Please enter a valid Player ID to initialize your profile.');
+        function handleProLogin() {
+            const name = document.getElementById('regName').value.trim();
+            const position = document.getElementById('regPosition').value;
+            const tier = document.getElementById('regTier').value;
+            const goal = document.getElementById('regGoal').value.trim();
+
+            if(!name) {
+                alert('Please enter your full player name to create your dossier.');
                 return;
             }
-            localStorage.setItem('elite_player_id', idInput);
+
+            localStorage.setItem('pro_player_name', name);
+            localStorage.setItem('pro_player_pos', position);
+            localStorage.setItem('pro_player_tier', tier);
+            localStorage.setItem('pro_player_goal', goal);
+
+            applyPlayerData({ name, position, tier, goal });
+        }
+
+        function applyPlayerData(data) {
             document.getElementById('loginOverlay').style.display = 'none';
-            document.getElementById('displayName').innerText = idInput;
-            document.getElementById('coachCommandText').innerText = `"Listen up, ${idInput}! Elite players rely on whole foods and professional tactical vision. Push harder every second!"`;
+            document.getElementById('displayName').innerText = data.name;
+            document.getElementById('displayTier').innerText = `${data.tier} • Focus Goal: "${data.goal || 'Elite Professional Mastery'}"`;
+            document.getElementById('displayBadgePos').innerText = `${data.position} Elite`;
+            document.getElementById('coachCommandText').innerText = `"Listen up, ${data.name}! As a top ${data.position}, rely on whole foods and professional vision. Push harder every second!"`;
+
+            // Tailor boot recommendation based on position
+            const bootBox = document.getElementById('bootRecommendationBox');
+            let bootText = "Speed Boots Recommended: Lightweight synthetic upper with aggressive blade stud configuration for explosive acceleration.";
+            if(data.position === 'CB' || data.position === 'DM') {
+                bootText = "Control & Stability Boots Recommended: Leather or reinforced synthetic upper with conical studs for firm traction and precise passing distribution under pressure.";
+            } else if(data.position === 'GK') {
+                bootText = "Goalkeeper Grip & Traction Boots: Wide soleplate stability and hybrid stud configuration for rapid lateral dives and spring-loaded jumps.";
+            }
+            bootBox.innerHTML = `<strong style="color: var(--accent-gold);">⚡ Position Match (${data.position}):</strong><p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">${bootText}</p>`;
         }
 
         function handleLogout() {
-            localStorage.removeItem('elite_player_id');
+            localStorage.clear();
             location.reload();
         }
 
@@ -581,10 +663,10 @@
                 'Mon': '• Breakfast: Rolled oats with chia seeds, raw honey, and whole milk.<br>• Mid-Morning: 2 boiled eggs and a handful of almonds.<br>• Lunch: Grilled paneer breast, brown rice, broccoli, and coconut water.',
                 'Tue': '• Breakfast: Whole wheat toast with peanut butter and banana slices.<br>• Mid-Morning: Handful of walnuts and an apple.<br>• Lunch: Lentil dal, millet rotis, curd, and cucumber salad.<br>• Dinner: Grilled tofu with quinoa and carrots.',
                 'Wed': '• Breakfast: Poha with peanuts, peas, and fresh lemon juice.<br>• Mid-Morning: Boiled sweet potato.<br>• Lunch: Chickpea curry, brown rice, and buttermilk.<br>• Dinner: Vegetable soup and roasted paneer chunks.',
-                'Thu': '• Breakfast: Upma with mixed vegetables and almonds.<br>• Mid-Morning: Fresh pomegranate seeds.<br>• Lunch: Grilled chicken/paneer wrap with whole wheat flatbread.<br>• Dinner: Steamed fish/tofu with spinach.',
+                'Thu': '• Breakfast: Upma with mixed vegetables and almonds.<br>• Mid-Morning: Fresh pomegranate seeds.<br>• Lunch: Grilled paneer wrap with whole wheat flatbread.<br>• Dinner: Steamed fish/tofu with spinach.',
                 'Fri': '• Breakfast: Egg whites (or soaked moong sprouts) with toast.<br>• Mid-Morning: Banana and walnuts.<br>• Lunch: Rajma curry with brown rice and salad.<br>• Dinner: Quinoa salad with olive oil dressing.',
                 'Sat': '• Breakfast: Smoothie with bananas, dates, curd, and oats.<br>• Mid-Morning: Handful of roasted chana.<br>• Lunch: Paneer tikka with mint chutney and millet rotis.<br>• Dinner: Vegetable khichdi with pure ghee.',
-                'Sun': '• Breakfast: Multi-grain paratha with curd.<br>• Mid-Morning: Coconut water.<br>• Lunch: Grand recovery feast: brown rice, dal, grilled chicken/paneer.<br>• Dinner: Light vegetable soup and warm milk with turmeric.'
+                'Sun': '• Breakfast: Multi-grain paratha with curd.<br>• Mid-Morning: Coconut water.<br>• Lunch: Grand recovery feast: brown rice, dal, grilled paneer.<br>• Dinner: Light vegetable soup and warm milk with turmeric.'
             };
             document.getElementById('dietContentBox').innerHTML = `<strong>🌱 ${day} 100% Natural Pro Diet Plan:</strong><p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">${diets[day]}</p>`;
         }
@@ -592,11 +674,14 @@
         // AI Q&A Analysis Mock
         function runAiAnalysis() {
             const query = document.getElementById('aiQueryInput').value.trim();
+            const playerName = localStorage.getItem('pro_player_name') || 'Player';
+            const playerPos = localStorage.getItem('pro_player_pos') || 'Elite';
+
             if(!query) {
                 alert('Please type your situation or question first.');
                 return;
             }
-            document.getElementById('aiResponseBox').innerHTML = `<strong>🧠 Elite Mind Analyzer Result:</strong><br>For your query ("<em>${query}</em>"):<br>• <strong>Custom Drill:</strong> 15 minutes of wall-rebound one-touch passing under high-speed shadow pressure.<br>• <strong>Natural Fuel Adjustment:</strong> Increase pre-training complex carbs with soaked raisins and fresh coconut water to enhance mental alertness.`;
+            document.getElementById('aiResponseBox').innerHTML = `<strong>🧠 European Club AI Dossier for ${playerName} (${playerPos}):</strong><br>Analyzing query ("<em>${query}</em>"):<br>• <strong>Custom Pro Drill:</strong> 20-minute cognitive pressure-scanning drill with wall rebounds and rapid scanning before receiving.<br>• <strong>Natural Fuel Adjustment:</strong> Consume fresh pomegranate juice and raw walnuts 45 minutes prior to match simulation for optimal cognitive focus.`;
         }
     </script>
 </body>
