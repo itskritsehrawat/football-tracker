@@ -107,7 +107,7 @@
         /* Navigation Tabs */
         .page-nav {
             display: flex;
-            gap: 6px;
+            gap: 4px;
             background: #05080f;
             padding: 8px;
             border-radius: 10px;
@@ -120,9 +120,9 @@
             background: transparent;
             border: none;
             color: var(--text-dim);
-            padding: 10px;
+            padding: 10px 6px;
             font-weight: 700;
-            font-size: 0.72rem;
+            font-size: 0.68rem;
             border-radius: 6px;
             cursor: pointer;
             transition: 0.2s;
@@ -337,6 +337,7 @@
             font-size: 0.85rem;
             font-weight: 700;
             text-align: center;
+            white-space: nowrap;
         }
 
         @media(max-width: 768px) {
@@ -351,7 +352,7 @@
     <div id="registrationModal" style="display:none;">
         <div class="reg-box">
             <h2 style="margin:0; color:var(--accent-yellow); font-size:1.3rem;">⚽ PRO-TRAIN FC ACADEMY</h2>
-            <p style="margin:0; font-size:0.8rem; color:var(--text-dim);">Enter your credentials. Coach is watching your discipline. If you want to survive here, build yourself into an unbreakable wall!</p>
+            <p style="margin:0; font-size:0.8rem; color:var(--text-dim);">Enter your credentials. Coach is watching your discipline. If you want to become elite, you must challenge yourself to the absolute maximum!</p>
             <label style="font-size:0.75rem; color:var(--text-dim);">Player Name:</label>
             <input type="text" id="regName" placeholder="e.g. Krit Sehrawat">
             <label style="font-size:0.75rem; color:var(--text-dim);">Age:</label>
@@ -379,17 +380,18 @@
 
         <!-- COACH VOICE BANNER -->
         <div class="coach-banner" id="coachBannerText">
-            🎙️ <strong>Coach's Command:</strong> "Listen up! We don't accept excuses here. If you want to become an Elite player, you must challenge yourself harder every single day. Build yourself into an absolute wall or get left behind!"
+            🎙️ <strong>Coach's Command:</strong> "Listen up! If you want to be an elite player, you have to push through the hardest limits. No excuses, no shortcuts!"
         </div>
 
         <!-- NAVIGATION -->
         <div class="page-nav">
             <button class="nav-tab active" onclick="switchPage('dashboard', this)">⚡ Live Academy</button>
-            <button class="nav-tab" onclick="switchPage('dailycoach', this)">🎯 Coach Daily Drills</button>
-            <button class="nav-tab" onclick="switchPage('tiers', this)">⭐ Tier & Yearly Audit</button>
-            <button class="nav-tab" onclick="switchPage('roadmap', this)">🗺️ Pro Roadmap</button>
-            <button class="nav-tab" onclick="switchPage('diet', this)">🥗 Pro Nutrition</button>
-            <button class="nav-tab" onclick="switchPage('analytics', this)">📈 Performance Logs</button>
+            <button class="nav-tab" onclick="switchPage('dailycoach', this)">🎯 Daily Missions</button>
+            <button class="nav-tab" onclick="switchPage('tiers', this)">⭐ Tiers & Audit</button>
+            <button class="nav-tab" onclick="switchPage('roadmap', this)">🗺️ Roadmap</button>
+            <button class="nav-tab" onclick="switchPage('diet', this)">🥗 Full Day Diet</button>
+            <button class="nav-tab" onclick="switchPage('aiqa', this)">🧠 Elite AI Q&A</button>
+            <button class="nav-tab" onclick="switchPage('analytics', this)">📈 Logs</button>
         </div>
 
         <!-- ================= PAGE 1: LIVE DASHBOARD ================= -->
@@ -410,7 +412,7 @@
                         <button class="btn-reset" onclick="confirmResetData()" title="Reset Career Profile">🔄 Reset Profile</button>
                         <span style="font-size: 0.75rem; color: var(--text-dim); margin-left: auto;" id="liveClock">Loading...</span>
                     </div>
-                    <p style="color: var(--text-dim); font-size: 0.85rem; margin: 0 0 12px 0;">System monitors your activity strictly. 1-Year comprehensive evaluation runs silently for tier upgrades.</p>
+                    <p style="color: var(--text-dim); font-size: 0.85rem; margin: 0 0 12px 0;">System actively logs your activities. 1-Year comprehensive evaluation runs silently for elite tier upgrades.</p>
                     <div style="display: flex; gap: 10px;">
                         <div style="background: #05080f; padding: 8px; border-radius: 6px; flex:1; text-align:center;">
                             <span style="font-size:0.65rem; color:var(--text-dim); display:block;">YEARLY AUDIT</span>
@@ -455,24 +457,24 @@
             <!-- Smart Training Tasks -->
             <div class="card">
                 <div class="section-header">
-                    <h3 style="color: var(--text-white);">📋 Coach's Mandatory Hardcore Drills</h3>
+                    <h3 style="color: var(--text-white);">📋 Today's Unique Hardcore Drills</h3>
                     <span class="badge" id="planBadge">2/4 Completed</span>
                 </div>
                 <div class="plan-list" id="trainingPlanList">
                     <div class="plan-item">
-                        <span>Wall Rebounder First Touch (150 Hard Reps) — 25 min</span>
+                        <span id="taskText0">Dynamic Technical Mastery — 25 min</span>
                         <button class="status-btn status-completed" onclick="toggleTask(0)">Completed ✓</button>
                     </div>
                     <div class="plan-item">
-                        <span>Explosive Cone Dribbling & Quick Turns — 20 min</span>
+                        <span id="taskText1">Explosive Agility Circuit — 20 min</span>
                         <button class="status-btn status-completed" onclick="toggleTask(1)">Completed ✓</button>
                     </div>
                     <div class="plan-item">
-                        <span>Max Velocity 30m Sprints (10 Reps) — 15 min</span>
+                        <span id="taskText2">High-Velocity Sprint Bursts — 15 min</span>
                         <button class="status-btn status-progress" onclick="toggleTask(2)">In Progress ⏳</button>
                     </div>
                     <div class="plan-item">
-                        <span>Weak Foot Finishing Under Fatigue — 30 min</span>
+                        <span id="taskText3">Position-Specific Match Pressure Drill — 30 min</span>
                         <button class="status-btn status-notstarted" onclick="toggleTask(3)">Not Started ⏳</button>
                     </div>
                 </div>
@@ -480,14 +482,14 @@
 
         </div>
 
-        <!-- ================= PAGE 2: COACH DAILY MISSIONS ================= -->
+        <!-- ================= PAGE 2: DAILY MISSIONS ================= -->
         <div id="page-dailycoach" class="page-section">
             <div class="card">
                 <div class="section-header">
-                    <h3 style="color: var(--accent-blue);" id="dailyMissionTitle">🎯 Coach's Daily Command Mission</h3>
+                    <h3 style="color: var(--accent-blue);" id="dailyMissionTitle">🎯 Daily Hardcore Mission & Schedule</h3>
                     <span style="font-size: 0.75rem; color: var(--text-dim);" id="currentDayNameLabel">Day Check</span>
                 </div>
-                <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 0;">Make your training harder every day. If you want to become elite, you must conquer these advanced trials.</p>
+                <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 0;">Every single day features completely new routines, harder drills, and strict protocols designed to filter out non-elite players.</p>
                 
                 <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 10px;">
                     <div class="content-box" style="border-left-color: var(--accent-yellow);">
@@ -495,18 +497,18 @@
                         <span id="dailyScheduleText">Loading schedule...</span>
                     </div>
                     <div class="content-box" style="border-left-color: var(--accent-green);">
-                        <strong>⚽ Hardcore Curiosity Drill:</strong><br>
+                        <strong>⚽ Advanced Daily Exercise Drill:</strong><br>
                         <span id="dailyDrillText">Loading drill...</span>
                     </div>
                     <div class="content-box" style="border-left-color: var(--accent-orange);">
-                        <strong>🥗 Upgraded Pro Nutrition Blueprint:</strong><br>
+                        <strong>🥗 Daily Nutrition Focus:</strong><br>
                         <span id="dailyDietText">Loading diet...</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ================= PAGE 3: TIER & YEARLY EVALUATION ================= -->
+        <!-- ================= PAGE 3: TIERS & YEARLY AUDIT ================= -->
         <div id="page-tiers" class="page-section">
             <div class="card">
                 <div class="section-header">
@@ -516,7 +518,7 @@
                 
                 <div class="content-box" style="border-left-color: var(--accent-yellow); margin-bottom: 15px;">
                     <strong>🏛️ The Elite Club Rule:</strong><br>
-                    Your <strong>365-day</strong> progression is tracked automatically. If your discipline slips, you won't pass the audit. Make yourself a wall, crush every drill, and earn your promotion to Professional and Elite Academy standards!
+                    Your <strong>365-day</strong> progression is tracked automatically. If you want to become elite, you cannot fail these standards. Push yourself harder every second!
                 </div>
 
                 <div class="sub-tabs">
@@ -527,37 +529,37 @@
 
                 <div id="tier-beginner" class="tier-content tab-content active" style="display:flex;">
                     <div class="content-box" style="border-left-color: var(--accent-green);">
-                        <strong>🌱 Beginner Tier Focus: Building the Wall</strong><br>
-                        • <em>Objective:</em> Master clean touch and basic coordination. Coach says: "No sloppy passes allowed!"
+                        <strong>🌱 Beginner Tier Focus: Building Unbreakable Foundations</strong><br>
+                        • <em>Objective:</em> Eliminate sloppy touches, build core stamina, and establish strict daily habits.
                     </div>
                 </div>
 
                 <div id="tier-pro" class="tier-content tab-content" style="display:none;">
                     <div class="content-box" style="border-left-color: var(--accent-orange);">
-                        <strong>⚡ Professional Tier Focus: Tactical Speed & Duels</strong><br>
-                        • <em>Objective:</em> Fast decision making under heavy pressure and high-intensity match execution.
+                        <strong>⚡ Professional Tier Focus: High-Intensity Speed & Tactical IQ</strong><br>
+                        • <em>Objective:</em> Master split-second decisions under heavy pressure and high-velocity match demands.
                     </div>
                 </div>
 
                 <div id="tier-elite" class="tier-content tab-content" style="display:none;">
                     <div class="content-box" style="border-left-color: var(--accent-yellow);">
                         <strong>🔥 Elite Academy Tier Focus: Match Winner Standard</strong><br>
-                        • <em>Objective:</em> Absolute dominance on the pitch, flawless technical execution, and top-tier GPS performance metrics.
+                        • <em>Objective:</em> Absolute physical and technical dominance. Flawless execution or you don't play.
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ================= PAGE 4: PRO ROADMAP ================= -->
+        <!-- ================= PAGE 4: ROADMAP ================= -->
         <div id="page-roadmap" class="page-section">
             <div class="card">
                 <div class="section-header">
-                    <h3 style="color: var(--accent-yellow);">🗺️ Tailored Roadmap & Training Execution</h3>
+                    <h3 style="color: var(--accent-yellow);">🗺️ Tailored Roadmap & Training Protocols</h3>
                     <span style="font-size: 0.75rem; color: var(--text-dim);">Customized Routines</span>
                 </div>
                 
                 <div class="sub-tabs">
-                    <button class="sub-btn active" onclick="switchRoadmap('homeground', this)">🏠 Home vs Ground Protocols</button>
+                    <button class="sub-btn active" onclick="switchRoadmap('homeground', this)">🏠 Home vs Ground</button>
                     <button class="sub-btn" onclick="switchRoadmap('prepost', this)">⚡ Pre & Post Routines</button>
                     <button class="sub-btn" onclick="switchRoadmap('injury', this)">🛡️ Injury Prevention</button>
                 </div>
@@ -565,77 +567,92 @@
                 <div id="road-homeground" class="tab-content active" style="display:flex;">
                     <div class="content-box">
                         <strong>🏠 At-Home Solo Training Protocol:</strong><br>
-                        • <em>Wall Rebounder Hardcore Drill:</em> 400 continuous one-touch passes switching feet without dropping the ball. Make it harder!
+                        • <em>Hardcore Wall Rebounder Routine:</em> 500 continuous one-touch passes alternating feet at lightning speed.
                     </div>
                     <div class="content-box" style="border-left-color: var(--accent-green);">
                         <strong>⚽ At-The-Ground Pitch Protocol:</strong><br>
-                        • <em>Max Speed Dribbling:</em> Slalom weaving through cones at 100% full sprinting velocity.
+                        • <em>Max Speed Dribbling & Cutbacks:</em> High-intensity slalom weaves and explosive change of direction.
                     </div>
                 </div>
 
                 <div id="road-prepost" class="tab-content">
                     <div class="content-box" style="border-left-color: var(--accent-purple);">
                         <strong>⚡ Pre-Training Activation (15 mins):</strong><br>
-                        • Dynamic skipping, high knees, opening hip rotations, and explosive acceleration sprints.
+                        • Dynamic hip mobility, explosive acceleration sprints, and neuromuscular priming.
                     </div>
                     <div class="content-box" style="border-left-color: var(--accent-green);">
                         <strong>🧊 Post-Training Recovery (15 mins):</strong><br>
-                        • Static stretching, foam rolling, and strict electrolyte rehydration.
+                        • Deep static stretching, foam rolling, and rapid electrolyte restoration.
                     </div>
                 </div>
 
                 <div id="road-injury" class="tab-content">
                     <div class="content-box" style="border-left-color: #ef4444;">
                         <strong>🛡️ Bulletproofing Against Injuries:</strong><br>
-                        • Ankle stability balance work and Nordic curls to safeguard high-velocity sprinting muscles.
+                        • Ankle stability protocols and hamstring Nordic curls to protect against high-speed tears.
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ================= PAGE 5: UPGRADED PRO DIET ================= -->
+        <!-- ================= PAGE 5: FULL DAY DIET ================= -->
         <div id="page-diet" class="page-section">
             <div class="card">
                 <div class="section-header">
-                    <h3 style="color: var(--accent-orange);">🥗 Upgraded Pro Nutrition & Diet Engine</h3>
-                    <span style="font-size: 0.75rem; color: var(--text-dim);">Advanced Fueling System</span>
+                    <h3 style="color: var(--accent-orange);">🥗 Full-Day Pro Nutrition & Meal Plan</h3>
+                    <span style="font-size: 0.75rem; color: var(--text-dim);">Complete Daily Fueling</span>
                 </div>
                 
                 <div class="sub-tabs">
-                    <button class="sub-btn active" onclick="switchDiet('beginner', this)">🌱 Beginner Diet</button>
-                    <button class="sub-btn" onclick="switchDiet('pro', this)">⚡ Pro Diet</button>
-                    <button class="sub-btn" onclick="switchDiet('elite', this)">🔥 Elite Diet</button>
+                    <button class="sub-btn active" onclick="switchDietTab('monday', this)">Mon</button>
+                    <button class="sub-btn" onclick="switchDietTab('tuesday', this)">Tue</button>
+                    <button class="sub-btn" onclick="switchDietTab('wednesday', this)">Wed</button>
+                    <button class="sub-btn" onclick="switchDietTab('thursday', this)">Thu</button>
+                    <button class="sub-btn" onclick="switchDietTab('friday', this)">Fri</button>
+                    <button class="sub-btn" onclick="switchDietTab('saturday', this)">Sat</button>
+                    <button class="sub-btn" onclick="switchDietTab('sunday', this)">Sun</button>
                 </div>
 
-                <div id="diet-beginner" class="tab-content active" style="display:flex;">
-                    <div class="content-box" style="border-left-color: var(--accent-orange);">
-                        <strong>🌱 Upgraded Beginner Nutrition Plan:</strong><br>
-                        • <em>Breakfast:</em> Whole grain oats with raw honey, chia seeds, and whole organic milk.<br>
-                        • <em>Lunch:</em> Grilled chicken breast, brown rice, steamed broccoli, and fresh coconut water for sustained energy.
+                <div id="fulldiet-box" class="content-box" style="border-left-color: var(--accent-orange); font-size: 0.85rem; line-height: 1.7;">
+                    Loading daily nutrition plan...
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PAGE 6: ELITE AI Q&A & MIND READER ================= -->
+        <div id="page-aiqa" class="page-section">
+            <div class="card">
+                <div class="section-header">
+                    <h3 style="color: var(--accent-blue);">🧠 Elite Coach AI Q&A & Mind Reader</h3>
+                    <span style="font-size: 0.75rem; color: var(--text-dim);">Stuck? Ask your question</span>
+                </div>
+                <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 0;">
+                    If you are stuck in any situation (bad first touch, losing stamina, feeling nervous before matches, weak foot issues), type your question below. The web engine thinks like an elite player and will instantly give you a custom drill and diet plan tailored precisely to your problem!
+                </p>
+
+                <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+                    <textarea id="playerQuestionInput" rows="3" placeholder="e.g. My first touch under pressure is terrible and I panic when defenders rush me..." style="background: #05080f; border: 1px solid var(--card-border); color: #fff; padding: 12px; border-radius: 8px; font-size: 0.9rem; resize: vertical;"></textarea>
+                    <button class="timer-btn btn-start" onclick="processPlayerQuestion()" style="align-self: flex-start;">Analyze & Generate Elite Solution 🚀</button>
+                </div>
+
+                <div id="aiResponseContainer" style="display: none; margin-top: 15px; flex-direction: column; gap: 10px;">
+                    <div class="content-box" style="border-left-color: var(--accent-yellow);">
+                        <strong>🎯 Coach's Mind Analysis:</strong><br>
+                        <span id="aiMindsetAnswer"></span>
                     </div>
-                </div>
-
-                <div id="diet-pro" class="tab-content" style="display:none;">
-                    <div class="content-box" style="border-left-color: var(--accent-orange);">
-                        <strong>⚡ Upgraded Professional Nutrition Plan:</strong><br>
-                        • <em>Breakfast:</em> Avocado sourdough toast with 3 egg whites, whole eggs, and fresh berries.<br>
-                        • <em>Mid-Day Fuel:</em> Greek yogurt with almonds and dark chocolate chips.<br>
-                        • <em>Lunch:</em> Quinoa salmon bowl with sweet potatoes and olive oil dressing.
+                    <div class="content-box" style="border-left-color: var(--accent-green);">
+                        <strong>⚽ Custom Custom-Fit Drill For Your Problem:</strong><br>
+                        <span id="aiCustomDrill"></span>
                     </div>
-                </div>
-
-                <div id="diet-elite" class="tab-content" style="display:none;">
                     <div class="content-box" style="border-left-color: var(--accent-orange);">
-                        <strong>🔥 Upgraded Elite Academy Nutrition Plan:</strong><br>
-                        • <em>Pre-Workout:</em> Concentrated beetroot juice shot for elite stamina and blood oxygenation.<br>
-                        • <em>Lunch:</em> Organic turkey mince with whole-grain pasta, spinach, and cold-pressed olive oil.<br>
-                        • <em>Post-Workout:</em> Whey protein isolate combined with fast-acting dextrose and glutamine within 20 minutes.
+                        <strong>🥗 Instant Diet & Recovery Adjustment:</strong><br>
+                        <span id="aiCustomDiet"></span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ================= PAGE 6: ANALYTICS ================= -->
+        <!-- ================= PAGE 7: ANALYTICS ================= -->
         <div id="page-analytics" class="page-section">
             <div class="card">
                 <div class="section-header">
@@ -657,9 +674,9 @@
             <div>
                 <div style="font-size: 0.75rem; color: var(--accent-green); font-weight: 700; margin-bottom: 4px;">🛍️ PRO GEAR RECOMMENDATION HUB</div>
                 <h3 style="margin: 0 0 4px 0; font-size: 1.1rem;">"Your Game Is Hard? Make It Harder with Pro Equipment!"</h3>
-                <p style="margin: 0; font-size: 0.8rem; color: var(--text-dim);">Elite players don't train with ordinary gear. Equip grip socks, resistance bands, and weighted training footballs to level up your game.</p>
+                <p style="margin: 0; font-size: 0.8rem; color: var(--text-dim);">Elite players don't train with ordinary gear. Equip grip socks, resistance bands, and weighted training footballs from Amazon to evolve your game.</p>
             </div>
-            <a href="https://www.amazon.in/s?k=football+grip+socks+training+equipment" target="_blank" class="shop-btn">Equip Pro Gear On Amazon ↗</a>
+            <a href="https://www.amazon.in/s?k=football+grip+socks+training+equipment" target="_blank" class="shop-btn">On Amazon ↗</a>
         </div>
 
     </div>
@@ -675,6 +692,8 @@
             } else {
                 document.getElementById('registrationModal').style.display = 'flex';
             }
+            loadDailyData();
+            loadFullDayDiet('monday');
         });
 
         function saveRegistration() {
@@ -696,7 +715,7 @@
             document.getElementById('displayPos').innerText = pos;
             document.getElementById('displayContract').innerText = tier;
 
-            let quote = `"Listen up, ${name}! If you want to become an Elite player, you must challenge yourself harder every single day. Build yourself into an unbreakable wall or you won't survive professional standards!"`;
+            let quote = `"Listen up, ${name}! If you want to become an Elite player, you must challenge yourself harder every single day. No shortcuts, no excuses. Build yourself into an unbreakable wall!"`;
             document.getElementById('coachBannerText').innerHTML = `🎙️ <strong>Coach's Command:</strong> ${quote}`;
         }
 
@@ -711,56 +730,127 @@
             }
         }
 
-        function loadDailyMission() {
-            const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-            const today = new Date().getDay();
-            const dayName = days[today];
-            document.getElementById('currentDayNameLabel').innerText = dayName + " Mission";
+        const daysData = {
+            1: { // Monday
+                name: "Monday",
+                schedule: "06:00 AM - Core & Agility | 05:00 PM - 90 Minutes Hardcore Passing & Scanning",
+                drill: "The 400-Touch Wall Rebounder Challenge: Zero loose touches allowed.",
+                dietDesc: "High-Carb Energy Fuel: Organic oats with raw honey, grilled chicken breast with brown rice, and coconut water.",
+                tasks: ["Wall Rebounder One-Touch (400 Reps)", "Cone Weaving Agility Sprints", "Max Velocity 30m Accelerations", "Weak Foot Passing Under Fatigue"]
+            },
+            2: { // Tuesday
+                name: "Tuesday",
+                schedule: "06:30 AM - 7km Endurance Run | 04:30 PM - Tight Space Dribbling",
+                drill: "Cone Minefield: Weave through 25 tight cones at 100% full sprinting velocity.",
+                dietDesc: "Endurance Fuel: Avocado sourdough toast, salmon quinoa bowl, and clean electrolytes.",
+                tasks: ["7km Endurance Pace Run", "Tight Space Sole-Roll Dribbling", "Direction Change Cutting Drills", "Core Stability Plank Holds"]
+            },
+            3: { // Wednesday
+                name: "Wednesday",
+                schedule: "07:00 AM - Active Recovery & Stretch | 05:00 PM - Finishing Under Fatigue",
+                drill: "Exhaustion Volleys: 60 powerful strikes immediately following high-speed sprints.",
+                dietDesc: "Muscle Repair: High-protein buckwheat pancakes, turkey salad, and magnesium supplements.",
+                tasks: ["Dynamic Mobility & Hip Openers", "Exhaustion Finishing Volleys", "1v1 Defending Pressure Duels", "Mental Visualization Study"]
+            },
+            4: { // Thursday
+                name: "Thursday",
+                schedule: "06:00 AM - Explosive Acceleration | 05:30 PM - Tactical Vision & Scanning",
+                drill: "Blind Spot Scanning: Scan over both shoulders before receiving every ball under pressure.",
+                dietDesc: "Speed Energy: Peanut butter banana smoothie, lean beef mince with whole-wheat pasta.",
+                tasks: ["Explosive Resistance Sprints", "Shoulder-Check Scanning Drills", "First-Touch Receiving Under Press", "Agility Ladder Footwork"]
+            },
+            5: { // Friday
+                name: "Friday",
+                schedule: "07:00 AM - Ball Mastery | 04:00 PM - Pre-Match Tactical Briefing",
+                drill: "2,500 Touches Challenge: Restricted space ball manipulation with zero errors.",
+                dietDesc: "Carb Loading: Massive organic pasta portion, grilled white fish, and rapid hydration drinks.",
+                tasks: ["2500 Touches Ball Mastery", "Tactical Shape Positioning", "Set-Piece Delivery Practice", "Match Readiness Review"]
+            },
+            6: { // Saturday
+                name: "Saturday",
+                schedule: "MATCHDAY: 09:00 AM Warmup | 11:00 AM Official Competitive League Match",
+                drill: "Match Execution: Dominate physical duels, high pressing intensity, zero sloppy errors.",
+                dietDesc: "Matchday Fuel: Fast-acting energy gels, bananas, and rapid post-match recovery shake.",
+                tasks: ["Pre-Match Activation Routine", "90-Min Match Performance", "GPS Data & Sprint Analysis", "Post-Match Ice Bath & Recovery"]
+            },
+            0: { // Sunday
+                name: "Sunday",
+                schedule: "REST & RECOVERY: Tactical video analysis and mental preparation",
+                drill: "Match IQ Study: Analyze top professional players in your specific position.",
+                dietDesc: "Clean Recovery: Antioxidant berries, green tea, mixed nuts, and vegetable broth soup.",
+                tasks: ["Tactical Video Review", "Passive Stretching & Foam Rolling", "Mental Focus & Goal Setting", "Hydration & Mineral Balance"]
+            }
+        };
 
-            const missions = {
-                1: {
-                    schedule: "06:30 AM - Core & Agility | 05:00 PM - 90 Minutes Hardcore Wall Passing",
-                    drill: "The Wall Challenge: 300 consecutive one-touch passes without a single loose touch.",
-                    diet: "Upgraded High-Carb Fuel: Organic oats, grilled chicken breast, and brown rice."
-                },
-                2: {
-                    schedule: "06:00 AM - 6km Endurance Run | 04:30 PM - Tight Space Dribbling",
-                    drill: "Cone Minefield: Weave through 20 tight cones at 100% maximum sprinting speed.",
-                    diet: "Pro Fuel: Avocado sourdough toast, salmon bowl, and electrolyte hydration."
-                },
-                3: {
-                    schedule: "08:00 AM - Active Recovery & Stretch | 05:00 PM - Finishing Under Fatigue",
-                    drill: "Exhaustion Volleys: 50 powerful strikes immediately following high-speed sprints.",
-                    diet: "Muscle Repair: High-protein pancakes, quinoa chicken salad, and magnesium."
-                },
-                4: {
-                    schedule: "07:00 AM - Acceleration Sprints | 05:30 PM - Tactical Scanning Vision",
-                    drill: "Blind Spot Scanning: Scan over both shoulders before receiving every ball.",
-                    diet: "Speed Energy: Peanut banana smoothie, turkey meatballs with whole-wheat pasta."
-                },
-                5: {
-                    schedule: "07:00 AM - Ball Mastery | 04:00 PM - Pre-Match Briefing",
-                    drill: "2,000 Touches Challenge: Sole rolls and V-pulls in restricted space. Make it harder!",
-                    diet: "Carb Loading: Massive organic pasta portion, grilled fish, and hydration drinks."
-                },
-                6: {
-                    schedule: "MATCHDAY: 09:00 AM Warmup | 11:00 AM Official League Match",
-                    drill: "Match Execution: Dominate physical duels, high pressing intensity, zero sloppy errors.",
-                    diet: "Matchday Fuel: Energy gels, bananas, and rapid post-match recovery shake."
-                },
-                0: {
-                    schedule: "REST & RECOVERY: Tactical visualization and match analysis review",
-                    drill: "Match IQ Study: Analyze top professional players in your specific position.",
-                    diet: "Clean Recovery: Antioxidant berries, green tea, mixed nuts, and vegetable soup."
-                }
-            };
+        function loadDailyData() {
+            const todayIndex = new Date().getDay();
+            const currentDay = daysData[todayIndex] || daysData[1];
 
-            let currentMission = missions[today];
-            document.getElementById('dailyScheduleText').innerText = currentMission.schedule;
-            document.getElementById('dailyDrillText').innerText = currentMission.drill;
-            document.getElementById('dailyDietText').innerText = currentMission.diet;
+            document.getElementById('currentDayNameLabel').innerText = currentDay.name + " Mission";
+            document.getElementById('dailyScheduleText').innerText = currentDay.schedule;
+            document.getElementById('dailyDrillText').innerText = currentDay.drill;
+            document.getElementById('dailyDietText').innerText = currentDay.dietDesc;
+
+            for(let i=0; i<4; i++) {
+                document.getElementById('taskText' + i).innerText = currentDay.tasks[i] + " — 20 min";
+            }
         }
-        loadDailyMission();
+
+        const fullDiets = {
+            monday: "<strong>🌱 Monday Full-Day Pro Diet Plan:</strong><br>• <em>Breakfast:</em> Rolled oats with chia seeds, raw honey, and organic whole milk.<br>• <em>Mid-Morning:</em> 2 boiled eggs and handful of almonds.<br>• <em>Lunch:</em> Grilled chicken breast, brown rice, steamed broccoli, and fresh coconut water.<br>• <em>Pre-Workout:</em> 1 banana and black coffee.<br>• <em>Post-Workout:</em> Whey isolate protein shake with dextrose.<br>• <em>Dinner:</em> Baked salmon, quinoa, and roasted asparagus.",
+            tuesday: "<strong>⚡ Tuesday Full-Day Pro Diet Plan:</strong><br>• <em>Breakfast:</em> Avocado sourdough toast with 3 egg whites and 1 whole egg.<br>• <em>Mid-Morning:</em> Greek yogurt with blueberries.<br>• <em>Lunch:</em> Lean turkey mince bowl with sweet potato mash and spinach.<br>• <em>Pre-Workout:</em> Beetroot juice shot for blood oxygenation.<br>• <em>Post-Workout:</em> Recovery shake with BCAA.<br>• <em>Dinner:</em> Grilled steak strips with mixed bell peppers and olive oil dressing.",
+            wednesday: "<strong>🔥 Wednesday Full-Day Pro Diet Plan:</strong><br>• <em>Breakfast:</em> Peanut butter banana protein smoothie.<br>• <em>Mid-Morning:</em> Cottage cheese with sliced cucumbers.<br>• <em>Lunch:</em> Quinoa chicken salad with walnuts and olive oil lemon dressing.<br>• <em>Pre-Workout:</em> Rice cakes with honey.<br>• <em>Post-Workout:</em> Fast recovery shake.<br>• <em>Dinner:</em> White fish fillet with roasted baby potatoes and zucchini.",
+            thursday: "<strong>⚡ Thursday Full-Day Pro Diet Plan:</strong><br>• <em>Breakfast:</em> Scrambled eggs on whole grain toast with cherry tomatoes.<br>• <em>Mid-Morning:</em> Mixed walnuts and dark chocolate (85%).<br>• <em>Lunch:</em> Grilled prawn bowl with brown rice and avocado.<br>• <em>Pre-Workout:</em> Apple slices with almond butter.<br>• <em>Post-Workout:</em> Whey protein isolate.<br>• <em>Dinner:</em> Lean chicken breast with lentil soup and side salad.",
+            friday: "<strong>🔥 Friday Carb-Loading Diet Plan:</strong><br>• <em>Breakfast:</em> Pancakes made with oats, banana, and egg whites.<br>• <em>Mid-Morning:</em> Greek yogurt with honey.<br>• <em>Lunch:</em> Large portion of whole-grain pasta with lean minced beef and tomato sauce.<br>• <em>Pre-Workout:</em> Energy gel and water.<br>• <em>Post-Workout:</em> Recovery shake.<br>• <em>Dinner:</em> Baked cod fish with sweet potato fries and steamed greens.",
+            saturday: "<strong>⚽ Saturday Matchday Fuel Plan:</strong><br>• <em>Breakfast:</em> White toast with honey, scrambled egg whites, and orange juice.<br>• <em>Pre-Match (2 hrs prior):</em> Easily digestible white rice with a little chicken.<br>• <em>During Match:</em> Electrolytes and energy gels at halftime.<br>• <em>Post-Match (Immediate):</em> Fast recovery protein and simple carbs.<br>• <em>Dinner:</em> Premium ribeye steak or grilled salmon with quinoa and roasted root veggies.",
+            sunday: "<strong>🛡️ Sunday Recovery & Repair Diet Plan:</strong><br>• <em>Breakfast:</em> Omelet with spinach, mushrooms, and feta cheese.<br>• <em>Mid-Morning:</em> Green tea and mixed almonds.<br>• <em>Lunch:</em> Warm bone broth soup with shredded chicken and carrots.<br>• <em>Evening Snack:</em> Chamomile tea with pumpkin seeds.<br>• <em>Dinner:</em> Baked white fish with steamed broccoli and olive oil."
+        };
+
+        function loadFullDayDiet(dayKey) {
+            document.getElementById('fulldiet-box').innerHTML = fullDiets[dayKey];
+        }
+
+        function switchDietTab(dayKey, btnElement) {
+            document.querySelectorAll('#page-diet .sub-btn').forEach(b => b.classList.remove('active'));
+            btnElement.classList.add('active');
+            loadFullDayDiet(dayKey);
+        }
+
+        function processPlayerQuestion() {
+            let query = document.getElementById('playerQuestionInput').value.trim();
+            if(!query) {
+                alert("Please type your question or problem first, player!");
+                return;
+            }
+
+            let lowerQ = query.toLowerCase();
+            let mindAns = "";
+            let drillAns = "";
+            let dietAns = "";
+
+            if(lowerQ.includes("first touch") || lowerQ.includes("touch") || lowerQ.includes("panic")) {
+                mindAns = "Elite players don't panic when pressed; they scan before receiving and cushion the ball into space with soft ankles.";
+                drillAns = "The 300-Wall Rebounder Blind Test: Have someone throw balls at you from random angles. You must control and pass back in under 0.8 seconds.";
+                dietAns = "Increase magnesium intake to calm neuromuscular tension and reduce reaction time sluggishness.";
+            } else if(lowerQ.includes("stamina") || lowerQ.includes("tired") || lowerQ.includes("fatigue") || lowerQ.includes("running")) {
+                mindAns = "Stamina is built when your brain tells you to stop, but your elite discipline forces you to do 5 more sprints.";
+                drillAns = "High-Intensity Interval Shuttle Runs: 30 seconds sprint, 15 seconds walking rest for 12 consecutive rounds.";
+                dietAns = "Add a concentrated beetroot juice pre-workout shot and ensure 60g complex carbs 2 hours before training.";
+            } else if(lowerQ.includes("weak foot") || lowerQ.includes("left foot") || lowerQ.includes("right foot")) {
+                mindAns = "An elite player has no weak foot. If your weak foot is bad, you are only 50% of a player.";
+                drillAns = "100% Weak Foot Wall Passing: 300 consecutive passes using exclusively your weak foot without touching with your dominant foot.";
+                dietAns = "Maintain clean protein and healthy fats for optimal neural pathway regeneration during bilateral coordination training.";
+            } else {
+                mindAns = "Coach analysis: Every elite player faces this mental barrier. The difference between average and elite is how relentlessly you attack your weakness.";
+                drillAns = "Custom Elite Agility & Technical Circuit: 20 minutes of high-speed cone weaving combined with sudden reaction sprints.";
+                dietAns = "Full-Day Macro Optimization: Clean lean proteins, complex slow-release carbs, and strict 3L water hydration.";
+            }
+
+            document.getElementById('aiMindsetAnswer').innerText = mindAns;
+            document.getElementById('aiCustomDrill').innerText = drillAns;
+            document.getElementById('aiCustomDiet').innerText = dietAns;
+            document.getElementById('aiResponseContainer').style.display = 'flex';
+        }
 
         function updateClock() {
             const now = new Date();
@@ -797,18 +887,6 @@
             });
             document.querySelectorAll('#page-roadmap .sub-btn').forEach(b => b.classList.remove('active'));
             let target = document.getElementById('road-' + subId);
-            target.classList.add('active');
-            target.style.display = 'flex';
-            btnElement.classList.add('active');
-        }
-
-        function switchDiet(tier, btnElement) {
-            document.querySelectorAll('#page-diet .tab-content').forEach(c => {
-                c.classList.remove('active');
-                c.style.display = 'none';
-            });
-            document.querySelectorAll('#page-diet .sub-btn').forEach(b => b.classList.remove('active'));
-            let target = document.getElementById('diet-' + tier);
             target.classList.add('active');
             target.style.display = 'flex';
             btnElement.classList.add('active');
