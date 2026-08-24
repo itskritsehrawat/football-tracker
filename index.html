@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PRO-TRAIN FC | Elite Football Hub</title>
+    <title>PRO-TRAIN FC | Elite Football Platform</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chart.js for Graphs -->
+    <!-- Chart.js for Advanced Analytics -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -25,8 +25,8 @@
         </div>
         <div class="flex items-center space-x-3">
             <div class="hidden sm:flex flex-col text-right">
-                <span id="nav-player-name" class="text-xs font-bold text-white">Player</span>
-                <span class="text-[10px] text-emerald-400 font-semibold" id="nav-xp">Level 5 • 1,420 XP</span>
+                <span id="nav-player-name" class="text-xs font-bold text-white">Krit Sehrawat</span>
+                <span class="text-[10px] text-emerald-400 font-semibold" id="nav-xp">Level 5 • 1,450 XP</span>
             </div>
             <button onclick="openProfileModal()" class="p-2 bg-slate-800 hover:bg-slate-700 rounded-full border border-slate-700 transition">
                 <i data-lucide="user" class="w-5 h-5 text-emerald-400"></i>
@@ -35,14 +35,14 @@
     </nav>
 
     <!-- Main Content Container -->
-    <main class="flex-1 max-w-5xl w-full mx-auto p-4 space-y-6 pb-20">
+    <main class="flex-1 max-w-5xl w-full mx-auto p-4 space-y-6 pb-24">
 
-        <!-- FUT Card Profile Preview & Status Banner -->
+        <!-- FUT Card Profile Preview & Readiness Bar -->
         <section class="bg-gradient-to-r from-slate-900 to-slate-900/80 rounded-2xl p-5 border border-slate-800 shadow-xl flex flex-col md:flex-row items-center gap-6">
             <div class="relative bg-gradient-to-b from-amber-500 to-amber-700 p-1 rounded-xl w-36 text-center shadow-lg">
                 <div class="bg-slate-950 rounded-lg p-3 text-white">
                     <div class="flex justify-between items-center text-xs font-bold text-amber-400">
-                        <span id="fut-rating">88</span>
+                        <span id="fut-rating">89</span>
                         <span id="fut-pos">LW</span>
                     </div>
                     <div class="my-2 bg-slate-900 rounded-full h-14 w-14 mx-auto flex items-center justify-center border border-amber-500/50">
@@ -60,33 +60,33 @@
                     </h2>
                     <span class="bg-slate-800 border border-slate-700 text-slate-300 text-xs px-3 py-1 rounded-lg font-medium" id="profile-team">Academy XI</span>
                 </div>
-                <p class="text-slate-400 text-sm">Elite training consistency builds champions. Conquer your position-based daily tasks and elevate your game metrics!</p>
+                <p class="text-slate-400 text-sm">Elite training consistency builds champions. Complete your daily tasks, log match stats, and elevate your game metrics!</p>
                 
-                <!-- Training Load & Recovery Quick Cards -->
+                <!-- Readiness & Load Quick Stats -->
                 <div class="grid grid-cols-3 gap-2 pt-1">
                     <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 text-center">
-                        <span class="block text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Today's Load</span>
-                        <span class="text-sm font-bold text-amber-400" id="load-status">Moderate ⚡</span>
+                        <span class="block text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Readiness</span>
+                        <span class="text-sm font-bold text-emerald-400" id="readiness-val">Optimal 🟢</span>
                     </div>
                     <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 text-center">
                         <span class="block text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Consistency</span>
-                        <span class="text-sm font-bold text-emerald-400" id="consistency-status">82% 🔥</span>
+                        <span class="text-sm font-bold text-amber-400" id="consistency-val">85% 🔥</span>
                     </div>
                     <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 text-center">
-                        <span class="block text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Recovery</span>
-                        <span class="text-sm font-bold text-sky-400" id="recovery-status">Good 🟢</span>
+                        <span class="block text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Top Speed</span>
+                        <span class="text-sm font-bold text-sky-400">29.4 km/h ⚡</span>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- USP: "Your Football Day" Summary Widget -->
+        <!-- "Your Football Day" USP Report Card -->
         <section class="bg-gradient-to-br from-emerald-950/40 via-slate-900 to-slate-900 rounded-2xl p-5 border border-emerald-500/30 shadow-xl">
             <div class="flex justify-between items-center mb-3">
                 <h3 class="text-md font-bold text-emerald-400 flex items-center gap-2">
                     <i data-lucide="zap" class="w-4 h-4"></i> TODAY'S FOOTBALL REPORT (USP Summary)
                 </h3>
-                <span class="text-xs text-slate-400">Auto-Synced</span>
+                <span class="text-xs text-slate-400">Live Sync</span>
             </div>
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 text-center">
                 <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800">
@@ -99,11 +99,11 @@
                 </div>
                 <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800">
                     <span class="block text-[10px] text-slate-400">⚡ Sprints</span>
-                    <span class="text-sm font-bold text-amber-400" id="rep-sprints">12</span>
+                    <span class="text-sm font-bold text-amber-400" id="rep-sprints">14</span>
                 </div>
                 <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800">
                     <span class="block text-[10px] text-slate-400">⏱️ Active Time</span>
-                    <span class="text-sm font-bold text-emerald-400" id="rep-time">68 min</span>
+                    <span class="text-sm font-bold text-emerald-400" id="rep-time">75 min</span>
                 </div>
                 <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800">
                     <span class="block text-[10px] text-slate-400">⚽ Drills</span>
@@ -111,30 +111,29 @@
                 </div>
                 <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800">
                     <span class="block text-[10px] text-slate-400">🔥 Streak</span>
-                    <span class="text-sm font-bold text-rose-400" id="rep-streak">6 Days</span>
+                    <span class="text-sm font-bold text-rose-400" id="rep-streak">7 Days</span>
                 </div>
             </div>
         </section>
 
-        <!-- Position-Based Daily Training Plan -->
+        <!-- Position-Based Smart Daily Training Plan -->
         <section class="bg-slate-900 rounded-2xl p-5 border border-slate-800 shadow-xl">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-lg font-bold flex items-center gap-2">
-                    <i data-lucide="clipboard-list" class="text-emerald-400"></i> Daily Training Plan — <span id="plan-pos-title" class="text-emerald-400">LW</span>
+                    <i data-lucide="clipboard-list" class="text-emerald-400"></i> Smart Training Plan — <span id="plan-pos-title" class="text-emerald-400">LW</span>
                 </h3>
                 <span class="text-xs text-slate-400 bg-slate-800 px-2.5 py-1 rounded-md border border-slate-700" id="task-progress-text">0/4 Completed</span>
             </div>
             <div class="space-y-3" id="tasks-container"></div>
         </section>
 
-        <!-- Performance Centre (Weekly / Monthly / Yearly Graphs) -->
+        <!-- Performance Centre & Analytics (Weekly / Monthly / Yearly) -->
         <section class="bg-slate-900 rounded-2xl p-5 border border-slate-800 shadow-xl space-y-4">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                 <h3 class="text-lg font-bold flex items-center gap-2">
                     <i data-lucide="bar-chart-3" class="text-sky-400"></i> Performance Centre & Analytics
                 </h3>
-                <div class="flex items-center gap-2">
-                    <!-- Timeframe Toggle Buttons -->
+                <div class="flex items-center gap-2 flex-wrap">
                     <div class="bg-slate-950 p-1 rounded-xl border border-slate-800 flex text-xs font-semibold">
                         <button onclick="changeTimeframe('weekly')" id="btn-weekly" class="px-3 py-1.5 rounded-lg bg-sky-500 text-slate-950 transition">Weekly</button>
                         <button onclick="changeTimeframe('monthly')" id="btn-monthly" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition">Monthly</button>
@@ -158,11 +157,11 @@
                 </div>
                 <div class="bg-slate-950/60 p-3 rounded-xl border border-slate-800">
                     <span class="text-xs text-slate-400">Sprint Count</span>
-                    <h4 class="text-xl font-bold text-amber-400 mt-1" id="disp-sprints">12 Sprints</h4>
+                    <h4 class="text-xl font-bold text-amber-400 mt-1" id="disp-sprints">14 Sprints</h4>
                 </div>
                 <div class="bg-slate-950/60 p-3 rounded-xl border border-slate-800">
-                    <span class="text-xs text-slate-400">Top Speed</span>
-                    <h4 class="text-xl font-bold text-rose-400 mt-1" id="disp-speed">28.4 km/h</h4>
+                    <span class="text-xs text-slate-400">Match Goals</span>
+                    <h4 class="text-xl font-bold text-rose-400 mt-1" id="disp-goals">12 Goals</h4>
                 </div>
             </div>
 
@@ -172,7 +171,25 @@
             </div>
         </section>
 
-        <!-- Training Streak Calendar -->
+        <!-- Match Mode & Log Match Section -->
+        <section class="bg-slate-900 rounded-2xl p-5 border border-slate-800 shadow-xl flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="space-y-1 text-center md:text-left">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2 justify-center md:justify-start">
+                    <i data-lucide="trophy" class="text-amber-400"></i> Match Mode & Report Generator
+                </h3>
+                <p class="text-xs text-slate-400">Record match goals, assists, and generate professional player evaluation reports.</p>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="openMatchModal()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs px-4 py-2.5 rounded-xl transition shadow-md">
+                    Log Match Stats ⚽
+                </button>
+                <button onclick="generatePlayerReport()" class="bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition shadow-md flex items-center gap-1.5">
+                    <i data-lucide="file-text" class="w-4 h-4"></i> Generate PDF Report
+                </button>
+            </div>
+        </section>
+
+        <!-- Training Calendar & Streak History -->
         <section class="bg-slate-900 rounded-2xl p-5 border border-slate-800 shadow-xl">
             <h3 class="text-lg font-bold flex items-center gap-2 mb-3">
                 <i data-lucide="calendar" class="text-amber-400"></i> Training History & Streak Calendar
@@ -180,13 +197,13 @@
             <div class="grid grid-cols-7 gap-2 text-center" id="calendar-grid"></div>
         </section>
 
-        <!-- Drill Library Preview -->
+        <!-- Pro Drill Library Preview -->
         <section class="bg-slate-900 rounded-2xl p-5 border border-slate-800 shadow-xl">
             <div class="flex justify-between items-center mb-3">
                 <h3 class="text-lg font-bold flex items-center gap-2">
                     <i data-lucide="book-open" class="text-purple-400"></i> Pro Drill Library
                 </h3>
-                <span class="text-xs text-slate-400">Select & Add to Training</span>
+                <span class="text-xs text-slate-400">Elite Standards</span>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800 space-y-2">
@@ -194,16 +211,16 @@
                         <span class="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">Difficulty: Pro</span>
                         <span class="text-xs text-slate-400">15 min</span>
                     </div>
-                    <h4 class="font-bold text-sm text-white">Elite Cone Weaving & Agility</h4>
-                    <p class="text-xs text-slate-400">Enhance tight space control and foot frequency at high velocity.</p>
+                    <h4 class="font-bold text-sm text-white">Cone Weaving & Agility</h4>
+                    <p class="text-xs text-slate-400">Tight space control and quick foot frequency.</p>
                 </div>
                 <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800 space-y-2">
                     <div class="flex justify-between items-center">
                         <span class="text-xs font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded">Difficulty: Intermediate</span>
                         <span class="text-xs text-slate-400">20 min</span>
                     </div>
-                    <h4 class="font-bold text-sm text-white">Corner & Box Finishing</h4>
-                    <p class="text-xs text-slate-400">One-touch powerful strikes under fatigue simulation.</p>
+                    <h4 class="font-bold text-sm text-white">Box Finishing & Volleys</h4>
+                    <p class="text-xs text-slate-400">One-touch powerful strikes under pressure.</p>
                 </div>
                 <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800 space-y-2">
                     <div class="flex justify-between items-center">
@@ -211,12 +228,12 @@
                         <span class="text-xs text-slate-400">10 min</span>
                     </div>
                     <h4 class="font-bold text-sm text-white">Explosive 30m Sprints</h4>
-                    <p class="text-xs text-slate-400">Max velocity acceleration drills for wingers and strikers.</p>
+                    <p class="text-xs text-slate-400">Max velocity acceleration drills for wingers.</p>
                 </div>
             </div>
         </section>
 
-        <!-- Amazon Affiliate Pro Store Section -->
+        <!-- Amazon Affiliate Pro Gear Section -->
         <section class="bg-gradient-to-r from-emerald-950/40 to-slate-900 rounded-2xl p-5 border border-emerald-500/30 shadow-xl">
             <div class="flex flex-col md:flex-row items-center justify-between gap-4">
                 <div class="space-y-2 text-center md:text-left">
@@ -224,7 +241,7 @@
                         <i data-lucide="shopping-bag" class="w-3.5 h-3.5"></i> Pro Recommendation Hub
                     </div>
                     <h3 class="text-xl font-bold text-white">Upgrade Your Matchday Gear</h3>
-                    <p class="text-sm text-slate-300">Explore premium football boots, agility cones, and GPS vest hardware directly on Amazon.</p>
+                    <p class="text-sm text-slate-300">Explore premium football boots, grip socks, and GPS trackers on Amazon.</p>
                 </div>
                 <a href="https://www.amazon.in/s?k=football+equipments+boots+gps&tag=yourtag-21" target="_blank" rel="noopener noreferrer" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold px-6 py-3 rounded-xl shadow-lg hover:shadow-emerald-500/20 transition flex items-center gap-2 whitespace-nowrap">
                     <span>Shop Amazon Store</span>
@@ -320,12 +337,12 @@
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="text-xs text-slate-400 block mb-1">Distance (km)</label>
-                        <input type="number" step="0.1" id="log-distance" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-sky-400" placeholder="e.g. 4.7">
+                        <label class="text-xs text-slate-400 block mb-1">Sprints Count</label>
+                        <input type="number" id="log-sprints" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-sky-400" placeholder="e.g. 14">
                     </div>
                     <div>
-                        <label class="text-xs text-slate-400 block mb-1">Sprints Count</label>
-                        <input type="number" id="log-sprints" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-sky-400" placeholder="e.g. 12">
+                        <label class="text-xs text-slate-400 block mb-1">Goals Scored</label>
+                        <input type="number" id="log-goals" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-sky-400" placeholder="e.g. 2">
                     </div>
                 </div>
             </div>
@@ -333,7 +350,34 @@
         </div>
     </div>
 
-    <!-- JavaScript Logic -->
+    <!-- Match Mode Modal -->
+    <div id="match-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center">
+                <h3 class="text-lg font-bold text-white">Record Match Performance</h3>
+                <button onclick="closeMatchModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div class="space-y-3">
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-xs text-slate-400 block mb-1">Match Goals</label>
+                        <input type="number" id="match-goals" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400" placeholder="e.g. 2">
+                    </div>
+                    <div>
+                        <label class="text-xs text-slate-400 block mb-1">Match Assists</label>
+                        <input type="number" id="match-assists" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400" placeholder="e.g. 1">
+                    </div>
+                </div>
+                <div>
+                    <label class="text-xs text-slate-400 block mb-1">Minutes Played</label>
+                    <input type="number" id="match-mins" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400" placeholder="e.g. 90">
+                </div>
+            </div>
+            <button onclick="saveMatchStats()" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-2.5 rounded-xl transition">Save Match Stats & XP</button>
+        </div>
+    </div>
+
+    <!-- JavaScript Application Logic -->
     <script>
         lucide.createIcons();
 
@@ -344,28 +388,28 @@
             team: "Academy XI",
             foot: "Right Foot",
             age: "U-19",
-            xp: 1420
+            xp: 1450,
+            goals: 12
         };
 
         let tasksData = JSON.parse(localStorage.getItem('pro_football_tasks')) || [
             { id: 1, title: "Ball Mastery — 15 min", status: "completed" },
             { id: 2, title: "1v1 Dribbling — 15 min", status: "completed" },
             { id: 3, title: "Finishing & Shooting — 20 min", status: "in-progress" },
-            { id: 4, title: "Speed & Acceleration — 10 min", status: "pending" }
+            { id: 4, title: "Speed & Agility — 10 min", status: "pending" }
         ];
 
-        // Multi-timeframe data for graphs
         let weeklyData = JSON.parse(localStorage.getItem('pro_weekly_data')) || [45, 60, 30, 75, 50, 90, 40];
-        let monthlyData = [240, 310, 290, 350]; // 4 Weeks of month
-        let yearlyData = [1200, 1450, 1600, 1850, 2100, 2400]; // 6 Months
+        let monthlyData = [240, 310, 290, 350];
+        let yearlyData = [1200, 1450, 1600, 1850, 2100, 2400];
         let currentTimeframe = 'weekly';
 
         let dailyStatsData = JSON.parse(localStorage.getItem('pro_daily_stats')) || {
             minutes: 75,
             steps: 8420,
             distance: 4.7,
-            sprints: 12,
-            speed: 28.4
+            sprints: 14,
+            goals: 12
         };
 
         function updateUI() {
@@ -383,7 +427,7 @@
             document.getElementById('disp-minutes').innerText = `${dailyStatsData.minutes} min`;
             document.getElementById('disp-steps').innerText = dailyStatsData.steps.toLocaleString();
             document.getElementById('disp-sprints').innerText = `${dailyStatsData.sprints} Sprints`;
-            document.getElementById('disp-speed').innerText = `${dailyStatsData.speed} km/h`;
+            document.getElementById('disp-goals').innerText = `${playerData.goals} Goals`;
 
             // USP Report Card sync
             document.getElementById('rep-steps').innerText = dailyStatsData.steps.toLocaleString();
@@ -432,8 +476,8 @@
         function cycleTaskStatus(id) {
             tasksData = tasksData.map(task => {
                 if (task.id === id) {
-                    if (task.status === 'pending') { task.status = 'in-progress'; playerData.xp += 15; }
-                    else if (task.status === 'in-progress') { task.status = 'completed'; playerData.xp += 35; }
+                    if (task.status === 'pending') { task.status = 'in-progress'; playerData.xp += 20; }
+                    else if (task.status === 'in-progress') { task.status = 'completed'; playerData.xp += 50; }
                     else { task.status = 'pending'; }
                 }
                 return task;
@@ -488,10 +532,10 @@
             const dayIndex = parseInt(document.getElementById('log-day').value);
             const mins = parseInt(document.getElementById('log-minutes').value) || 0;
             const steps = parseInt(document.getElementById('log-steps').value) || 0;
-            const dist = parseFloat(document.getElementById('log-distance').value) || 0.0;
             const sprints = parseInt(document.getElementById('log-sprints').value) || 0;
+            const goals = parseInt(document.getElementById('log-goals').value) || 0;
 
-            dailyStatsData = { minutes: mins, steps: steps, distance: dist, sprints: sprints, speed: 28.4 };
+            dailyStatsData = { minutes: mins, steps: steps, distance: 4.7, sprints: sprints, goals: goals };
             localStorage.setItem('pro_daily_stats', JSON.stringify(dailyStatsData));
 
             weeklyData[dayIndex] = mins;
@@ -507,7 +551,24 @@
             closeActivityModal();
         }
 
-        // Chart.js with Timeframe Toggles (Weekly, Monthly, Yearly)
+        function openMatchModal() { document.getElementById('match-modal').classList.remove('hidden'); }
+        function closeMatchModal() { document.getElementById('match-modal').classList.add('hidden'); }
+
+        function saveMatchStats() {
+            const g = parseInt(document.getElementById('match-goals').value) || 0;
+            playerData.goals += g;
+            playerData.xp += 100;
+            localStorage.setItem('pro_football_profile', JSON.stringify(playerData));
+            updateUI();
+            closeMatchModal();
+            alert("Match stats successfully recorded! +100 XP added! 🏆");
+        }
+
+        function generatePlayerReport() {
+            alert(`--- PRO PLAYER EVALUATION REPORT ---\nPlayer: ${playerData.name} (${playerData.pos})\nTeam: ${playerData.team}\nTotal Goals: ${playerData.goals}\nCurrent XP: ${playerData.xp}\nStatus: Elite Tier Ready 🚀`);
+        }
+
+        // Chart.js Setup
         const ctx = document.getElementById('performanceChart').getContext('2d');
         const performanceChart = new Chart(ctx, {
             type: 'bar',
