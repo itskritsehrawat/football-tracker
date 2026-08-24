@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PRO-TRAIN FC | Complete Player Dashboard</title>
-    <!-- Chart.js CDN for Analytics Graph -->
+    <title>PRO-TRAIN FC | Live Interactive Dashboard</title>
+    <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
@@ -44,7 +44,7 @@
             padding: 20px;
         }
 
-        /* 1. Header Profile Section */
+        /* Profile Section */
         .profile-card {
             display: flex;
             align-items: center;
@@ -152,7 +152,7 @@
             font-weight: 700;
         }
 
-        /* 2. Today's Football Report */
+        /* Reports */
         .section-header {
             display: flex;
             justify-content: space-between;
@@ -199,7 +199,7 @@
             font-size: 1.1rem;
         }
 
-        /* 3. Smart Training Plan */
+        /* Smart Training Plan */
         .plan-list {
             display: flex;
             flex-direction: column;
@@ -230,7 +230,7 @@
         .status-progress { background: rgba(234, 179, 8, 0.2); color: var(--accent-yellow); }
         .status-notstarted { background: rgba(148, 163, 184, 0.1); color: var(--text-dim); }
 
-        /* 4. Analytics Graph */
+        /* Analytics */
         .chart-tabs {
             display: flex;
             gap: 6px;
@@ -260,7 +260,7 @@
             margin-bottom: 20px;
         }
 
-        /* 5. Calendar */
+        /* Calendar */
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
@@ -273,6 +273,11 @@
             padding: 12px;
             border-radius: 8px;
             border: 1px solid var(--card-border);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .day-box:hover {
+            border-color: var(--accent-yellow);
         }
 
         .day-box div {
@@ -284,7 +289,7 @@
         .check-icon { color: var(--accent-green); font-weight: bold; }
         .cross-icon { color: #ef4444; font-weight: bold; }
 
-        /* 6. Drill Library */
+        /* Drill Library */
         .drills-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -318,7 +323,7 @@
             color: var(--text-dim);
         }
 
-        /* 7. Gear Hub */
+        /* Gear Hub */
         .gear-card {
             background: linear-gradient(90deg, #0f1623 0%, #064e3b 100%);
             display: flex;
@@ -336,7 +341,7 @@
             font-weight: 700;
         }
 
-        /* Modal Popup */
+        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -418,11 +423,11 @@
                 <div class="sum-item"><div>⚡ Sprints</div><span id="statSprints">14</span></div>
                 <div class="sum-item"><div>⏱️ Active Time</div><span id="statTime">75 min</span></div>
                 <div class="sum-item"><div>⚽ Drills</div><span id="statDrillsCount">1/4</span></div>
-                <div class="sum-item"><div>🔥 Streak</div><span>7 Days</span></div>
+                <div class="sum-item"><div>🔥 Streak</div><span id="statStreak">7 Days</span></div>
             </div>
         </div>
 
-        <!-- 3. SMART TRAINING PLAN (TASKS & DRILLS CHECK) -->
+        <!-- 3. SMART TRAINING PLAN (INTERACTIVE) -->
         <div class="card">
             <div class="section-header">
                 <h3 style="color: var(--text-white);">📋 Smart Training Plan — LW</h3>
@@ -470,19 +475,20 @@
             </div>
         </div>
 
-        <!-- 5. STREAK CALENDAR -->
+        <!-- 5. STREAK CALENDAR (CLICKABLE DAYS) -->
         <div class="card">
             <div class="section-header">
                 <h3 style="color: var(--accent-yellow);">📅 Training History & Streak Calendar</h3>
+                <span style="font-size: 0.75rem; color: var(--text-dim);">Click box to toggle status</span>
             </div>
-            <div class="calendar-grid">
-                <div class="day-box"><div>Mon</div><span class="check-icon">✔</span></div>
-                <div class="day-box"><div>Tue</div><span class="check-icon">✔</span></div>
-                <div class="day-box"><div>Wed</div><span class="check-icon">✔</span></div>
-                <div class="day-box"><div>Thu</div><span class="check-icon">✔</span></div>
-                <div class="day-box"><div>Fri</div><span class="cross-icon">✖</span></div>
-                <div class="day-box"><div>Sat</div><span class="check-icon">✔</span></div>
-                <div class="day-box"><div>Sun</div><span style="color: var(--text-dim);">🔵</span></div>
+            <div class="calendar-grid" id="calendarGrid">
+                <div class="day-box" onclick="toggleDay(this)"><div>Mon</div><span class="check-icon">✔</span></div>
+                <div class="day-box" onclick="toggleDay(this)"><div>Tue</div><span class="check-icon">✔</span></div>
+                <div class="day-box" onclick="toggleDay(this)"><div>Wed</div><span class="check-icon">✔</span></div>
+                <div class="day-box" onclick="toggleDay(this)"><div>Thu</div><span class="check-icon">✔</span></div>
+                <div class="day-box" onclick="toggleDay(this)"><div>Fri</div><span class="cross-icon">✖</span></div>
+                <div class="day-box" onclick="toggleDay(this)"><div>Sat</div><span class="check-icon">✔</span></div>
+                <div class="day-box" onclick="toggleDay(this)"><div>Sun</div><span style="color: var(--text-dim);">🔵</span></div>
             </div>
         </div>
 
@@ -511,7 +517,7 @@
             </div>
         </div>
 
-        <!-- 7. GEAR HUB (WORKING AMAZON FOOTBALL GEAR LINK) -->
+        <!-- 7. GEAR HUB -->
         <div class="card gear-card">
             <div>
                 <div style="font-size: 0.75rem; color: var(--accent-green); font-weight: 700; margin-bottom: 4px;">🛍️ Pro Recommendation Hub</div>
@@ -523,7 +529,7 @@
 
     </div>
 
-    <!-- MODAL POPUP FOR LOGGING STATS -->
+    <!-- MODAL FOR LOGGING STATS -->
     <div class="modal" id="statsModal">
         <div class="modal-content">
             <h3 style="margin:0; color:var(--accent-blue);">Log Today's Stats</h3>
@@ -540,8 +546,9 @@
         </div>
     </div>
 
-    <!-- JAVASCRIPT FUNCTIONS -->
+    <!-- SCRIPT LOGIC -->
     <script>
+        // Task Management
         let tasks = [
             { status: "completed" },
             { status: "progress" },
@@ -578,7 +585,7 @@
             document.getElementById("planBadge").innerText = `${completedCount}/4 Completed`;
         }
 
-        // Chart Configuration
+        // Chart.js Configuration
         const ctx = document.getElementById('performanceChart').getContext('2d');
         let performanceChart = new Chart(ctx, {
             type: 'bar',
@@ -621,6 +628,23 @@
             performanceChart.update();
         }
 
+        // Calendar Day Toggle
+        function toggleDay(element) {
+            let span = element.querySelector('span');
+            if(span.classList.contains('check-icon')) {
+                span.className = 'cross-icon';
+                span.innerText = '✖';
+            } else if(span.classList.contains('cross-icon')) {
+                span.className = '';
+                span.style.color = 'var(--text-dim)';
+                span.innerText = '🔵';
+            } else {
+                span.className = 'check-icon';
+                span.innerText = '✔';
+            }
+        }
+
+        // Modal Controls
         function openModal() {
             document.getElementById('statsModal').style.display = 'flex';
         }
