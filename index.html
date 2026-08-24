@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PRO-TRAIN FC | Ultimate Player Ecosystem & Analytics</title>
+    <title>PRO-TRAIN FC | Ultimate Footballer Ecosystem & Roadmap</title>
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -63,11 +63,12 @@
         /* Navigation Tabs for Pages */
         .page-nav {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             background: #080c14;
             padding: 8px;
             border-radius: 10px;
             border: 1px solid var(--card-border);
+            overflow-x: auto;
         }
 
         .nav-tab {
@@ -77,11 +78,12 @@
             color: var(--text-dim);
             padding: 10px;
             font-weight: 700;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             border-radius: 6px;
             cursor: pointer;
             transition: 0.2s;
             text-align: center;
+            white-space: nowrap;
         }
 
         .nav-tab.active {
@@ -199,14 +201,15 @@
             font-size: 1.1rem;
         }
 
-        /* Diet Section Tabs */
-        .diet-tabs {
+        /* Generic Sub-Tabs */
+        .sub-tabs {
             display: flex;
             gap: 8px;
             margin-bottom: 15px;
+            flex-wrap: wrap;
         }
 
-        .diet-btn {
+        .sub-btn {
             background: #080c14;
             border: 1px solid var(--card-border);
             color: var(--text-dim);
@@ -217,30 +220,29 @@
             font-weight: 600;
         }
 
-        .diet-btn.active {
+        .sub-btn.active {
             background: var(--accent-orange);
             color: #000;
             border-color: var(--accent-orange);
         }
 
-        .diet-content {
+        .tab-content {
             display: none;
             flex-direction: column;
             gap: 10px;
         }
 
-        .diet-content.active {
+        .tab-content.active {
             display: flex;
         }
 
-        .diet-item {
+        .content-box {
             background: #080c14;
-            padding: 12px 16px;
+            padding: 14px 16px;
             border-radius: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-left: 4px solid var(--accent-orange);
+            border-left: 4px solid var(--accent-blue);
+            font-size: 0.85rem;
+            line-height: 1.5;
         }
 
         /* Calendar & History Grid */
@@ -256,7 +258,6 @@
             padding: 12px;
             border-radius: 8px;
             border: 1px solid var(--card-border);
-            cursor: pointer;
         }
 
         .check-icon { color: var(--accent-green); font-weight: bold; }
@@ -318,8 +319,9 @@
         <!-- PAGE SWITCHER NAVIGATION -->
         <div class="page-nav">
             <button class="nav-tab active" onclick="switchPage('dashboard', this)">⚡ Live Dashboard</button>
+            <button class="nav-tab" onclick="switchPage('roadmap', this)">🗺️ Elite Roadmap & Schedules</button>
             <button class="nav-tab" onclick="switchPage('diet', this)">🥗 Pro Diet Engine</button>
-            <button class="nav-tab" onclick="switchPage('analytics', this)">📈 Deep Analytics & Logs</button>
+            <button class="nav-tab" onclick="switchPage('analytics', this)">📈 Analytics & Logs</button>
         </div>
 
         <!-- ================= PAGE 1: LIVE DASHBOARD ================= -->
@@ -353,7 +355,7 @@
                 </div>
             </div>
 
-            <!-- LIVE TRAINING STOPWATCH (START/END SESSION) -->
+            <!-- LIVE TRAINING STOPWATCH -->
             <div class="card stopwatch-box">
                 <div>
                     <div style="font-size: 0.75rem; color: var(--accent-green); font-weight: 700; margin-bottom: 4px;">⏱️ LIVE SESSION TRACKER</div>
@@ -409,7 +411,87 @@
 
         </div>
 
-        <!-- ================= PAGE 2: PRO DIET ENGINE ================= -->
+        <!-- ================= PAGE 2: ELITE ROADMAP & SCHEDULES ================= -->
+        <div id="page-roadmap" class="page-section">
+            <div class="card">
+                <div class="section-header">
+                    <h3 style="color: var(--accent-yellow);">🗺️ Master Training Schedules & Elite Roadmap</h3>
+                    <span style="font-size: 0.75rem; color: var(--text-dim);">By Skill Tiers & Age Groups</span>
+                </div>
+                <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 0;">Explore how different levels train, how to build skills at home versus the ground, pre/post routines, and injury prevention.</p>
+                
+                <div class="sub-tabs">
+                    <button class="sub-btn active" onclick="switchRoadmap('schedules', this)">📅 Tier Schedules</button>
+                    <button class="sub-btn" onclick="switchRoadmap('homeground', this)">🏠 Home vs Ground</button>
+                    <button class="sub-btn" onclick="switchRoadmap('prepost', this)">⚡ Pre/Post Routines</button>
+                    <button class="sub-btn" onclick="switchRoadmap('injury', this)">🛡️ Injury Prevention</button>
+                </div>
+
+                <!-- 1. Tier Schedules -->
+                <div id="road-schedules" class="tab-content active">
+                    <div class="content-box" style="border-left-color: var(--accent-green);">
+                        <strong>🌱 Beginner Tier (Ages 8-12): Foundation Building</strong><br>
+                        • <em>Time Commitment:</em> 45 mins/day, 3 days a week.<br>
+                        • <em>Focus:</em> Ball touch, basic passing against a wall, coordination, and having fun with the ball. No heavy gym work.
+                    </div>
+                    <div class="content-box" style="border-left-color: var(--accent-orange);">
+                        <strong>⚡ Professional Tier (Ages 13-17): Tactical & Physical Integration</strong><br>
+                        • <em>Time Commitment:</em> 90 mins/day, 5 days a week + weekend match.<br>
+                        • <em>Focus:</em> First touch under pressure, position-specific drills (LW/RW runs), stamina, and basic bodyweight strength (core/legs).
+                    </div>
+                    <div class="content-box" style="border-left-color: var(--accent-yellow);">
+                        <strong>🔥 Elite Academy Tier (Ages 18+): Professional Standard</strong><br>
+                        • <em>Time Commitment:</em> 2 hours on-pitch + gym session daily.<br>
+                        • <em>Focus:</em> High-intensity tactical execution, explosive sprints, video match analysis, sports psychology, and elite recovery tracking.
+                    </div>
+                </div>
+
+                <!-- 2. Home vs Ground -->
+                <div id="road-homeground" class="tab-content">
+                    <div class="content-box">
+                        <strong>🏠 What to do AT HOME:</strong><br>
+                        • <em>Ball Mastery:</em> 1,000 touches daily using sole rolls, toe taps, and inside-out chops in a tight room.<br>
+                        • <em>Wall Passing:</em> 100 accurate passes with weak foot and strong foot against a flat brick wall for quick reaction control.<br>
+                        • <em>Mental Viz:</em> Review match footage and analyze tactical positioning.
+                    </div>
+                    <div class="content-box" style="border-left-color: var(--accent-green);">
+                        <strong>⚽ What to do AT THE GROUND:</strong><br>
+                        • <em>Dribbling at Speed:</em> Cone weaving and driving past defenders at full acceleration.<br>
+                        • <em>Long Passing & Crossing:</em> Switching play from flank to flank and curling crosses into the box.<br>
+                        • <em>Match Simulations:</em> Small-sided games (3v3 or 5v5) to test decision-making under physical fatigue.
+                    </div>
+                </div>
+
+                <!-- 3. Pre and Post Routines -->
+                <div id="road-prepost" class="tab-content">
+                    <div class="content-box" style="border-left-color: var(--accent-purple);">
+                        <strong>⚡ Before Training (Dynamic Warm-Up):</strong><br>
+                        • 5 mins light jogging & skipping rope.<br>
+                        • Dynamic stretches: Leg swings, high knees, opening the gate, and lunges.<br>
+                        • 3 short progressive acceleration sprints to wake up fast-twitch muscle fibers.
+                    </div>
+                    <div class="content-box" style="border-left-color: var(--accent-green);">
+                        <strong>🧊 After Training (Cool Down & Recovery):</strong><br>
+                        • 5 mins slow walk and static stretching (hamstrings, calves, hip flexors).<br>
+                        • Immediate rehydration with water and electrolytes.<br>
+                        • Protein intake within 45 minutes to repair muscle micro-tears.
+                    </div>
+                </div>
+
+                <!-- 4. Injury Prevention -->
+                <div id="road-injury" class="tab-content">
+                    <div class="content-box" style="border-left-color: #ef4444;">
+                        <strong>🛡️ How to Avoid Common Football Injuries (ACL, Ankles, Hamstrings):</strong><br>
+                        • <em>Ankle Stability:</em> Incorporate balance board or single-leg standing exercises to strengthen ankle ligaments.<br>
+                        • <em>Hamstring Strength:</em> Perform Nordic curls or Romanian deadlifts to bulletproof your sprinting muscles.<br>
+                        • <em>Core & Glutes:</em> Weak glutes lead to knee strain; maintain strict plank and hip bridge routines.<br>
+                        • <em>Listen to Your Body:</em> Never push through sharp joint pain; fatigue causes bad landing mechanics and tears.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PAGE 3: PRO DIET ENGINE ================= -->
         <div id="page-diet" class="page-section">
             <div class="card">
                 <div class="section-header">
@@ -418,47 +500,47 @@
                 </div>
                 <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 0;">Select your current tier to view exact pre-match, post-match, and recovery nutritional plans designed for speed and endurance.</p>
                 
-                <div class="diet-tabs">
-                    <button class="diet-btn active" onclick="switchDiet('beginner', this)">🌱 Beginner Player</button>
-                    <button class="diet-btn" onclick="switchDiet('pro', this)">⚡ Professional Player</button>
-                    <button class="diet-btn" onclick="switchDiet('elite', this)">🔥 Elite Academy Player</button>
+                <div class="sub-tabs">
+                    <button class="sub-btn active" onclick="switchDiet('beginner', this)">🌱 Beginner Player</button>
+                    <button class="sub-btn" onclick="switchDiet('pro', this)">⚡ Professional Player</button>
+                    <button class="sub-btn" onclick="switchDiet('elite', this)">🔥 Elite Academy Player</button>
                 </div>
 
                 <!-- Beginner Diet -->
-                <div id="diet-beginner" class="diet-content active">
-                    <div class="diet-item"><div>🍳 Breakfast: Oats with banana & milk</div><span style="color:var(--accent-orange); font-weight:700;">350 kcal</span></div>
-                    <div class="diet-item"><div>🍛 Lunch: Brown rice, dal, chicken breast & salad</div><span style="color:var(--accent-orange); font-weight:700;">550 kcal</span></div>
-                    <div class="diet-item"><div>🍎 Pre-Training: 1 Apple & handful of almonds</div><span style="color:var(--accent-orange); font-weight:700;">200 kcal</span></div>
-                    <div class="diet-item"><div>🥛 Post-Training: Paneer sandwich or whey protein shake</div><span style="color:var(--accent-orange); font-weight:700;">400 kcal</span></div>
+                <div id="diet-beginner" class="tab-content active" style="display:flex;">
+                    <div class="content-box" style="border-left-color: var(--accent-orange);">🍳 Breakfast: Oats with banana & milk — 350 kcal</div>
+                    <div class="content-box" style="border-left-color: var(--accent-orange);">🍛 Lunch: Brown rice, dal, chicken breast & salad — 550 kcal</div>
+                    <div class="content-box" style="border-left-color: var(--accent-orange);">🍎 Pre-Training: 1 Apple & handful of almonds — 200 kcal</div>
+                    <div class="content-box" style="border-left-color: var(--accent-orange);">🥛 Post-Training: Paneer sandwich or whey shake — 400 kcal</div>
                 </div>
 
                 <!-- Pro Diet -->
-                <div id="diet-pro" class="diet-content">
-                    <div class="diet-item"><div>🥑 Breakfast: Whole wheat toast, 3 egg whites, avocado & juice</div><span style="color:var(--accent-orange); font-weight:700;">500 kcal</span></div>
-                    <div class="diet-item"><div>🍗 Lunch: Grilled chicken quinoa bowl with sweet potatoes</div><span style="color:var(--accent-orange); font-weight:700;">700 kcal</span></div>
-                    <div class="diet-item"><div>🍌 Pre-Match: Peanut butter toast & banana (2 hours before kick-off)</div><span style="color:var(--accent-orange); font-weight:700;">300 kcal</span></div>
-                    <div class="diet-item"><div>🥩 Dinner: Salmon/Lean steak with roasted vegetables & rice</div><span style="color:var(--accent-orange); font-weight:700;">650 kcal</span></div>
+                <div id="diet-pro" class="tab-content">
+                    <div class="content-box" style="border-left-color: var(--accent-orange);">🥑 Breakfast: Whole wheat toast, 3 egg whites, avocado — 500 kcal</div>
+                    <div class="content-box" style="border-left-color: var(--accent-orange);">🍗 Lunch: Grilled chicken quinoa bowl with sweet potatoes — 700 kcal</div>
+                    <div class="content-box" style="border-left-color: var(--accent-orange);">🍌 Pre-Match: Peanut butter toast & banana (2h before) — 300 kcal</div>
+                    <div class="content-box" style="border-left-color: var(--accent-orange);">🥩 Dinner: Salmon/Lean steak with veggies & rice — 650 kcal</div>
                 </div>
 
                 <!-- Elite Diet -->
-                <div id="diet-elite" class="diet-content">
-                    <div class="diet-item"><div>🥞 Breakfast: High-protein pancakes, berries, organic honey & eggs</div><span style="color:var(--accent-orange); font-weight:700;">650 kcal</span></div>
-                    <div class="diet-item"><div>🍝 Mid-Day: Carb-loading whole grain pasta with turkey meatballs</div><span style="color:var(--accent-orange); font-weight:700;">850 kcal</span></div>
-                    <div class="diet-item"><div>⚡ Matchday Fuel: Electrolyte loading drink, fast-acting energy gels</div><span style="color:var(--accent-orange); font-weight:700;">250 kcal</span></div>
-                    <div class="diet-item"><div>🐟 Recovery: White fish, asparagus, organic rice & magnesium supplement</div><span style="color:var(--accent-orange); font-weight:700;">700 kcal</span></div>
+                <div id="diet-elite" class="tab-content">
+                    <div class="content-box" style="border-left-color: var(--accent-orange);">🥞 Breakfast: High-protein pancakes, berries, organic honey — 650 kcal</div>
+                    <div class="content-box" style="border-left-color: var(--accent-orange);">🍝 Mid-Day: Carb-loading whole grain pasta with turkey — 850 kcal</div>
+                    <div class="content-box" style="border-left-color: var(--accent-orange);">⚡ Matchday Fuel: Electrolyte loading drink, energy gels — 250 kcal</div>
+                    <div class="content-box" style="border-left-color: var(--accent-orange);">🐟 Recovery: White fish, asparagus, rice & magnesium — 700 kcal</div>
                 </div>
             </div>
         </div>
 
-        <!-- ================= PAGE 3: DEEP ANALYTICS & LOGS ================= -->
+        <!-- ================= PAGE 4: DEEP ANALYTICS & LOGS ================= -->
         <div id="page-analytics" class="page-section">
             <div class="card">
                 <div class="section-header">
                     <h3 style="color: var(--accent-blue);">📈 Deep Performance Analytics & Graphs</h3>
                     <div style="display: flex; gap: 6px;">
-                        <button class="diet-btn active" onclick="switchChart('weekly', this)" style="padding: 4px 10px;">Weekly</button>
-                        <button class="diet-btn" onclick="switchChart('monthly', this)" style="padding: 4px 10px;">Monthly</button>
-                        <button class="diet-btn" onclick="switchChart('yearly', this)" style="padding: 4px 10px;">Yearly</button>
+                        <button class="sub-btn active" onclick="switchChart('weekly', this)" style="padding: 4px 10px;">Weekly</button>
+                        <button class="sub-btn" onclick="switchChart('monthly', this)" style="padding: 4px 10px;">Monthly</button>
+                        <button class="sub-btn" onclick="switchChart('yearly', this)" style="padding: 4px 10px;">Yearly</button>
                     </div>
                 </div>
                 <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 0;">Analyze training volume across days, weeks, months, and years to detect performance trends.</p>
@@ -474,13 +556,13 @@
                     <span style="font-size: 0.75rem; color: var(--text-dim);" id="currentYearDisplay">Year 2026</span>
                 </div>
                 <div class="calendar-grid">
-                    <div class="day-box"><div>Mon</div><span class="check-icon">✔</span></div>
-                    <div class="day-box"><div>Tue</div><span class="check-icon">✔</span></div>
-                    <div class="day-box"><div>Wed</div><span class="check-icon">✔</span></div>
-                    <div class="day-box"><div>Thu</div><span class="check-icon">✔</span></div>
-                    <div class="day-box"><div>Fri</div><span class="cross-icon">✖</span></div>
-                    <div class="day-box"><div>Sat</div><span class="check-icon">✔</span></div>
-                    <div class="day-box"><div>Sun</div><span style="color: var(--accent-blue);">●</span></div>
+                    <div class="day-box"><div style="color:var(--text-dim); font-size:0.75rem;">Mon</div><span class="check-icon">✔</span></div>
+                    <div class="day-box"><div style="color:var(--text-dim); font-size:0.75rem;">Tue</div><span class="check-icon">✔</span></div>
+                    <div class="day-box"><div style="color:var(--text-dim); font-size:0.75rem;">Wed</div><span class="check-icon">✔</span></div>
+                    <div class="day-box"><div style="color:var(--text-dim); font-size:0.75rem;">Thu</div><span class="check-icon">✔</span></div>
+                    <div class="day-box"><div style="color:var(--text-dim); font-size:0.75rem;">Fri</div><span class="cross-icon">✖</span></div>
+                    <div class="day-box"><div style="color:var(--text-dim); font-size:0.75rem;">Sat</div><span class="check-icon">✔</span></div>
+                    <div class="day-box"><div style="color:var(--text-dim); font-size:0.75rem;">Sun</div><span style="color: var(--accent-blue);">●</span></div>
                 </div>
             </div>
         </div>
@@ -497,7 +579,7 @@
 
     </div>
 
-    <!-- SCRIPT LOGIC FOR FULL ECOSYSTEM -->
+    <!-- SCRIPT LOGIC -->
     <script>
         // Live Date & Time Stamp Updater
         function updateClock() {
@@ -516,6 +598,29 @@
             document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
             
             document.getElementById('page-' + pageId).classList.add('active');
+            btnElement.classList.add('active');
+        }
+
+        // Roadmap Internal Sub-Tab Switcher
+        function switchRoadmap(subId, btnElement) {
+            document.querySelectorAll('#page-roadmap .tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('#page-roadmap .sub-btn').forEach(b => b.classList.remove('active'));
+
+            document.getElementById('road-' + subId).classList.add('active');
+            btnElement.classList.add('active');
+        }
+
+        // Diet Internal Sub-Tab Switcher
+        function switchDiet(tier, btnElement) {
+            document.querySelectorAll('#page-diet .tab-content').forEach(c => {
+                c.classList.remove('active');
+                c.style.display = 'none';
+            });
+            document.querySelectorAll('#page-diet .sub-btn').forEach(b => b.classList.remove('active'));
+
+            let target = document.getElementById('diet-' + tier);
+            target.classList.add('active');
+            target.style.display = 'flex';
             btnElement.classList.add('active');
         }
 
@@ -587,15 +692,6 @@
             document.getElementById("planBadge").innerText = `${completedCount}/4 Completed`;
         }
 
-        // Diet Category Switcher
-        function switchDiet(tier, btnElement) {
-            document.querySelectorAll('.diet-content').forEach(c => c.classList.remove('active'));
-            document.querySelectorAll('.diet-btn').forEach(b => b.classList.remove('active'));
-
-            document.getElementById('diet-' + tier).classList.add('active');
-            btnElement.classList.add('active');
-        }
-
         // Advanced Chart.js Analytics Engine
         const ctx = document.getElementById('deepPerformanceChart').getContext('2d');
         let deepChart = new Chart(ctx, {
@@ -621,7 +717,7 @@
         });
 
         function switchChart(timeframe, btnElement) {
-            document.querySelectorAll('#page-analytics .diet-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('#page-analytics .sub-btn').forEach(b => b.classList.remove('active'));
             btnElement.classList.add('active');
 
             if(timeframe === 'weekly') {
