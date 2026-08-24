@@ -81,20 +81,15 @@
             <div class="space-y-3" id="tasks-container"></div>
         </section>
 
-        <!-- Live Activity Sensor Section -->
+        <!-- Activity & 7-Day Graph with Log Button -->
         <section class="bg-slate-800 rounded-2xl p-5 border border-slate-700 shadow-xl space-y-4">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                 <h3 class="text-lg font-bold flex items-center gap-2">
-                    <i data-lucide="activity" class="text-sky-400"></i> Live Motion & Activity Tracker
+                    <i data-lucide="activity" class="text-sky-400"></i> 7-Day Activity & Workload
                 </h3>
-                <div class="flex items-center gap-2">
-                    <button id="track-btn" onclick="toggleLiveTracking()" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-semibold text-xs px-4 py-2 rounded-xl transition flex items-center gap-1.5 shadow-md">
-                        <i data-lucide="play-circle" class="w-4 h-4"></i> <span id="track-btn-text">Start Live Tracking</span>
-                    </button>
-                    <button onclick="openActivityModal()" class="bg-slate-700 hover:bg-slate-600 text-slate-200 font-semibold text-xs px-3 py-2 rounded-xl transition flex items-center gap-1.5">
-                        <i data-lucide="edit-3" class="w-4 h-4"></i> Manual Log
-                    </button>
-                </div>
+                <button onclick="openActivityModal()" class="bg-sky-500 hover:bg-sky-600 text-slate-950 font-semibold text-xs px-3 py-2 rounded-xl transition flex items-center gap-1.5 shadow-md">
+                    <i data-lucide="plus-circle" class="w-4 h-4"></i> Log Today's Stats
+                </button>
             </div>
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-700/50">
@@ -102,16 +97,16 @@
                     <h4 class="text-xl font-bold text-white mt-1" id="disp-minutes">75 min</h4>
                 </div>
                 <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-700/50">
-                    <span class="text-xs text-slate-400">Live Steps (Sensor)</span>
-                    <h4 class="text-xl font-bold text-emerald-400 mt-1" id="disp-steps">0</h4>
+                    <span class="text-xs text-slate-400">Daily Steps</span>
+                    <h4 class="text-xl font-bold text-emerald-400 mt-1" id="disp-steps">8,450</h4>
                 </div>
                 <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-700/50">
                     <span class="text-xs text-slate-400">Distance Covered</span>
-                    <h4 class="text-xl font-bold text-amber-400 mt-1" id="disp-distance">0.0 km</h4>
+                    <h4 class="text-xl font-bold text-amber-400 mt-1" id="disp-distance">6.2 km</h4>
                 </div>
                 <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-700/50">
                     <span class="text-xs text-slate-400">Active Calories</span>
-                    <h4 class="text-xl font-bold text-rose-400 mt-1" id="disp-calories">0 kcal</h4>
+                    <h4 class="text-xl font-bold text-rose-400 mt-1" id="disp-calories">680 kcal</h4>
                 </div>
             </div>
             <div class="bg-slate-900/40 p-4 rounded-xl border border-slate-700/50">
@@ -184,11 +179,11 @@
         </div>
     </div>
 
-    <!-- Manual Log Activity Modal -->
+    <!-- Log Activity Modal -->
     <div id="activity-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-slate-800 border border-slate-700 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
             <div class="flex justify-between items-center">
-                <h3 class="text-lg font-bold text-white">Manual Workout Log</h3>
+                <h3 class="text-lg font-bold text-white">Log Today's Workout Stats</h3>
                 <button onclick="closeActivityModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
             <div class="space-y-3">
@@ -214,12 +209,22 @@
                         <input type="number" id="log-steps" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-sky-400" placeholder="e.g. 8450">
                     </div>
                 </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-xs text-slate-400 block mb-1">Distance (km)</label>
+                        <input type="number" step="0.1" id="log-distance" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-sky-400" placeholder="e.g. 6.2">
+                    </div>
+                    <div>
+                        <label class="text-xs text-slate-400 block mb-1">Calories (kcal)</label>
+                        <input type="number" id="log-calories" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-sky-400" placeholder="e.g. 680">
+                    </div>
+                </div>
             </div>
-            <button onclick="saveManualLogs()" class="w-full bg-sky-500 hover:bg-sky-600 text-slate-950 font-bold py-2.5 rounded-xl transition">Save Manual Stats</button>
+            <button onclick="saveActivityLogs()" class="w-full bg-sky-500 hover:bg-sky-600 text-slate-950 font-bold py-2.5 rounded-xl transition">Update Stats & Graph</button>
         </div>
     </div>
 
-    <!-- JavaScript Logic with DeviceMotion Sensor Integration -->
+    <!-- JavaScript Logic -->
     <script>
         lucide.createIcons();
 
@@ -239,8 +244,12 @@
         ];
 
         let weeklyMinutes = JSON.parse(localStorage.getItem('pro_weekly_minutes')) || [45, 60, 30, 75, 50, 90, 40];
-        let liveSteps = parseInt(localStorage.getItem('pro_live_steps')) || 0;
-        let isTracking = false;
+        let dailyStatsData = JSON.parse(localStorage.getItem('pro_daily_stats')) || {
+            minutes: 75,
+            steps: 8450,
+            distance: 6.2,
+            calories: 680
+        };
 
         function updateUI() {
             document.getElementById('fut-name').innerText = playerData.name;
@@ -250,73 +259,13 @@
             document.getElementById('fut-pos').innerText = playerData.pos;
             document.getElementById('fut-team').innerText = playerData.team;
 
-            document.getElementById('disp-steps').innerText = liveSteps.toLocaleString();
-            document.getElementById('disp-distance').innerText = (liveSteps * 0.00075).toFixed(2) + " km";
-            document.getElementById('disp-calories').innerText = Math.floor(liveSteps * 0.04) + " kcal";
+            document.getElementById('disp-minutes').innerText = `${dailyStatsData.minutes} min`;
+            document.getElementById('disp-steps').innerText = dailyStatsData.steps.toLocaleString();
+            document.getElementById('disp-distance').innerText = `${dailyStatsData.distance} km`;
+            document.getElementById('disp-calories').innerText = `${dailyStatsData.calories} kcal`;
 
             renderTasks();
             renderCalendar();
-        }
-
-        // Live Motion Sensor Logic
-        function toggleLiveTracking() {
-            const btnText = document.getElementById('track-btn-text');
-            const btn = document.getElementById('track-btn');
-
-            if (!isTracking) {
-                // Check if DeviceMotionEvent requires permission (iOS 13+)
-                if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
-                    DeviceMotionEvent.requestPermission().then(permissionState => {
-                        if (permissionState === 'granted') {
-                            startSensorListener();
-                        } else {
-                            alert("Sensor permission denied!");
-                        }
-                    }).catch(console.error);
-                } else {
-                    // Android & standard browsers
-                    startSensorListener();
-                }
-            } else {
-                stopSensorListener();
-            }
-        }
-
-        let lastAcc = { x: 0, y: 0, z: 0 };
-        const threshold = 12; // Movement sensitivity threshold
-
-        function handleMotion(event) {
-            const acc = event.accelerationIncludingGravity;
-            if (!acc) return;
-
-            let deltaX = Math.abs(acc.x - lastAcc.x);
-            let deltaY = Math.abs(acc.y - lastAcc.y);
-            let deltaZ = Math.abs(acc.z - lastAcc.z);
-
-            if (deltaX + deltaY + deltaZ > threshold) {
-                liveSteps++;
-                document.getElementById('disp-steps').innerText = liveSteps.toLocaleString();
-                document.getElementById('disp-distance').innerText = (liveSteps * 0.00075).toFixed(2) + " km";
-                document.getElementById('disp-calories').innerText = Math.floor(liveSteps * 0.04) + " kcal";
-                localStorage.setItem('pro_live_steps', liveSteps);
-            }
-            lastAcc = { x: acc.x, y: acc.y, z: acc.z };
-        }
-
-        function startSensorListener() {
-            isTracking = true;
-            window.addEventListener('devicemotion', handleMotion);
-            document.getElementById('track-btn-text').innerText = "Stop Tracking";
-            document.getElementById('track-btn').classList.remove('bg-emerald-500', 'hover:bg-emerald-600');
-            document.getElementById('track-btn').classList.add('bg-rose-500', 'hover:bg-rose-600');
-        }
-
-        function stopSensorListener() {
-            isTracking = false;
-            window.removeEventListener('devicemotion', handleMotion);
-            document.getElementById('track-btn-text').innerText = "Start Live Tracking";
-            document.getElementById('track-btn').classList.remove('bg-rose-500', 'hover:bg-rose-600');
-            document.getElementById('track-btn').classList.add('bg-emerald-500', 'hover:bg-emerald-600');
         }
 
         function renderTasks() {
@@ -326,6 +275,7 @@
 
             tasksData.forEach(task => {
                 if (task.status === 'completed') completedCount++;
+                
                 let badgeColor = 'bg-slate-700 text-slate-300 border-slate-600';
                 let statusLabel = 'Pending ⏳';
 
@@ -346,6 +296,7 @@
                     </div>
                 `;
             });
+
             document.getElementById('task-progress-text').innerText = `${completedCount}/${tasksData.length} Completed`;
             localStorage.setItem('pro_football_tasks', JSON.stringify(tasksData));
         }
@@ -367,6 +318,7 @@
             grid.innerHTML = '';
             const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
             const statuses = ['✅', '✅', '✅', '🔵', '❌', '✅', '🔵'];
+
             days.forEach((day, index) => {
                 grid.innerHTML += `
                     <div class="bg-slate-900/60 p-2 rounded-xl border border-slate-700/50 flex flex-col items-center">
@@ -377,7 +329,6 @@
             });
         }
 
-        // Modals Control
         function openProfileModal() {
             document.getElementById('input-name').value = playerData.name;
             document.getElementById('input-jersey').value = playerData.jersey;
@@ -400,18 +351,25 @@
         function openActivityModal() { document.getElementById('activity-modal').classList.remove('hidden'); }
         function closeActivityModal() { document.getElementById('activity-modal').classList.add('hidden'); }
 
-        function saveManualLogs() {
+        function saveActivityLogs() {
             const dayIndex = parseInt(document.getElementById('log-day').value);
             const mins = parseInt(document.getElementById('log-minutes').value) || 0;
+            const steps = parseInt(document.getElementById('log-steps').value) || 0;
+            const dist = parseFloat(document.getElementById('log-distance').value) || 0.0;
+            const cals = parseInt(document.getElementById('log-calories').value) || 0;
+
+            dailyStatsData = { minutes: mins, steps: steps, distance: dist, calories: cals };
+            localStorage.setItem('pro_daily_stats', JSON.stringify(dailyStatsData));
+
             weeklyMinutes[dayIndex] = mins;
             localStorage.setItem('pro_weekly_minutes', JSON.stringify(weeklyMinutes));
             weeklyChart.data.datasets[0].data = weeklyMinutes;
             weeklyChart.update();
+
             updateUI();
             closeActivityModal();
         }
 
-        // Weekly Activity Chart Setup
         const ctx = document.getElementById('weeklyChart').getContext('2d');
         const weeklyChart = new Chart(ctx, {
             type: 'bar',
