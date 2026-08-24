@@ -1,609 +1,204 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PRO-TRAIN FC | Elite Football Platform</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chart.js for Advanced Analytics -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <title>ProFootball OS | God-Level Dashboard</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
-        body { font-family: 'Poppins', sans-serif; }
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #131b2e;
+            --accent-green: #10b981;
+            --accent-cyan: #38bdf8;
+            --accent-orange: #f59e0b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+        }
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--card-bg);
+            padding: 20px 30px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        }
+        .player-info h1 {
+            margin: 0;
+            color: var(--accent-cyan);
+            font-size: 1.8rem;
+        }
+        .player-info p {
+            margin: 5px 0 0;
+            color: var(--text-muted);
+        }
+        .intel-score {
+            text-align: right;
+        }
+        .intel-score .score {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent-green);
+        }
+        
+        .grid-layout {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        .card h3 {
+            margin-top: 0;
+            border-bottom: 2px solid #1e293b;
+            padding-bottom: 10px;
+            color: var(--accent-orange);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* Stats Ratings */
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 12px 0;
+            font-weight: 600;
+        }
+        .stat-bar {
+            background: #1e293b;
+            border-radius: 4px;
+            height: 8px;
+            width: 100%;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+        .stat-fill {
+            background: var(--accent-cyan);
+            height: 100%;
+        }
+
+        /* Streak Badges */
+        .badge-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        .badge {
+            background: #1e293b;
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 0.9rem;
+            border: 1px solid #334155;
+        }
+
+        /* Tasks */
+        ul.task-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        ul.task-list li {
+            background: #1e293b;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .task-status {
+            font-size: 0.8rem;
+            padding: 4px 8px;
+            border-radius: 4px;
+            background: #0f172a;
+            color: var(--accent-orange);
+        }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col">
+<body>
 
-    <!-- Navbar -->
-    <nav class="bg-slate-900 border-b border-slate-800 px-4 py-3 flex justify-between items-center shadow-xl sticky top-0 z-40">
-        <div class="flex items-center space-x-2">
-            <i data-lucide="shield" class="w-8 h-8 text-emerald-400"></i>
-            <span class="text-xl font-extrabold tracking-wider text-emerald-400">PRO-TRAIN<span class="text-white">FC</span></span>
-        </div>
-        <div class="flex items-center space-x-3">
-            <div class="hidden sm:flex flex-col text-right">
-                <span id="nav-player-name" class="text-xs font-bold text-white">Krit Sehrawat</span>
-                <span class="text-[10px] text-emerald-400 font-semibold" id="nav-xp">Level 5 • 1,450 XP</span>
+    <div class="dashboard-container">
+        <!-- Header / Profile Section -->
+        <header>
+            <div class="player-info">
+                <h1>👤 Kridarth #10</h1>
+                <p>Position: CAM / CM | Preferred Foot: Right | Academy: Elite FC</p>
             </div>
-            <button onclick="openProfileModal()" class="p-2 bg-slate-800 hover:bg-slate-700 rounded-full border border-slate-700 transition">
-                <i data-lucide="user" class="w-5 h-5 text-emerald-400"></i>
-            </button>
-        </div>
-    </nav>
-
-    <!-- Main Content Container with Proper Spacing -->
-    <main class="flex-1 max-w-5xl w-full mx-auto p-4 space-y-6 pb-24">
-
-        <!-- FUT Card Profile Preview & Readiness Bar -->
-        <section class="bg-gradient-to-r from-slate-900 to-slate-900/80 rounded-2xl p-5 border border-slate-800 shadow-xl flex flex-col md:flex-row items-center gap-6">
-            <div class="relative bg-gradient-to-b from-amber-500 to-amber-700 p-1 rounded-xl w-36 text-center shadow-lg">
-                <div class="bg-slate-950 rounded-lg p-3 text-white">
-                    <div class="flex justify-between items-center text-xs font-bold text-amber-400">
-                        <span id="fut-rating">89</span>
-                        <span id="fut-pos">LW</span>
-                    </div>
-                    <div class="my-2 bg-slate-900 rounded-full h-14 w-14 mx-auto flex items-center justify-center border border-amber-500/50">
-                        <i data-lucide="award" class="w-7 h-7 text-amber-400"></i>
-                    </div>
-                    <div class="text-sm font-bold truncate" id="fut-name">Krit Sehrawat</div>
-                    <div class="text-[10px] text-amber-300">#<span id="fut-jersey">10</span> • <span id="fut-age">U-19</span></div>
-                </div>
+            <div class="intel-score">
+                <div class="score">87 / 100 <span>↑</span></div>
+                <div style="font-size: 0.85rem; color: var(--text-muted);">Football Intelligence Score</div>
             </div>
-            <div class="flex-1 space-y-3 text-center md:text-left w-full">
-                <div class="flex flex-col md:flex-row justify-between items-center gap-2">
-                    <h2 class="text-2xl font-bold text-white flex items-center gap-2">
-                        <span id="profile-display-name">Krit Sehrawat</span> 
-                        <span class="text-xs bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2.5 py-0.5 rounded-full" id="profile-foot">Right Foot</span>
-                    </h2>
-                    <span class="bg-slate-800 border border-slate-700 text-slate-300 text-xs px-3 py-1 rounded-lg font-medium" id="profile-team">Academy XI</span>
-                </div>
-                <p class="text-slate-400 text-sm">Elite training consistency builds champions. Complete your daily tasks, log match stats, and elevate your game metrics!</p>
+        </header>
+
+        <div class="grid-layout">
+            <!-- FIFA Style Ratings -->
+            <div class="card">
+                <h3>⚡ Player Ratings (100-Point)</h3>
+                <div class="stat-row"><span>PACE</span> <span>84</span></div>
+                <div class="stat-bar"><div class="stat-fill" style="width: 84%;"></div></div>
                 
-                <div class="grid grid-cols-3 gap-2 pt-1">
-                    <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 text-center">
-                        <span class="block text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Readiness</span>
-                        <span class="text-sm font-bold text-emerald-400" id="readiness-val">Optimal 🟢</span>
-                    </div>
-                    <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 text-center">
-                        <span class="block text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Consistency</span>
-                        <span class="text-sm font-bold text-amber-400" id="consistency-val">85% 🔥</span>
-                    </div>
-                    <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 text-center">
-                        <span class="block text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Top Speed</span>
-                        <span class="text-sm font-bold text-sky-400">29.4 km/h ⚡</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- "Your Football Day" USP Report Card -->
-        <section class="bg-gradient-to-br from-emerald-950/40 via-slate-900 to-slate-900 rounded-2xl p-5 border border-emerald-500/30 shadow-xl">
-            <div class="flex justify-between items-center mb-3">
-                <h3 class="text-md font-bold text-emerald-400 flex items-center gap-2">
-                    <i data-lucide="zap" class="w-4 h-4"></i> TODAY'S FOOTBALL REPORT (USP Summary)
-                </h3>
-                <span class="text-xs text-slate-400">Live Sync</span>
-            </div>
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 text-center">
-                <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800">
-                    <span class="block text-[10px] text-slate-400">👟 Steps</span>
-                    <span class="text-sm font-bold text-white" id="rep-steps">8,420</span>
-                </div>
-                <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800">
-                    <span class="block text-[10px] text-slate-400">🏃 Distance</span>
-                    <span class="text-sm font-bold text-sky-400" id="rep-distance">4.7 km</span>
-                </div>
-                <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800">
-                    <span class="block text-[10px] text-slate-400">⚡ Sprints</span>
-                    <span class="text-sm font-bold text-amber-400" id="rep-sprints">14</span>
-                </div>
-                <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800">
-                    <span class="block text-[10px] text-slate-400">⏱️ Active Time</span>
-                    <span class="text-sm font-bold text-emerald-400" id="rep-time">75 min</span>
-                </div>
-                <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800">
-                    <span class="block text-[10px] text-slate-400">⚽ Drills</span>
-                    <span class="text-sm font-bold text-purple-400" id="rep-drills">3/4</span>
-                </div>
-                <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800">
-                    <span class="block text-[10px] text-slate-400">🔥 Streak</span>
-                    <span class="text-sm font-bold text-rose-400" id="rep-streak">7 Days</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- Position-Based Smart Daily Training Plan -->
-        <section class="bg-slate-900 rounded-2xl p-5 border border-slate-800 shadow-xl">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-bold flex items-center gap-2">
-                    <i data-lucide="clipboard-list" class="text-emerald-400"></i> Smart Training Plan — <span id="plan-pos-title" class="text-emerald-400">LW</span>
-                </h3>
-                <span class="text-xs text-slate-400 bg-slate-800 px-2.5 py-1 rounded-md border border-slate-700" id="task-progress-text">0/4 Completed</span>
-            </div>
-            <div class="space-y-3" id="tasks-container"></div>
-        </section>
-
-        <!-- Performance Centre & Analytics (Weekly / Monthly / Yearly) -->
-        <section class="bg-slate-900 rounded-2xl p-5 border border-slate-800 shadow-xl space-y-4">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-                <h3 class="text-lg font-bold flex items-center gap-2">
-                    <i data-lucide="bar-chart-3" class="text-sky-400"></i> Performance Centre & Analytics
-                </h3>
-                <div class="flex items-center gap-2 flex-wrap">
-                    <div class="bg-slate-950 p-1 rounded-xl border border-slate-800 flex text-xs font-semibold">
-                        <button onclick="changeTimeframe('weekly')" id="btn-weekly" class="px-3 py-1.5 rounded-lg bg-sky-500 text-slate-950 transition">Weekly</button>
-                        <button onclick="changeTimeframe('monthly')" id="btn-monthly" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition">Monthly</button>
-                        <button onclick="changeTimeframe('yearly')" id="btn-yearly" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition">Yearly</button>
-                    </div>
-                    <button onclick="openActivityModal()" class="bg-sky-500 hover:bg-sky-600 text-slate-950 font-semibold text-xs px-3 py-2 rounded-xl transition flex items-center gap-1.5 shadow-md">
-                        <i data-lucide="plus-circle" class="w-4 h-4"></i> Log Stats
-                    </button>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <div class="bg-slate-950/60 p-3 rounded-xl border border-slate-800">
-                    <span class="text-xs text-slate-400">Training Minutes</span>
-                    <h4 class="text-xl font-bold text-white mt-1" id="disp-minutes">75 min</h4>
-                </div>
-                <div class="bg-slate-950/60 p-3 rounded-xl border border-slate-800">
-                    <span class="text-xs text-slate-400">Daily Steps</span>
-                    <h4 class="text-xl font-bold text-emerald-400 mt-1" id="disp-steps">8,420</h4>
-                </div>
-                <div class="bg-slate-950/60 p-3 rounded-xl border border-slate-800">
-                    <span class="text-xs text-slate-400">Sprint Count</span>
-                    <h4 class="text-xl font-bold text-amber-400 mt-1" id="disp-sprints">14 Sprints</h4>
-                </div>
-                <div class="bg-slate-950/60 p-3 rounded-xl border border-slate-800">
-                    <span class="text-xs text-slate-400">Match Goals</span>
-                    <h4 class="text-xl font-bold text-rose-400 mt-1" id="disp-goals">12 Goals</h4>
-                </div>
-            </div>
-
-            <div class="bg-slate-950/40 p-4 rounded-xl border border-slate-800">
-                <canvas id="performanceChart" height="110"></canvas>
-            </div>
-        </section>
-
-        <!-- Match Mode & Report Generator Section (Properly Spaced) -->
-        <section class="bg-slate-900 rounded-2xl p-5 border border-slate-800 shadow-xl flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="space-y-1 text-center md:text-left">
-                <h3 class="text-lg font-bold text-white flex items-center gap-2 justify-center md:justify-start">
-                    <i data-lucide="trophy" class="text-amber-400"></i> Match Mode & Report Generator
-                </h3>
-                <p class="text-xs text-slate-400">Record match goals, assists, and generate professional player evaluation reports.</p>
-            </div>
-            <div class="flex gap-3 flex-wrap justify-center">
-                <button onclick="openMatchModal()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs px-4 py-2.5 rounded-xl transition shadow-md">
-                    Log Match Stats ⚽
-                </button>
-                <button onclick="generatePlayerReport()" class="bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition shadow-md flex items-center gap-1.5">
-                    <i data-lucide="file-text" class="w-4 h-4"></i> Generate PDF Report
-                </button>
-            </div>
-        </section>
-
-        <!-- Training Calendar & Streak History -->
-        <section class="bg-slate-900 rounded-2xl p-5 border border-slate-800 shadow-xl">
-            <h3 class="text-lg font-bold flex items-center gap-2 mb-3">
-                <i data-lucide="calendar" class="text-amber-400"></i> Training History & Streak Calendar
-            </h3>
-            <div class="grid grid-cols-7 gap-2 text-center" id="calendar-grid"></div>
-        </section>
-
-        <!-- Pro Drill Library Preview -->
-        <section class="bg-slate-900 rounded-2xl p-5 border border-slate-800 shadow-xl">
-            <div class="flex justify-between items-center mb-3">
-                <h3 class="text-lg font-bold flex items-center gap-2">
-                    <i data-lucide="book-open" class="text-purple-400"></i> Pro Drill Library
-                </h3>
-                <span class="text-xs text-slate-400">Elite Standards</span>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800 space-y-2">
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">Difficulty: Pro</span>
-                        <span class="text-xs text-slate-400">15 min</span>
-                    </div>
-                    <h4 class="font-bold text-sm text-white">Cone Weaving & Agility</h4>
-                    <p class="text-xs text-slate-400">Tight space control and quick foot frequency.</p>
-                </div>
-                <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800 space-y-2">
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded">Difficulty: Intermediate</span>
-                        <span class="text-xs text-slate-400">20 min</span>
-                    </div>
-                    <h4 class="font-bold text-sm text-white">Box Finishing & Volleys</h4>
-                    <p class="text-xs text-slate-400">One-touch powerful strikes under pressure.</p>
-                </div>
-                <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800 space-y-2">
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs font-bold text-sky-400 bg-sky-500/10 px-2 py-0.5 rounded">Difficulty: Advanced</span>
-                        <span class="text-xs text-slate-400">10 min</span>
-                    </div>
-                    <h4 class="font-bold text-sm text-white">Explosive 30m Sprints</h4>
-                    <p class="text-xs text-slate-400">Max velocity acceleration drills for wingers.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Amazon Affiliate Pro Gear Section -->
-        <section class="bg-gradient-to-r from-emerald-950/40 to-slate-900 rounded-2xl p-5 border border-emerald-500/30 shadow-xl">
-            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
-                <div class="space-y-2 text-center md:text-left">
-                    <div class="inline-flex items-center gap-1.5 bg-emerald-500/20 text-emerald-400 text-xs font-semibold px-2.5 py-1 rounded-full border border-emerald-500/30">
-                        <i data-lucide="shopping-bag" class="w-3.5 h-3.5"></i> Pro Recommendation Hub
-                    </div>
-                    <h3 class="text-xl font-bold text-white">Upgrade Your Matchday Gear</h3>
-                    <p class="text-sm text-slate-300">Explore premium football boots, grip socks, and GPS trackers on Amazon.</p>
-                </div>
-                <a href="https://www.amazon.in/s?k=football+equipments+boots+gps&tag=yourtag-21" target="_blank" rel="noopener noreferrer" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold px-6 py-3 rounded-xl shadow-lg hover:shadow-emerald-500/20 transition flex items-center gap-2 whitespace-nowrap">
-                    <span>Shop Amazon Store</span>
-                    <i data-lucide="external-link" class="w-4 h-4"></i>
-                </a>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Modals -->
-    <div id="profile-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
-            <div class="flex justify-between items-center">
-                <h3 class="text-lg font-bold text-white">Edit Player Profile</h3>
-                <button onclick="closeProfileModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
-            </div>
-            <div class="space-y-3">
-                <div>
-                    <label class="text-xs text-slate-400 block mb-1">Player Name</label>
-                    <input type="text" id="input-name" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-400">
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="text-xs text-slate-400 block mb-1">Jersey Number</label>
-                        <input type="number" id="input-jersey" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-400">
-                    </div>
-                    <div>
-                        <label class="text-xs text-slate-400 block mb-1">Position</label>
-                        <select id="input-pos" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-400">
-                            <option value="LW">LW (Left Winger)</option>
-                            <option value="RW">RW (Right Winger)</option>
-                            <option value="ST">ST (Striker)</option>
-                            <option value="CM">CM (Central Midfielder)</option>
-                            <option value="CAM">CAM (Attacking Mid)</option>
-                            <option value="CB">CB (Center Back)</option>
-                            <option value="GK">GK (Goalkeeper)</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="text-xs text-slate-400 block mb-1">Preferred Foot</label>
-                        <select id="input-foot" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-400">
-                            <option value="Right Foot">Right Foot</option>
-                            <option value="Left Foot">Left Foot</option>
-                            <option value="Both Feet">Both Feet</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="text-xs text-slate-400 block mb-1">Age Group</label>
-                        <input type="text" id="input-age" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-400" placeholder="e.g. U-19">
-                    </div>
-                </div>
-                <div>
-                    <label class="text-xs text-slate-400 block mb-1">Team / Academy Name</label>
-                    <input type="text" id="input-team" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-400">
-                </div>
-            </div>
-            <button onclick="saveProfile()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold py-2.5 rounded-xl transition">Save Changes</button>
-        </div>
-    </div>
-
-    <div id="activity-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
-            <div class="flex justify-between items-center">
-                <h3 class="text-lg font-bold text-white">Log Performance Stats</h3>
-                <button onclick="closeActivityModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
-            </div>
-            <div class="space-y-3">
-                <div>
-                    <label class="text-xs text-slate-400 block mb-1">Select Day</label>
-                    <select id="log-day" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-sky-400">
-                        <option value="0">Monday</option>
-                        <option value="1">Tuesday</option>
-                        <option value="2">Wednesday</option>
-                        <option value="3">Thursday</option>
-                        <option value="4">Friday</option>
-                        <option value="5">Saturday</option>
-                        <option value="6">Sunday</option>
-                    </select>
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="text-xs text-slate-400 block mb-1">Training Minutes</label>
-                        <input type="number" id="log-minutes" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-sky-400" placeholder="e.g. 75">
-                    </div>
-                    <div>
-                        <label class="text-xs text-slate-400 block mb-1">Steps</label>
-                        <input type="number" id="log-steps" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-sky-400" placeholder="e.g. 8420">
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="text-xs text-slate-400 block mb-1">Sprints Count</label>
-                        <input type="number" id="log-sprints" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-sky-400" placeholder="e.g. 14">
-                    </div>
-                    <div>
-                        <label class="text-xs text-slate-400 block mb-1">Goals Scored</label>
-                        <input type="number" id="log-goals" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-sky-400" placeholder="e.g. 2">
-                    </div>
-                </div>
-            </div>
-            <button onclick="saveActivityLogs()" class="w-full bg-sky-500 hover:bg-sky-600 text-slate-950 font-bold py-2.5 rounded-xl transition">Update Performance Metrics</button>
-        </div>
-    </div>
-
-    <div id="match-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
-            <div class="flex justify-between items-center">
-                <h3 class="text-lg font-bold text-white">Record Match Performance</h3>
-                <button onclick="closeMatchModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
-            </div>
-            <div class="space-y-3">
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="text-xs text-slate-400 block mb-1">Match Goals</label>
-                        <input type="number" id="match-goals" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400" placeholder="e.g. 2">
-                    </div>
-                    <div>
-                        <label class="text-xs text-slate-400 block mb-1">Match Assists</label>
-                        <input type="number" id="match-assists" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400" placeholder="e.g. 1">
-                    </div>
-                </div>
-                <div>
-                    <label class="text-xs text-slate-400 block mb-1">Minutes Played</label>
-                    <input type="number" id="match-mins" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400" placeholder="e.g. 90">
-                </div>
-            </div>
-            <button onclick="saveMatchStats()" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-2.5 rounded-xl transition">Save Match Stats & XP</button>
-        </div>
-    </div>
-
-    <!-- JavaScript Application Logic -->
-    <script>
-        lucide.createIcons();
-
-        let playerData = JSON.parse(localStorage.getItem('pro_football_profile')) || {
-            name: "Krit Sehrawat",
-            jersey: 10,
-            pos: "LW",
-            team: "Academy XI",
-            foot: "Right Foot",
-            age: "U-19",
-            xp: 1450,
-            goals: 12
-        };
-
-        let tasksData = JSON.parse(localStorage.getItem('pro_football_tasks')) || [
-            { id: 1, title: "Ball Mastery — 15 min", status: "completed" },
-            { id: 2, title: "1v1 Dribbling — 15 min", status: "completed" },
-            { id: 3, title: "Finishing & Shooting — 20 min", status: "in-progress" },
-            { id: 4, title: "Speed & Agility — 10 min", status: "pending" }
-        ];
-
-        let weeklyData = JSON.parse(localStorage.getItem('pro_weekly_data')) || [45, 60, 30, 75, 50, 90, 40];
-        let monthlyData = [240, 310, 290, 350];
-        let yearlyData = [1200, 1450, 1600, 1850, 2100, 2400];
-        let currentTimeframe = 'weekly';
-
-        let dailyStatsData = JSON.parse(localStorage.getItem('pro_daily_stats')) || {
-            minutes: 75,
-            steps: 8420,
-            distance: 4.7,
-            sprints: 14,
-            goals: 12
-        };
-
-        function updateUI() {
-            document.getElementById('fut-name').innerText = playerData.name;
-            document.getElementById('profile-display-name').innerText = playerData.name;
-            document.getElementById('nav-player-name').innerText = playerData.name;
-            document.getElementById('fut-jersey').innerText = playerData.jersey;
-            document.getElementById('fut-pos').innerText = playerData.pos;
-            document.getElementById('plan-pos-title').innerText = playerData.pos;
-            document.getElementById('profile-team').innerText = playerData.team;
-            document.getElementById('profile-foot').innerText = playerData.foot;
-            document.getElementById('fut-age').innerText = playerData.age;
-            document.getElementById('nav-xp').innerText = `Level 5 • ${playerData.xp} XP`;
-
-            document.getElementById('disp-minutes').innerText = `${dailyStatsData.minutes} min`;
-            document.getElementById('disp-steps').innerText = dailyStatsData.steps.toLocaleString();
-            document.getElementById('disp-sprints').innerText = `${dailyStatsData.sprints} Sprints`;
-            document.getElementById('disp-goals').innerText = `${playerData.goals} Goals`;
-
-            document.getElementById('rep-steps').innerText = dailyStatsData.steps.toLocaleString();
-            document.getElementById('rep-distance').innerText = `${dailyStatsData.distance} km`;
-            document.getElementById('rep-sprints').innerText = dailyStatsData.sprints;
-            document.getElementById('rep-time').innerText = `${dailyStatsData.minutes} min`;
-
-            renderTasks();
-            renderCalendar();
-        }
-
-        function renderTasks() {
-            const container = document.getElementById('tasks-container');
-            container.innerHTML = '';
-            let completedCount = 0;
-
-            tasksData.forEach(task => {
-                if (task.status === 'completed') completedCount++;
+                <div class="stat-row"><span>PASSING</span> <span>78</span></div>
+                <div class="stat-bar"><div class="stat-fill" style="width: 78%;"></div></div>
                 
-                let badgeColor = 'bg-slate-800 text-slate-300 border-slate-700';
-                let statusLabel = 'Not Started ⏳';
+                <div class="stat-row"><span>DRIBBLING</span> <span>91</span></div>
+                <div class="stat-bar"><div class="stat-fill" style="width: 91%;"></div></div>
+                
+                <div class="stat-row"><span>SHOOTING</span> <span>82</span></div>
+                <div class="stat-bar"><div class="stat-fill" style="width: 82%;"></div></div>
+                
+                <div class="stat-row"><span>FITNESS</span> <span>88</span></div>
+                <div class="stat-bar"><div class="stat-fill" style="width: 88%;"></div></div>
+            </div>
 
-                if (task.status === 'in-progress') {
-                    badgeColor = 'bg-amber-500/20 text-amber-400 border-amber-500/30';
-                    statusLabel = 'In Progress 🔄';
-                } else if (task.status === 'completed') {
-                    badgeColor = 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30';
-                    statusLabel = 'Completed ✅';
-                }
+            <!-- Streak System & Badges -->
+            <div class="card">
+                <h3>🔥 Streaks & Records</h3>
+                <div class="badge-grid">
+                    <div class="badge">🏅 7-Day Streak</div>
+                    <div class="badge">⚡ 50 Sprints</div>
+                    <div class="badge">🎯 100 Shots</div>
+                    <div class="badge">🏃 25 km Run</div>
+                </div>
+            </div>
 
-                container.innerHTML += `
-                    <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800 flex justify-between items-center">
-                        <span class="text-sm font-medium ${task.status === 'completed' ? 'line-through text-slate-500' : 'text-slate-200'}">${task.title}</span>
-                        <button onclick="cycleTaskStatus(${task.id})" class="text-xs font-semibold px-3 py-1.5 rounded-lg border ${badgeColor} transition">
-                            ${statusLabel}
-                        </button>
-                    </div>
-                `;
-            });
+            <!-- Smart Daily Planner -->
+            <div class="card" style="grid-column: span 1;">
+                <h3>📅 Today's Training Tasks</h3>
+                <ul class="task-list">
+                    <li>
+                        <span>20 min Weak-foot Passing</span>
+                        <span class="task-status" style="color: var(--accent-green);">Completed</span>
+                    </li>
+                    <li>
+                        <span>High-intensity Sprints (x10)</span>
+                        <span class="task-status">In Progress</span>
+                    </li>
+                    <li>
+                        <span>Agility Cone Drills</span>
+                        <span class="task-status" style="color: var(--text-muted);">Not Started</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
-            document.getElementById('task-progress-text').innerText = `${completedCount}/${tasksData.length} Completed`;
-            document.getElementById('rep-drills').innerText = `${completedCount}/${tasksData.length}`;
-            localStorage.setItem('pro_football_tasks', JSON.stringify(tasksData));
-        }
-
-        function cycleTaskStatus(id) {
-            tasksData = tasksData.map(task => {
-                if (task.id === id) {
-                    if (task.status === 'pending') { task.status = 'in-progress'; playerData.xp += 20; }
-                    else if (task.status === 'in-progress') { task.status = 'completed'; playerData.xp += 50; }
-                    else { task.status = 'pending'; }
-                }
-                return task;
-            });
-            localStorage.setItem('pro_football_profile', JSON.stringify(playerData));
-            updateUI();
-        }
-
-        function renderCalendar() {
-            const grid = document.getElementById('calendar-grid');
-            grid.innerHTML = '';
-            const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-            const statuses = ['✅', '✅', '✅', '🔵', '❌', '✅', '🔵'];
-
-            days.forEach((day, index) => {
-                grid.innerHTML += `
-                    <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 flex flex-col items-center">
-                        <span class="text-[10px] text-slate-400 font-semibold">${day}</span>
-                        <span class="text-lg mt-1">${statuses[index]}</span>
-                    </div>
-                `;
-            });
-        }
-
-        function openProfileModal() {
-            document.getElementById('input-name').value = playerData.name;
-            document.getElementById('input-jersey').value = playerData.jersey;
-            document.getElementById('input-pos').value = playerData.pos;
-            document.getElementById('input-foot').value = playerData.foot;
-            document.getElementById('input-age').value = playerData.age;
-            document.getElementById('input-team').value = playerData.team;
-            document.getElementById('profile-modal').classList.remove('hidden');
-        }
-        function closeProfileModal() { document.getElementById('profile-modal').classList.add('hidden'); }
-
-        function saveProfile() {
-            playerData.name = document.getElementById('input-name').value || "Player";
-            playerData.jersey = document.getElementById('input-jersey').value || 10;
-            playerData.pos = document.getElementById('input-pos').value || "LW";
-            playerData.foot = document.getElementById('input-foot').value || "Right Foot";
-            playerData.age = document.getElementById('input-age').value || "U-19";
-            playerData.team = document.getElementById('input-team').value || "Academy XI";
-            localStorage.setItem('pro_football_profile', JSON.stringify(playerData));
-            updateUI();
-            closeProfileModal();
-        }
-
-        function openActivityModal() { document.getElementById('activity-modal').classList.remove('hidden'); }
-        function closeActivityModal() { document.getElementById('activity-modal').classList.add('hidden'); }
-
-        function saveActivityLogs() {
-            const dayIndex = parseInt(document.getElementById('log-day').value);
-            const mins = parseInt(document.getElementById('log-minutes').value) || 0;
-            const steps = parseInt(document.getElementById('log-steps').value) || 0;
-            const sprints = parseInt(document.getElementById('log-sprints').value) || 0;
-            const goals = parseInt(document.getElementById('log-goals').value) || 0;
-
-            dailyStatsData = { minutes: mins, steps: steps, distance: 4.7, sprints: sprints, goals: goals };
-            localStorage.setItem('pro_daily_stats', JSON.stringify(dailyStatsData));
-
-            weeklyData[dayIndex] = mins;
-            localStorage.setItem('pro_weekly_data', JSON.stringify(weeklyData));
-            
-            if(currentTimeframe === 'weekly') {
-                performanceChart.data.labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-                performanceChart.data.datasets[0].data = weeklyData;
-                performanceChart.update();
-            }
-
-            updateUI();
-            closeActivityModal();
-        }
-
-        function openMatchModal() { document.getElementById('match-modal').classList.remove('hidden'); }
-        function closeMatchModal() { document.getElementById('match-modal').classList.add('hidden'); }
-
-        function saveMatchStats() {
-            const g = parseInt(document.getElementById('match-goals').value) || 0;
-            playerData.goals += g;
-            playerData.xp += 100;
-            localStorage.setItem('pro_football_profile', JSON.stringify(playerData));
-            updateUI();
-            closeMatchModal();
-            alert("Match stats successfully recorded! +100 XP added! 🏆");
-        }
-
-        function generatePlayerReport() {
-            alert(`--- PRO PLAYER EVALUATION REPORT ---\nPlayer: ${playerData.name} (${playerData.pos})\nTeam: ${playerData.team}\nTotal Goals: ${playerData.goals}\nCurrent XP: ${playerData.xp}\nStatus: Elite Tier Ready 🚀`);
-        }
-
-        const ctx = document.getElementById('performanceChart').getContext('2d');
-        const performanceChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                datasets: [{
-                    label: 'Training Minutes',
-                    data: weeklyData,
-                    backgroundColor: '#38bdf8',
-                    borderRadius: 6
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: { legend: { display: false } },
-                scales: {
-                    y: { grid: { color: 'rgba(255, 255, 255, 0.04)' }, ticks: { color: '#94a3b8' } },
-                    x: { grid: { display: false }, ticks: { color: '#94a3b8' } }
-                }
-            }
-        });
-
-        function changeTimeframe(tf) {
-            currentTimeframe = tf;
-            document.getElementById('btn-weekly').className = tf === 'weekly' ? 'px-3 py-1.5 rounded-lg bg-sky-500 text-slate-950 transition' : 'px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition';
-            document.getElementById('btn-monthly').className = tf === 'monthly' ? 'px-3 py-1.5 rounded-lg bg-sky-500 text-slate-950 transition' : 'px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition';
-            document.getElementById('btn-yearly').className = tf === 'yearly' ? 'px-3 py-1.5 rounded-lg bg-sky-500 text-slate-950 transition' : 'px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition';
-
-            if(tf === 'weekly') {
-                performanceChart.data.labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-                performanceChart.data.datasets[0].data = weeklyData;
-            } else if(tf === 'monthly') {
-                performanceChart.data.labels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
-                performanceChart.data.datasets[0].data = monthlyData;
-            } else if(tf === 'yearly') {
-                performanceChart.data.labels = ['Month 1', 'Month 2', 'Month 3', 'Month 4', 'Month 5', 'Month 6'];
-                performanceChart.data.datasets[0].data = yearlyData;
-            }
-            performanceChart.update();
-        }
-
-        updateUI();
-    </script>
 </body>
 </html>
