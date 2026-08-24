@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PRO-TRAIN FC | Elite Pro Career Portal & Dynamic Coach</title>
+    <title>PRO-TRAIN FC | Elite Club Academy & Coach Portal</title>
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --bg-dark: #080b11;
-            --card-bg: #0f1623;
-            --card-border: #1e293b;
+            --bg-dark: #06090f;
+            --card-bg: #0d131f;
+            --card-border: #1a2332;
             --accent-green: #10b981;
             --accent-blue: #38bdf8;
             --accent-yellow: #eab308;
@@ -43,6 +43,7 @@
             border: 1px solid var(--card-border);
             border-radius: 12px;
             padding: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
         }
 
         .section-header {
@@ -64,7 +65,7 @@
         #registrationModal {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(4, 6, 10, 0.96);
+            background: rgba(3, 5, 8, 0.98);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -80,11 +81,11 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
-            box-shadow: 0 0 35px rgba(234, 179, 8, 0.25);
+            box-shadow: 0 0 40px rgba(234, 179, 8, 0.2);
         }
 
         .reg-box input, .reg-box select {
-            background: #080c14;
+            background: #05080f;
             border: 1px solid var(--card-border);
             color: #fff;
             padding: 12px;
@@ -92,11 +93,22 @@
             font-size: 0.9rem;
         }
 
+        /* Coach Voice Banner */
+        .coach-banner {
+            background: linear-gradient(135deg, #1b1603, #0d131f);
+            border-left: 4px solid var(--accent-yellow);
+            padding: 14px 18px;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            line-height: 1.5;
+            color: #fef08a;
+        }
+
         /* Navigation Tabs */
         .page-nav {
             display: flex;
             gap: 6px;
-            background: #080c14;
+            background: #05080f;
             padding: 8px;
             border-radius: 10px;
             border: 1px solid var(--card-border);
@@ -182,7 +194,7 @@
 
         /* Stopwatch Widget */
         .stopwatch-box {
-            background: linear-gradient(135deg, #080c14, #06241b);
+            background: linear-gradient(135deg, #05080f, #04241a);
             border: 1px solid var(--accent-green);
             display: flex;
             justify-content: space-between;
@@ -216,7 +228,7 @@
         }
 
         .sum-item {
-            background: #080c14;
+            background: #05080f;
             padding: 12px 8px;
             border-radius: 8px;
             text-align: center;
@@ -234,7 +246,7 @@
             font-size: 1.1rem;
         }
 
-        /* Generic Sub-Tabs */
+        /* Sub-Tabs */
         .sub-tabs {
             display: flex;
             gap: 8px;
@@ -243,7 +255,7 @@
         }
 
         .sub-btn {
-            background: #080c14;
+            background: #05080f;
             border: 1px solid var(--card-border);
             color: var(--text-dim);
             padding: 8px 16px;
@@ -270,7 +282,7 @@
         }
 
         .content-box {
-            background: #080c14;
+            background: #05080f;
             padding: 16px;
             border-radius: 8px;
             border-left: 4px solid var(--accent-blue);
@@ -286,7 +298,7 @@
         }
 
         .plan-item {
-            background: #080c14;
+            background: #05080f;
             padding: 12px 16px;
             border-radius: 8px;
             display: flex;
@@ -310,7 +322,7 @@
 
         /* Gear Hub */
         .gear-card {
-            background: linear-gradient(90deg, #0f1623 0%, #064e3b 100%);
+            background: linear-gradient(90deg, #0d131f 0%, #064e3b 100%);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -326,24 +338,19 @@
             font-weight: 700;
         }
 
-        .tier-card-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
         @media(max-width: 768px) {
-            .tier-card-grid { grid-template-columns: 1fr; }
             .summary-grid { grid-template-columns: repeat(3, 1fr); }
+            .gear-card { flex-direction: column; align-items: flex-start; gap: 12px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- PERSISTENT REGISTRATION / SETUP MODAL -->
+    <!-- REGISTRATION / SETUP MODAL -->
     <div id="registrationModal" style="display:none;">
         <div class="reg-box">
-            <h2 style="margin:0; color:var(--accent-yellow); font-size:1.3rem;">⚽ PRO-TRAIN FC SETUP</h2>
-            <p style="margin:0; font-size:0.8rem; color:var(--text-dim);">Enter your player credentials. Your session is saved securely so progression never resets!</p>
+            <h2 style="margin:0; color:var(--accent-yellow); font-size:1.3rem;">⚽ PRO-TRAIN FC ACADEMY</h2>
+            <p style="margin:0; font-size:0.8rem; color:var(--text-dim);">Enter your credentials. The club coach is watching your every move. Are you ready to build yourself into a wall?</p>
             <label style="font-size:0.75rem; color:var(--text-dim);">Player Name:</label>
             <input type="text" id="regName" placeholder="e.g. Krit Sehrawat">
             <label style="font-size:0.75rem; color:var(--text-dim);">Age:</label>
@@ -357,26 +364,31 @@
                 <option value="CB">Center Back (CB)</option>
                 <option value="GK">Goalkeeper (GK)</option>
             </select>
-            <label style="font-size:0.75rem; color:var(--text-dim);">Career Tier Level:</label>
+            <label style="font-size:0.75rem; color:var(--text-dim);">Starting Tier Level:</label>
             <select id="regTier">
-                <option value="Beginner Tier">🌱 Beginner Tier (Ages 8-12)</option>
-                <option value="Professional Tier">⚡ Professional Tier (Ages 13-17)</option>
-                <option value="Elite Academy Tier">🔥 Elite Academy Tier (Ages 18+)</option>
+                <option value="Beginner Tier">🌱 Beginner Tier (Foundation Base)</option>
+                <option value="Professional Tier">⚡ Professional Tier (Academy Standard)</option>
+                <option value="Elite Academy Tier">🔥 Elite Academy Tier (Pro First Team)</option>
             </select>
-            <button class="timer-btn btn-start" style="margin-top:10px;" onclick="saveRegistration()">Initialize Career Portal 🚀</button>
+            <button class="timer-btn btn-start" style="margin-top:10px;" onclick="saveRegistration()">Step Into The Pitch 🚀</button>
         </div>
     </div>
 
     <div class="dashboard">
 
+        <!-- COACH VOICE BANNER -->
+        <div class="coach-banner" id="coachBannerText">
+            🎙️ <strong>Coach's Memo:</strong> "Listen up! We don't ask you to train—we command excellence. If you want to become an Elite player, build yourself into an unbreakable wall. No shortcuts!"
+        </div>
+
         <!-- NAVIGATION -->
         <div class="page-nav">
-            <button class="nav-tab active" onclick="switchPage('dashboard', this)">⚡ Live Dashboard</button>
-            <button class="nav-tab" onclick="switchPage('dailycoach', this)">🎯 Today's AI Mission</button>
-            <button class="nav-tab" onclick="switchPage('tiers', this)">⭐ Tier Blueprint</button>
+            <button class="nav-tab active" onclick="switchPage('dashboard', this)">⚡ Live Academy</button>
+            <button class="nav-tab" onclick="switchPage('dailycoach', this)">🎯 Coach Daily Drills</button>
+            <button class="nav-tab" onclick="switchPage('tiers', this)">⭐ Tier & Yearly Audit</button>
             <button class="nav-tab" onclick="switchPage('roadmap', this)">🗺️ Pro Roadmap</button>
-            <button class="nav-tab" onclick="switchPage('diet', this)">🥗 Elite Diet Engine</button>
-            <button class="nav-tab" onclick="switchPage('analytics', this)">📈 Analytics</button>
+            <button class="nav-tab" onclick="switchPage('diet', this)">🥗 Pro Nutrition</button>
+            <button class="nav-tab" onclick="switchPage('analytics', this)">📈 Performance Logs</button>
         </div>
 
         <!-- ================= PAGE 1: LIVE DASHBOARD ================= -->
@@ -386,26 +398,26 @@
             <div class="card profile-card">
                 <div class="fut-card">
                     <span class="pos" id="displayPos">LW</span>
-                    <span class="rating">89</span>
+                    <span class="rating" id="displayRating">89</span>
                     <div style="font-size: 2rem; margin: 6px 0;">⚽</div>
                     <div style="font-size: 0.75rem; font-weight:700; text-align:center; padding:0 4px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:100%;" id="displayName">Player</div>
                 </div>
                 <div style="flex-grow: 1;">
                     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px; flex-wrap: wrap;">
                         <h2 style="margin: 0; font-size: 1.4rem;" id="displayNameHeader">Player</h2>
-                        <span class="badge" id="displayContract">Pro Trainee</span>
-                        <button class="btn-reset" onclick="confirmResetData()" title="Reset Profile Data">🔄 Reset Progress</button>
-                        <span style="font-size: 0.75rem; color: var(--text-dim); margin-left: auto;" id="liveClock">Loading Date...</span>
+                        <span class="badge" id="displayContract">Beginner Tier</span>
+                        <button class="btn-reset" onclick="confirmResetData()" title="Reset Career Profile">🔄 Reset Profile</button>
+                        <span style="font-size: 0.75rem; color: var(--text-dim); margin-left: auto;" id="liveClock">Loading...</span>
                     </div>
-                    <p style="color: var(--text-dim); font-size: 0.85rem; margin: 0 0 12px 0;">Session persisted securely via local storage. Your progress and daily streak are safe.</p>
+                    <p style="color: var(--text-dim); font-size: 0.85rem; margin: 0 0 12px 0;">System actively logs your daily activities. 1-Year comprehensive evaluation runs silently in the background for tier upgrades.</p>
                     <div style="display: flex; gap: 10px;">
-                        <div style="background: #080c14; padding: 8px; border-radius: 6px; flex:1; text-align:center;">
-                            <span style="font-size:0.65rem; color:var(--text-dim); display:block;">STATUS</span>
-                            <span style="font-size:0.9rem; color:var(--accent-green); font-weight:700;">Synced 🟢</span>
+                        <div style="background: #05080f; padding: 8px; border-radius: 6px; flex:1; text-align:center;">
+                            <span style="font-size:0.65rem; color:var(--text-dim); display:block;">YEARLY AUDIT</span>
+                            <span style="font-size:0.85rem; color:var(--accent-yellow); font-weight:700;" id="auditStatusLabel">Day 42 / 365 Active</span>
                         </div>
-                        <div style="background: #080c14; padding: 8px; border-radius: 6px; flex:1; text-align:center;">
-                            <span style="font-size:0.65rem; color:var(--text-dim); display:block;">STREAK</span>
-                            <span style="font-size:0.9rem; color:var(--accent-yellow); font-weight:700;">12 Days 🔥</span>
+                        <div style="background: #05080f; padding: 8px; border-radius: 6px; flex:1; text-align:center;">
+                            <span style="font-size:0.65rem; color:var(--text-dim); display:block;">COACH STATUS</span>
+                            <span style="font-size:0.85rem; color:var(--accent-green); font-weight:700;">Watching Closely 🟢</span>
                         </div>
                     </div>
                 </div>
@@ -414,9 +426,9 @@
             <!-- LIVE TRAINING STOPWATCH -->
             <div class="card stopwatch-box">
                 <div>
-                    <div style="font-size: 0.75rem; color: var(--accent-green); font-weight: 700; margin-bottom: 4px;">⏱️ LIVE SESSION TRACKER</div>
+                    <div style="font-size: 0.75rem; color: var(--accent-green); font-weight: 700; margin-bottom: 4px;">⏱️ PITCH TRAINING STOPWATCH</div>
                     <div class="timer-display" id="stopwatchTime">00:00:00</div>
-                    <div style="font-size: 0.75rem; color: var(--text-dim);" id="sessionStatus">Ready to track your daily football grind.</div>
+                    <div style="font-size: 0.75rem; color: var(--text-dim);" id="sessionStatus">Record your intense training minutes. Prove your grit!</div>
                 </div>
                 <div>
                     <button class="timer-btn btn-start" id="startStopBtn" onclick="toggleStopwatch()">Start Training</button>
@@ -426,40 +438,40 @@
             <!-- Today's Report Grid -->
             <div class="card">
                 <div class="section-header">
-                    <h3 style="color: var(--accent-green);">⚡ TODAY'S FOOTBALL REPORT</h3>
-                    <span style="font-size: 0.75rem; color: var(--text-dim);" id="dateStampText">Auto-Synced</span>
+                    <h3 style="color: var(--accent-green);">⚡ DAILY ACTIVITY TRACKING</h3>
+                    <span style="font-size: 0.75rem; color: var(--text-dim);" id="dateStampText">Live Monitored</span>
                 </div>
                 <div class="summary-grid">
-                    <div class="sum-item"><div>👟 Steps</div><span>9,840</span></div>
-                    <div class="sum-item"><div>📍 Distance</div><span>5.4 km</span></div>
-                    <div class="sum-item"><div>⚡ Sprints</div><span>18</span></div>
-                    <div class="sum-item"><div>⏱️ Active Time</div><span>90 min</span></div>
+                    <div class="sum-item"><div>👟 Steps</div><span>10,420</span></div>
+                    <div class="sum-item"><div>📍 Distance</div><span>6.2 km</span></div>
+                    <div class="sum-item"><div>⚡ Sprints</div><span>22</span></div>
+                    <div class="sum-item"><div>⏱️ Active Time</div><span>105 min</span></div>
                     <div class="sum-item"><div>⚽ Drills</div><span id="statDrillsCount">2/4</span></div>
-                    <div class="sum-item"><div>🔥 Streak</div><span>12 Days</span></div>
+                    <div class="sum-item"><div>🔥 Discipline</div><span>Elite</span></div>
                 </div>
             </div>
 
             <!-- Smart Training Tasks -->
             <div class="card">
                 <div class="section-header">
-                    <h3 style="color: var(--text-white);">📋 Daily Smart Training Drills</h3>
+                    <h3 style="color: var(--text-white);">📋 Coach's Mandatory Daily Drills</h3>
                     <span class="badge" id="planBadge">2/4 Completed</span>
                 </div>
                 <div class="plan-list" id="trainingPlanList">
                     <div class="plan-item">
-                        <span>Ball Mastery & Cone Dribbling — 25 min</span>
+                        <span>Wall Rebounder First Touch (100 Reps) — 25 min</span>
                         <button class="status-btn status-completed" onclick="toggleTask(0)">Completed ✓</button>
                     </div>
                     <div class="plan-item">
-                        <span>First Touch Under Pressure — 20 min</span>
+                        <span>Explosive Cone Dribbling & Direction Change — 20 min</span>
                         <button class="status-btn status-completed" onclick="toggleTask(1)">Completed ✓</button>
                     </div>
                     <div class="plan-item">
-                        <span>Explosive Sprint Acceleration — 15 min</span>
+                        <span>Max Velocity 30m Sprints (8 Reps) — 15 min</span>
                         <button class="status-btn status-progress" onclick="toggleTask(2)">In Progress ⏳</button>
                     </div>
                     <div class="plan-item">
-                        <span>Finishing & Weak Foot Volleys — 30 min</span>
+                        <span>Weak Foot Finishing Under Fatigue — 30 min</span>
                         <button class="status-btn status-notstarted" onclick="toggleTask(3)">Not Started ⏳</button>
                     </div>
                 </div>
@@ -467,76 +479,72 @@
 
         </div>
 
-        <!-- ================= PAGE 2: TODAY'S AI MISSION ================= -->
+        <!-- ================= PAGE 2: COACH DAILY MISSIONS ================= -->
         <div id="page-dailycoach" class="page-section">
             <div class="card">
                 <div class="section-header">
-                    <h3 style="color: var(--accent-blue);" id="dailyMissionTitle">🎯 Today's AI Dynamic Mission</h3>
+                    <h3 style="color: var(--accent-blue);" id="dailyMissionTitle">🎯 Coach's Daily Command Mission</h3>
                     <span style="font-size: 0.75rem; color: var(--text-dim);" id="currentDayNameLabel">Day Check</span>
                 </div>
-                <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 0;">AI generates customized second-by-second routines, schedules, and micronutrient diet guidelines based on your selected career tier.</p>
+                <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 0;">Every single day brings brand new unexpected challenges, advanced drills, and tailored nutrition according to your chosen tier.</p>
                 
                 <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 10px;">
                     <div class="content-box" style="border-left-color: var(--accent-yellow);">
-                        <strong>⏰ Custom Daily Schedule Breakdown:</strong><br>
+                        <strong>⏰ Daily Schedule Command:</strong><br>
                         <span id="dailyScheduleText">Loading schedule...</span>
                     </div>
                     <div class="content-box" style="border-left-color: var(--accent-green);">
-                        <strong>⚽ Unique Elite Training Drill:</strong><br>
+                        <strong>⚽ New Curiosity Drill (Make it Harder):</strong><br>
                         <span id="dailyDrillText">Loading drill...</span>
                     </div>
                     <div class="content-box" style="border-left-color: var(--accent-orange);">
-                        <strong>🥗 Targeted Nutrition & Meal Blueprint:</strong><br>
+                        <strong>🥗 Strict Pro Nutrition & Diet Plan:</strong><br>
                         <span id="dailyDietText">Loading diet...</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ================= PAGE 3: DEDICATED TIER BLUEPRINTS (NEW) ================= -->
+        <!-- ================= PAGE 3: TIER & YEARLY EVALUATION (NEW LOGIC) ================= -->
         <div id="page-tiers" class="page-section">
             <div class="card">
                 <div class="section-header">
-                    <h3 style="color: var(--accent-yellow);">⭐ Dedicated Tier Hub (Beginner to Elite Academy)</h3>
-                    <span style="font-size: 0.75rem; color: var(--text-dim);">Detailed Pathway Matrix</span>
+                    <h3 style="color: var(--accent-yellow);">⭐ 1-Year Evaluation & Tier Progression Engine</h3>
+                    <span style="font-size: 0.75rem; color: var(--text-dim);">Automated Club Scouting Audit</span>
                 </div>
                 
-                <div class="sub-tabs">
-                    <button class="sub-btn active" onclick="switchTierTab('beginner', this)">🌱 Beginner Tier Hub</button>
-                    <button class="sub-btn" onclick="switchTierTab('pro', this)">⚡ Professional Tier Hub</button>
-                    <button class="sub-btn" onclick="switchTierTab('elite', this)">🔥 Elite Academy Hub</button>
+                <div class="content-box" style="border-left-color: var(--accent-yellow); margin-bottom: 15px;">
+                    <strong>🏛️ How Tier Upgrades Work:</strong><br>
+                    We don't just ask what level you want—the web portal acts as your professional club coach. Your progression across <strong>365 days</strong> of training volume, consistency, and discipline is analyzed silently. Once your 1-year evaluation benchmark is met, you receive an automatic upgrade notification to Professional or Elite Academy standards!
                 </div>
 
-                <!-- Beginner Tier Page Content -->
+                <div class="sub-tabs">
+                    <button class="sub-btn active" onclick="switchTierTab('beginner', this)">🌱 Beginner Tier</button>
+                    <button class="sub-btn" onclick="switchTierTab('pro', this)">⚡ Professional Tier</button>
+                    <button class="sub-btn" onclick="switchTierTab('elite', this)">🔥 Elite Academy Tier</button>
+                </div>
+
                 <div id="tier-beginner" class="tier-content tab-content active" style="display:flex;">
                     <div class="content-box" style="border-left-color: var(--accent-green);">
-                        <strong>🌱 Beginner Tier Masterplan (Ages 8-12): Foundation Building</strong><br>
-                        • <strong>Every Second/Minute Focus:</strong> Mastering ball feel, coordination, and building confidence with both feet.<br>
-                        • <strong>Every Day Schedule:</strong> 45 minutes split into 15 min wall passing, 15 min sole rolls, and 15 min fun small-sided games.<br>
-                        • <strong>Every Week Blueprint:</strong> 3 active days training, 2 days light technical play, weekend casual match.<br>
-                        • <strong>Every Year Milestone:</strong> Build solid motor skills, ambidextrous passing, and spatial awareness.
+                        <strong>🌱 Beginner Tier Focus: Building the Wall</strong><br>
+                        • <em>Objective:</em> Master ball mastery, eliminate loose touches, and build absolute consistency.<br>
+                        • <em>Coach's Note:</em> "If your touch bounces 2 meters away, you are not ready for professional pitches. Master the wall first!"
                     </div>
                 </div>
 
-                <!-- Professional Tier Page Content -->
                 <div id="tier-pro" class="tier-content tab-content" style="display:none;">
                     <div class="content-box" style="border-left-color: var(--accent-orange);">
-                        <strong>⚡ Professional Tier Masterplan (Ages 13-17): Tactical & Physical Integration</strong><br>
-                        • <strong>Every Second/Minute Focus:</strong> Scanning the field before receiving, explosive first touch, and tactical decision making.<br>
-                        • <strong>Every Day Schedule:</strong> 90 minutes structured training (Warm-up 15m, Technical Drills 30m, Position-specific Sprints 30m, Cool-down 15m).<br>
-                        • <strong>Every Week Blueprint:</strong> 5 intensive training days + 1 official league weekend match + 1 active recovery day.<br>
-                        • <strong>Every Year Milestone:</strong> Secure academy trial selection, improve sprint speed by 15%, and master defensive/offensive transitions.
+                        <strong>⚡ Professional Tier Focus: Tactical Execution & Speed</strong><br>
+                        • <em>Objective:</em> High-speed decision making, intense scanning before receiving, and physical duel dominance.<br>
+                        • <em>Coach's Note:</em> "Pros don't think about the ball; they think about the space before the ball arrives."
                     </div>
                 </div>
 
-                <!-- Elite Academy Tier Page Content -->
                 <div id="tier-elite" class="tier-content tab-content" style="display:none;">
                     <div class="content-box" style="border-left-color: var(--accent-yellow);">
-                        <strong>🔥 Elite Academy Tier Masterplan (Ages 18+): Pro Standard & Scouting</strong><br>
-                        • <strong>Every Second/Minute Focus:</strong> High-intensity pressing, elite split-second passing under heavy opposition tackle, and injury bulletproofing.<br>
-                        • <strong>Every Day Schedule:</strong> 2 hours on-pitch tactical execution + 1 hour gym conditioning & recovery tracking daily.<br>
-                        • <strong>Every Week Blueprint:</strong> Double sessions Tuesday/Thursday, tactical match preparation Friday, matchday Saturday, recovery Sunday.<br>
-                        • <strong>Every Year Milestone:</strong> Professional contract signing, GPS performance metric optimization, and peak physical conditioning.
+                        <strong>🔥 Elite Academy Tier Focus: Match Winner & First Team Standard</strong><br>
+                        • <em>Objective:</em> Flawless execution under high-pressure stadium environments and GPS metric supremacy.<br>
+                        • <em>Coach's Note:</em> "You are now carrying the badge of an elite competitor. Leave nothing on the grass."
                     </div>
                 </div>
             </div>
@@ -547,95 +555,80 @@
             <div class="card">
                 <div class="section-header">
                     <h3 style="color: var(--accent-yellow);">🗺️ Tailored Roadmap & Training Execution</h3>
-                    <span style="font-size: 0.75rem; color: var(--text-dim);">Customized for Your Profile Data</span>
+                    <span style="font-size: 0.75rem; color: var(--text-dim);">Customized Routines</span>
                 </div>
                 
                 <div class="sub-tabs">
                     <button class="sub-btn active" onclick="switchRoadmap('homeground', this)">🏠 Home vs Ground Protocols</button>
                     <button class="sub-btn" onclick="switchRoadmap('prepost', this)">⚡ Pre & Post Routines</button>
-                    <button class="sub-btn" onclick="switchRoadmap('injury', this)">🛡️ Injury Prevention & Recovery</button>
+                    <button class="sub-btn" onclick="switchRoadmap('injury', this)">🛡️ Injury Prevention</button>
                 </div>
 
-                <!-- Home vs Ground -->
                 <div id="road-homeground" class="tab-content active" style="display:flex;">
                     <div class="content-box">
                         <strong>🏠 At-Home Solo Training Protocol:</strong><br>
-                        • <em>Ball Mastery Circuit:</em> 1,000 touches daily using sole rolls, outside-in cuts, and V-pulls in restricted space.<br>
-                        • <em>Wall Rebounder Drills:</em> 150 consecutive one-touch passes switching between right and left foot.
+                        • <em>Wall Rebounder Challenge:</em> 300 continuous one-touch passes switching feet without letting the ball drop.<br>
+                        • <em>Core Bulletproofing:</em> 5 minutes of plank variations to withstand physical shoulder challenges.
                     </div>
                     <div class="content-box" style="border-left-color: var(--accent-green);">
                         <strong>⚽ At-The-Ground Pitch Protocol:</strong><br>
-                        • <em>Max Speed Dribbling:</em> Weaving through cones at full sprinting cadence.<br>
-                        • <em>Long-Range Crossing & Shooting:</em> Delivering accurate crosses from the flank and finishing under pressure.
+                        • <em>Max Speed Dribbling:</em> Slalom weaving through 10 cones at 100% sprinting velocity.<br>
+                        • <em>Crossing & Finishing:</em> Whip in 20 precise crosses and convert from awkward angles.
                     </div>
                 </div>
 
-                <!-- Pre and Post Routines -->
                 <div id="road-prepost" class="tab-content">
                     <div class="content-box" style="border-left-color: var(--accent-purple);">
-                        <strong>⚡ Pre-Training Dynamic Activation (15 mins):</strong><br>
-                        • Skipping rope, dynamic lunges, leg swings, open-the-gate hip rotations, and short acceleration bursts.
+                        <strong>⚡ Pre-Training Activation (15 mins):</strong><br>
+                        • Dynamic skipping, high knees, opening the gate hip rotations, and explosive acceleration starts.
                     </div>
                     <div class="content-box" style="border-left-color: var(--accent-green);">
-                        <strong>🧊 Post-Training Recovery Protocol (15 mins):</strong><br>
-                        • Slow cool-down walk, static stretching for hamstrings and calves, foam rolling, and electrolyte rehydration.
+                        <strong>🧊 Post-Training Recovery (15 mins):</strong><br>
+                        • Static hamstring and calf stretching, foam rolling, and rapid electrolyte rehydration.
                     </div>
                 </div>
 
-                <!-- Injury Prevention -->
                 <div id="road-injury" class="tab-content">
                     <div class="content-box" style="border-left-color: #ef4444;">
-                        <strong>🛡️ Bulletproofing Against ACL, Ankle & Hamstring Injuries:</strong><br>
-                        • <em>Ankle Stability:</em> Single-leg balance board exercises.<br>
-                        • <em>Hamstring Strength:</em> Nordic curls and Romanian deadlifts to safeguard high-velocity sprinting muscles.
+                        <strong>🛡️ Bulletproofing Against Injuries:</strong><br>
+                        • Focus on ankle stability (balance pads) and hamstring eccentric loading (Nordic curls) to prevent tearing during high-speed sprints.
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ================= PAGE 5: DIET ENGINE ================= -->
+        <!-- ================= PAGE 5: PRO DIET ================= -->
         <div id="page-diet" class="page-section">
             <div class="card">
                 <div class="section-header">
                     <h3 style="color: var(--accent-orange);">🥗 Professional Diet Engine & Nutrition Hub</h3>
-                    <span style="font-size: 0.75rem; color: var(--text-dim);">Detailed Second-to-Yearly Meal Plan</span>
+                    <span style="font-size: 0.75rem; color: var(--text-dim);">Detailed Fueling Guide</span>
                 </div>
                 
                 <div class="sub-tabs">
                     <button class="sub-btn active" onclick="switchDiet('beginner', this)">🌱 Beginner Diet</button>
                     <button class="sub-btn" onclick="switchDiet('pro', this)">⚡ Pro Diet</button>
-                    <button class="sub-btn" onclick="switchDiet('elite', this)">🔥 Elite Academy Diet</button>
+                    <button class="sub-btn" onclick="switchDiet('elite', this)">🔥 Elite Diet</button>
                 </div>
 
-                <!-- Beginner Diet -->
                 <div id="diet-beginner" class="tab-content active" style="display:flex;">
                     <div class="content-box" style="border-left-color: var(--accent-orange);">
-                        <strong>🌱 Beginner Daily Nutrition Blueprint:</strong><br>
-                        • <em>Breakfast (08:00 AM):</em> Oatmeal with sliced bananas and whole milk (350 kcal).<br>
-                        • <em>Lunch (01:00 PM):</em> Brown rice, lentil dal, grilled chicken breast, and fresh salad (550 kcal).<br>
-                        • <em>Hydration Rule:</em> 500ml water every 2 hours; electrolyte sip during training blocks.
+                        <strong>🌱 Beginner Nutrition Blueprint:</strong><br>
+                        • Clean carbohydrates, whole milk, eggs, and lean chicken breast to support growing bones and high energy output.
                     </div>
                 </div>
 
-                <!-- Pro Diet -->
                 <div id="diet-pro" class="tab-content" style="display:none;">
                     <div class="content-box" style="border-left-color: var(--accent-orange);">
-                        <strong>⚡ Professional Daily Nutrition Blueprint:</strong><br>
-                        • <em>Breakfast (07:30 AM):</em> Whole wheat avocado toast with 3 organic egg whites and berries (500 kcal).<br>
-                        • <em>Mid-Day Fuel (11:00 AM):</em> Greek yogurt with almonds and honey.<br>
-                        • <em>Lunch (02:00 PM):</em> Grilled chicken quinoa bowl with sweet potatoes and steamed broccoli (700 kcal).<br>
-                        • <em>Pre-Match/Training Snack:</em> Fast-acting energy bar and banana 90 minutes prior.
+                        <strong>⚡ Professional Nutrition Blueprint:</strong><br>
+                        • Avocado toast with egg whites, grilled chicken quinoa bowls, sweet potatoes, and strict hydration monitoring.
                     </div>
                 </div>
 
-                <!-- Elite Diet -->
                 <div id="diet-elite" class="tab-content" style="display:none;">
                     <div class="content-box" style="border-left-color: var(--accent-orange);">
-                        <strong>🔥 Elite Academy Daily Nutrition Blueprint:</strong><br>
-                        • <em>Breakfast (07:00 AM):</em> High-protein oat pancakes, organic honey, chia seeds, and fresh fruit mix (650 kcal).<br>
-                        • <em>Pre-Workout:</em> Beetroot juice for nitric oxide and endurance boost.<br>
-                        • <em>Mid-Day Carb Loading (01:30 PM):</em> Whole-grain pasta with lean turkey mince, olive oil, and spinach (850 kcal).<br>
-                        • <em>Post-Workout Recovery:</em> Whey protein isolate shake with glutamine and fast carbohydrates within 30 minutes.
+                        <strong>🔥 Elite Academy Nutrition Blueprint:</strong><br>
+                        • Beetroot juice for nitric oxide production, whole-grain pasta carbohydrate loading, and post-workout whey isolate shakes within 30 minutes.
                     </div>
                 </div>
             </div>
@@ -645,11 +638,11 @@
         <div id="page-analytics" class="page-section">
             <div class="card">
                 <div class="section-header">
-                    <h3 style="color: var(--accent-blue);">📈 Deep Performance Analytics & Graphs</h3>
+                    <h3 style="color: var(--accent-blue);">📈 Deep Performance Logs & 1-Year Audit</h3>
                     <div style="display: flex; gap: 6px;">
                         <button class="sub-btn active" onclick="switchChart('weekly', this)" style="padding: 4px 10px;">Weekly</button>
                         <button class="sub-btn" onclick="switchChart('monthly', this)" style="padding: 4px 10px;">Monthly</button>
-                        <button class="sub-btn" onclick="switchChart('yearly', this)" style="padding: 4px 10px;">Yearly</button>
+                        <button class="sub-btn" onclick="switchChart('yearly', this)" style="padding: 4px 10px;">Yearly Audit</button>
                     </div>
                 </div>
                 <div style="height: 250px; width: 100%;">
@@ -658,19 +651,19 @@
             </div>
         </div>
 
-        <!-- Gear Hub Footer -->
+        <!-- AMAZON GEAR RECOMMENDATION HUB (CURURIOSITY & EQUIPMENT DRIVEN GROWTH) -->
         <div class="card gear-card">
             <div>
-                <div style="font-size: 0.75rem; color: var(--accent-green); font-weight: 700; margin-bottom: 4px;">🛍️ Pro Recommendation Hub</div>
-                <h3 style="margin: 0 0 4px 0; font-size: 1.1rem;">Upgrade Your Matchday Gear</h3>
-                <p style="margin: 0; font-size: 0.8rem; color: var(--text-dim);">Explore premium football boots, grip socks, and GPS trackers on Amazon.</p>
+                <div style="font-size: 0.75rem; color: var(--accent-green); font-weight: 700; margin-bottom: 4px;">🛍️ PRO GEAR RECOMMENDATION HUB</div>
+                <h3 style="margin: 0 0 4px 0; font-size: 1.1rem;">"Your Game Is Hard? Make It Harder with Pro Equipment!"</h3>
+                <p style="margin: 0; font-size: 0.8rem; color: var(--text-dim);">Elite players don't train with ordinary balls. Equip grip socks, resistance bands, and weighted training footballs from Amazon to evolve your game.</p>
             </div>
-            <a href="https://www.amazon.in/s?k=football+boots+grip+socks" target="_blank" class="shop-btn">Shop Amazon Store ↗</a>
+            <a href="https://www.amazon.in/s?k=football+grip+socks+training+equipment" target="_blank" class="shop-btn">Equip Pro Gear Now ↗</a>
         </div>
 
     </div>
 
-    <!-- SCRIPT LOGIC WITH LOCALSTORAGE PERSISTENCE & DOUBLE CONFIRMATION RESET -->
+    <!-- LOGIC SCRIPT -->
     <script>
         // Check localStorage on load for persistent login
         window.addEventListener('DOMContentLoaded', () => {
@@ -702,13 +695,17 @@
             document.getElementById('displayNameHeader').innerText = name;
             document.getElementById('displayPos').innerText = pos;
             document.getElementById('displayContract').innerText = tier;
+
+            // Coach dynamic opening quote based on tier
+            let quote = `"Listen up, ${name}! We don't ask you to train—we command excellence. If you want to become an Elite player, build yourself into an unbreakable wall. Grab your pro gear and let's work!"`;
+            document.getElementById('coachBannerText').innerHTML = `🎙️ <strong>Coach's Memo:</strong> ${quote}`;
         }
 
-        // Secure Reset Option with Double Confirmation
+        // Secure Double Confirmation Reset Option
         function confirmResetData() {
-            let confirmation1 = confirm("⚠️ Are you sure you want to reset your profile and progress? This action cannot be undone.");
+            let confirmation1 = confirm("⚠️ Coach Warning: Are you sure you want to reset your career profile? All progression data will be wiped.");
             if (confirmation1) {
-                let confirmation2 = confirm("🚨 FINAL WARNING: All training stats, streaks, and data will be wiped clean. Proceed with reset?");
+                let confirmation2 = confirm("🚨 FINAL CONFIRMATION: This will completely erase your academy logs and restart your journey. Proceed?");
                 if (confirmation2) {
                     localStorage.removeItem('protrain_player_profile');
                     location.reload();
@@ -716,48 +713,48 @@
             }
         }
 
-        // AI Daily Mission Generator based on Day of the Week
+        // Coach Daily Mission Generator
         function loadDailyMission() {
             const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
             const today = new Date().getDay();
             const dayName = days[today];
-            document.getElementById('currentDayNameLabel').innerText = dayName + " AI Mission";
+            document.getElementById('currentDayNameLabel').innerText = dayName + " Mission";
 
             const missions = {
-                1: { // Monday
-                    schedule: "07:00 AM - Dynamic Core & Agility | 05:00 PM - 90 Mins Ball Control & Passing Mechanics",
-                    drill: "Passing Accuracy: 50 wall passes with weak foot, 50 with strong foot under 10 minutes.",
+                1: {
+                    schedule: "06:30 AM - Explosive Agility & Core | 05:00 PM - 90 Minutes Wall Passing Mechanics",
+                    drill: "The Wall Test: 200 consecutive one-touch passes against a brick wall without missing.",
                     diet: "High Carbohydrate & Lean Protein: Oatmeal breakfast, Grilled Chicken & Brown Rice lunch."
                 },
-                2: { // Tuesday
-                    schedule: "06:30 AM - 5km Endurance Run | 04:30 PM - Dribbling in Tight Spaces & Cone Weaving",
-                    drill: "Cone Weaving: 10 repetitions zigzagging through tight cones at max velocity.",
+                2: {
+                    schedule: "06:00 AM - 6km Endurance Run | 04:30 PM - Tight Space Dribbling & Cone Weaving",
+                    drill: "Cone Minefield: Weave through 15 tight cones at maximum speed without touching them.",
                     diet: "Endurance Fuel: Avocado toast with egg whites, Sweet potato & salmon bowl."
                 },
-                3: { // Wednesday
-                    schedule: "08:00 AM - Active Recovery & Yoga Stretch | 05:00 PM - Finishing & Volleys",
-                    drill: "Box Shooting: 30 one-touch powerful strikes from the edge of the penalty box.",
+                3: {
+                    schedule: "08:00 AM - Active Recovery & Flexibility | 05:00 PM - Finishing Under Fatigue",
+                    drill: "Exhaustion Volleys: 40 powerful shots immediately after a 100m sprint.",
                     diet: "Muscle Repair: High-protein pancakes, Quinoa chicken salad, Magnesium supplement."
                 },
-                4: { // Thursday
-                    schedule: "07:00 AM - Explosive Sprints | 05:30 PM - Tactical Positioning & Game Vision",
-                    drill: "30m Acceleration Sprints: 8 reps with full 45-second recovery between each sprint.",
-                    diet: "Speed Energy: Peanut butter banana smoothie, Turkey meatballs with whole-wheat pasta."
+                4: {
+                    schedule: "07:00 AM - Sprints & Acceleration | 05:30 PM - Tactical Scanning & Vision",
+                    drill: "Blind Spot Receiving: Practice scanning over both shoulders before every touch.",
+                    diet: "Speed Energy: Peanut banana smoothie, Turkey meatballs with whole-wheat pasta."
                 },
-                5: { // Friday
-                    schedule: "07:00 AM - Light Footwork & Coordination | 04:00 PM - Pre-Match Tactical Walkthrough",
-                    drill: "1,000 Touches Home Challenge: Sole rolls, toe taps, and body feints in your room.",
-                    diet: "Carb Loading: Massive portion of organic pasta, grilled fish, electrolyte hydration drinks."
+                5: {
+                    schedule: "07:00 AM - Ball Mastery | 04:00 PM - Pre-Match Tactical Briefing",
+                    drill: "1,500 Touches Challenge: Sole rolls and V-pulls in restricted space.",
+                    diet: "Carb Loading: Massive portion of organic pasta, grilled fish, electrolyte drinks."
                 },
-                6: { // Saturday
+                6: {
                     schedule: "MATCHDAY: 09:00 AM Team Warmup | 11:00 AM Official League Match",
-                    drill: "Match Performance: Maintain high pressing intensity, high sprint counts, and zero defensive errors.",
-                    diet: "Matchday Fuel: Fast-acting energy gels, bananas 2 hours before kick-off, post-match protein shake."
+                    drill: "Match Execution: Dominate physical duels, maintain high pressing intensity, zero sloppy turnovers.",
+                    diet: "Matchday Fuel: Energy gels, bananas 2 hours before kick-off, post-match protein shake."
                 },
-                0: { // Sunday
-                    schedule: "REST & ACTIVE RECOVERY: Light swimming or foam rolling session",
-                    drill: "Mental Visualization: Watch professional match analysis of top wingers in your position.",
-                    diet: "Clean Recovery: Antioxidant-rich berries, green tea, mixed nuts, and light vegetable soup."
+                0: {
+                    schedule: "REST & RECOVERY: Complete tactical visualization and mental review",
+                    drill: "Match IQ Study: Watch 3 professional matches analyzing players in your exact position.",
+                    diet: "Clean Recovery: Antioxidant-rich berries, green tea, mixed nuts, and vegetable soup."
                 }
             };
 
@@ -773,7 +770,6 @@
             const now = new Date();
             const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
             document.getElementById('liveClock').innerText = now.toLocaleDateString('en-US', options);
-            document.getElementById('dateStampText').innerText = "Live Synced: " + now.toLocaleDateString();
         }
         setInterval(updateClock, 1000);
         updateClock();
@@ -837,7 +833,7 @@
                 isRunning = true;
                 btn.innerText = "End Session";
                 btn.className = "timer-btn btn-stop";
-                statusText.innerText = "Training session is live! Go crush your drills.";
+                statusText.innerText = "Coach is logging your active pitch minutes. Go hard!";
                 stopwatchInterval = setInterval(() => {
                     secondsElapsed++;
                     let hrs = Math.floor(secondsElapsed / 3600).toString().padStart(2, '0');
@@ -850,8 +846,8 @@
                 clearInterval(stopwatchInterval);
                 btn.innerText = "Start Training";
                 btn.className = "timer-btn btn-start";
-                statusText.innerText = `Session completed! Total active training time saved.`;
-                alert(`Great session, Champion! You logged ${Math.floor(secondsElapsed/60)} minutes of active training today. 🚀`);
+                statusText.innerText = `Session logged successfully. Keep building that wall!`;
+                alert(`Coach note: Excellent session! You recorded ${Math.floor(secondsElapsed/60)} minutes of rigorous training today. Keep pushing! 🚀`);
             }
         }
 
@@ -886,8 +882,8 @@
             data: {
                 labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
                 datasets: [{
-                    label: 'Training Volume (Minutes)',
-                    data: [50, 75, 45, 90, 60, 110, 40],
+                    label: 'Training Volume (Mins)',
+                    data: [60, 90, 75, 110, 85, 130, 50],
                     backgroundColor: '#38bdf8',
                     borderRadius: 6
                 }]
@@ -898,7 +894,7 @@
                 plugins: { legend: { display: false } },
                 scales: {
                     x: { grid: { display: false }, ticks: { color: '#94a3b8' } },
-                    y: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } }
+                    y: { grid: { color: '#1a2332' }, ticks: { color: '#94a3b8' } }
                 }
             }
         });
@@ -908,13 +904,13 @@
             btnElement.classList.add('active');
             if(timeframe === 'weekly') {
                 deepChart.data.labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-                deepChart.data.datasets[0].data = [50, 75, 45, 90, 60, 110, 40];
+                deepChart.data.datasets[0].data = [60, 90, 75, 110, 85, 130, 50];
             } else if(timeframe === 'monthly') {
                 deepChart.data.labels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
-                deepChart.data.datasets[0].data = [350, 310, 440, 400];
+                deepChart.data.datasets[0].data = [420, 480, 510, 550];
             } else if(timeframe === 'yearly') {
-                deepChart.data.labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-                deepChart.data.datasets[0].data = [1300, 1450, 1500, 1650, 1700, 1550, 1600, 1800, 1750, 1900, 1850, 2000];
+                deepChart.data.labels = ['Q1 Audit', 'Q2 Audit', 'Q3 Audit', 'Q4 Final Evaluation'];
+                deepChart.data.datasets[0].data = [1800, 2100, 2400, 2900];
             }
             deepChart.update();
         }
