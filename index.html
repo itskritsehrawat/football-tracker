@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pro Football Tracker & Training Hub</title>
+    <title>PRO-TRAIN FC | Elite Football Hub</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js for Graphs -->
@@ -11,21 +11,24 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
         body { font-family: 'Poppins', sans-serif; }
     </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col">
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col">
 
     <!-- Navbar -->
-    <nav class="bg-slate-800 border-b border-slate-700 px-4 py-3 flex justify-between items-center shadow-lg">
+    <nav class="bg-slate-900 border-b border-slate-800 px-4 py-3 flex justify-between items-center shadow-xl sticky top-0 z-40">
         <div class="flex items-center space-x-2">
             <i data-lucide="shield" class="w-8 h-8 text-emerald-400"></i>
-            <span class="text-xl font-bold tracking-wider text-emerald-400">PRO-TRAIN<span class="text-white">FC</span></span>
+            <span class="text-xl font-extrabold tracking-wider text-emerald-400">PRO-TRAIN<span class="text-white">FC</span></span>
         </div>
         <div class="flex items-center space-x-3">
-            <span id="nav-player-name" class="text-sm font-medium bg-slate-700 px-3 py-1 rounded-full text-slate-300">Player</span>
-            <button onclick="openProfileModal()" class="p-2 bg-slate-700 hover:bg-slate-600 rounded-full transition">
+            <div class="hidden sm:flex flex-col text-right">
+                <span id="nav-player-name" class="text-xs font-bold text-white">Player</span>
+                <span class="text-[10px] text-emerald-400 font-semibold" id="nav-xp">Level 5 • 1,420 XP</span>
+            </div>
+            <button onclick="openProfileModal()" class="p-2 bg-slate-800 hover:bg-slate-700 rounded-full border border-slate-700 transition">
                 <i data-lucide="user" class="w-5 h-5 text-emerald-400"></i>
             </button>
         </div>
@@ -34,105 +37,196 @@
     <!-- Main Content Container -->
     <main class="flex-1 max-w-5xl w-full mx-auto p-4 space-y-6 pb-20">
 
-        <!-- FUT Card Profile Preview -->
-        <section class="bg-gradient-to-r from-slate-800 to-slate-800/80 rounded-2xl p-5 border border-slate-700 shadow-xl flex flex-col md:flex-row items-center gap-6">
-            <div class="relative bg-gradient-to-b from-amber-500 to-amber-700 p-1 rounded-xl w-32 text-center shadow-lg">
-                <div class="bg-slate-900 rounded-lg p-3 text-white">
-                    <div class="text-2xl font-black text-amber-400" id="fut-rating">88</div>
-                    <div class="text-xs font-semibold uppercase tracking-widest text-slate-300" id="fut-pos">CM</div>
-                    <div class="my-2 bg-slate-800 rounded-full h-16 w-16 mx-auto flex items-center justify-center border border-amber-500/50">
-                        <i data-lucide="user-check" class="w-8 h-8 text-amber-400"></i>
+        <!-- FUT Card Profile Preview & Status Banner -->
+        <section class="bg-gradient-to-r from-slate-900 to-slate-900/80 rounded-2xl p-5 border border-slate-800 shadow-xl flex flex-col md:flex-row items-center gap-6">
+            <div class="relative bg-gradient-to-b from-amber-500 to-amber-700 p-1 rounded-xl w-36 text-center shadow-lg">
+                <div class="bg-slate-950 rounded-lg p-3 text-white">
+                    <div class="flex justify-between items-center text-xs font-bold text-amber-400">
+                        <span id="fut-rating">88</span>
+                        <span id="fut-pos">LW</span>
                     </div>
-                    <div class="text-sm font-bold truncate" id="fut-name">Krit</div>
-                    <div class="text-[10px] text-amber-300">#<span id="fut-jersey">10</span> • <span id="fut-team">Academy XI</span></div>
+                    <div class="my-2 bg-slate-900 rounded-full h-14 w-14 mx-auto flex items-center justify-center border border-amber-500/50">
+                        <i data-lucide="award" class="w-7 h-7 text-amber-400"></i>
+                    </div>
+                    <div class="text-sm font-bold truncate" id="fut-name">Krit Sehrawat</div>
+                    <div class="text-[10px] text-amber-300">#<span id="fut-jersey">10</span> • <span id="fut-age">U-19</span></div>
                 </div>
             </div>
-            <div class="flex-1 space-y-3 text-center md:text-left">
-                <h2 class="text-2xl font-bold text-white flex items-center justify-center md:justify-start gap-2">
-                    <span id="profile-display-name">Krit Sehrawat</span> 
-                    <span class="text-xs bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full" id="profile-foot">Right Foot</span>
-                </h2>
-                <p class="text-slate-400 text-sm">Consistent training builds champions. Track your daily workload, conquer tasks, and elevate your game metrics!</p>
-                <div class="grid grid-cols-3 gap-2 pt-2">
-                    <div class="bg-slate-900/60 p-2 rounded-lg border border-slate-700/50 text-center">
-                        <span class="block text-xs text-slate-400">Goals</span>
-                        <span class="text-lg font-bold text-emerald-400" id="stat-goals">12</span>
+            <div class="flex-1 space-y-3 text-center md:text-left w-full">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-2">
+                    <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+                        <span id="profile-display-name">Krit Sehrawat</span> 
+                        <span class="text-xs bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2.5 py-0.5 rounded-full" id="profile-foot">Right Foot</span>
+                    </h2>
+                    <span class="bg-slate-800 border border-slate-700 text-slate-300 text-xs px-3 py-1 rounded-lg font-medium" id="profile-team">Academy XI</span>
+                </div>
+                <p class="text-slate-400 text-sm">Elite training consistency builds champions. Conquer your position-based daily tasks and elevate your game metrics!</p>
+                
+                <!-- Training Load & Recovery Quick Cards -->
+                <div class="grid grid-cols-3 gap-2 pt-1">
+                    <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 text-center">
+                        <span class="block text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Today's Load</span>
+                        <span class="text-sm font-bold text-amber-400" id="load-status">Moderate ⚡</span>
                     </div>
-                    <div class="bg-slate-900/60 p-2 rounded-lg border border-slate-700/50 text-center">
-                        <span class="block text-xs text-slate-400">Assists</span>
-                        <span class="text-lg font-bold text-sky-400" id="stat-assists">8</span>
+                    <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 text-center">
+                        <span class="block text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Consistency</span>
+                        <span class="text-sm font-bold text-emerald-400" id="consistency-status">82% 🔥</span>
                     </div>
-                    <div class="bg-slate-900/60 p-2 rounded-lg border border-slate-700/50 text-center">
-                        <span class="block text-xs text-slate-400">Matches</span>
-                        <span class="text-lg font-bold text-amber-400" id="stat-matches">15</span>
+                    <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 text-center">
+                        <span class="block text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Recovery</span>
+                        <span class="text-sm font-bold text-sky-400" id="recovery-status">Good 🟢</span>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Today's Tasks -->
-        <section class="bg-slate-800 rounded-2xl p-5 border border-slate-700 shadow-xl">
+        <!-- USP: "Your Football Day" Summary Widget -->
+        <section class="bg-gradient-to-br from-emerald-950/40 via-slate-900 to-slate-900 rounded-2xl p-5 border border-emerald-500/30 shadow-xl">
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="text-md font-bold text-emerald-400 flex items-center gap-2">
+                    <i data-lucide="zap" class="w-4 h-4"></i> TODAY'S FOOTBALL REPORT (USP Summary)
+                </h3>
+                <span class="text-xs text-slate-400">Auto-Synced</span>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 text-center">
+                <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800">
+                    <span class="block text-[10px] text-slate-400">👟 Steps</span>
+                    <span class="text-sm font-bold text-white" id="rep-steps">8,420</span>
+                </div>
+                <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800">
+                    <span class="block text-[10px] text-slate-400">🏃 Distance</span>
+                    <span class="text-sm font-bold text-sky-400" id="rep-distance">4.7 km</span>
+                </div>
+                <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800">
+                    <span class="block text-[10px] text-slate-400">⚡ Sprints</span>
+                    <span class="text-sm font-bold text-amber-400" id="rep-sprints">12</span>
+                </div>
+                <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800">
+                    <span class="block text-[10px] text-slate-400">⏱️ Active Time</span>
+                    <span class="text-sm font-bold text-emerald-400" id="rep-time">68 min</span>
+                </div>
+                <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800">
+                    <span class="block text-[10px] text-slate-400">⚽ Drills</span>
+                    <span class="text-sm font-bold text-purple-400" id="rep-drills">3/4</span>
+                </div>
+                <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800">
+                    <span class="block text-[10px] text-slate-400">🔥 Streak</span>
+                    <span class="text-sm font-bold text-rose-400" id="rep-streak">6 Days</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Position-Based Daily Training Plan -->
+        <section class="bg-slate-900 rounded-2xl p-5 border border-slate-800 shadow-xl">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-lg font-bold flex items-center gap-2">
-                    <i data-lucide="check-square" class="text-emerald-400"></i> Today's Training Tasks
+                    <i data-lucide="clipboard-list" class="text-emerald-400"></i> Daily Training Plan — <span id="plan-pos-title" class="text-emerald-400">LW</span>
                 </h3>
-                <span class="text-xs text-slate-400 bg-slate-700 px-2 py-1 rounded-md" id="task-progress-text">0/4 Completed</span>
+                <span class="text-xs text-slate-400 bg-slate-800 px-2.5 py-1 rounded-md border border-slate-700" id="task-progress-text">0/4 Completed</span>
             </div>
             <div class="space-y-3" id="tasks-container"></div>
         </section>
 
-        <!-- Activity & 7-Day Graph with Log Button -->
-        <section class="bg-slate-800 rounded-2xl p-5 border border-slate-700 shadow-xl space-y-4">
+        <!-- Performance Centre (Weekly / Monthly / Yearly Graphs) -->
+        <section class="bg-slate-900 rounded-2xl p-5 border border-slate-800 shadow-xl space-y-4">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                 <h3 class="text-lg font-bold flex items-center gap-2">
-                    <i data-lucide="activity" class="text-sky-400"></i> 7-Day Activity & Workload
+                    <i data-lucide="bar-chart-3" class="text-sky-400"></i> Performance Centre & Analytics
                 </h3>
-                <button onclick="openActivityModal()" class="bg-sky-500 hover:bg-sky-600 text-slate-950 font-semibold text-xs px-3 py-2 rounded-xl transition flex items-center gap-1.5 shadow-md">
-                    <i data-lucide="plus-circle" class="w-4 h-4"></i> Log Today's Stats
-                </button>
+                <div class="flex items-center gap-2">
+                    <!-- Timeframe Toggle Buttons -->
+                    <div class="bg-slate-950 p-1 rounded-xl border border-slate-800 flex text-xs font-semibold">
+                        <button onclick="changeTimeframe('weekly')" id="btn-weekly" class="px-3 py-1.5 rounded-lg bg-sky-500 text-slate-950 transition">Weekly</button>
+                        <button onclick="changeTimeframe('monthly')" id="btn-monthly" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition">Monthly</button>
+                        <button onclick="changeTimeframe('yearly')" id="btn-yearly" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition">Yearly</button>
+                    </div>
+                    <button onclick="openActivityModal()" class="bg-sky-500 hover:bg-sky-600 text-slate-950 font-semibold text-xs px-3 py-2 rounded-xl transition flex items-center gap-1.5 shadow-md">
+                        <i data-lucide="plus-circle" class="w-4 h-4"></i> Log Stats
+                    </button>
+                </div>
             </div>
+
+            <!-- Quick Metrics Grid -->
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-700/50">
+                <div class="bg-slate-950/60 p-3 rounded-xl border border-slate-800">
                     <span class="text-xs text-slate-400">Training Minutes</span>
                     <h4 class="text-xl font-bold text-white mt-1" id="disp-minutes">75 min</h4>
                 </div>
-                <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-700/50">
+                <div class="bg-slate-950/60 p-3 rounded-xl border border-slate-800">
                     <span class="text-xs text-slate-400">Daily Steps</span>
-                    <h4 class="text-xl font-bold text-emerald-400 mt-1" id="disp-steps">8,450</h4>
+                    <h4 class="text-xl font-bold text-emerald-400 mt-1" id="disp-steps">8,420</h4>
                 </div>
-                <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-700/50">
-                    <span class="text-xs text-slate-400">Distance Covered</span>
-                    <h4 class="text-xl font-bold text-amber-400 mt-1" id="disp-distance">6.2 km</h4>
+                <div class="bg-slate-950/60 p-3 rounded-xl border border-slate-800">
+                    <span class="text-xs text-slate-400">Sprint Count</span>
+                    <h4 class="text-xl font-bold text-amber-400 mt-1" id="disp-sprints">12 Sprints</h4>
                 </div>
-                <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-700/50">
-                    <span class="text-xs text-slate-400">Active Calories</span>
-                    <h4 class="text-xl font-bold text-rose-400 mt-1" id="disp-calories">680 kcal</h4>
+                <div class="bg-slate-950/60 p-3 rounded-xl border border-slate-800">
+                    <span class="text-xs text-slate-400">Top Speed</span>
+                    <h4 class="text-xl font-bold text-rose-400 mt-1" id="disp-speed">28.4 km/h</h4>
                 </div>
             </div>
-            <div class="bg-slate-900/40 p-4 rounded-xl border border-slate-700/50">
-                <canvas id="weeklyChart" height="100"></canvas>
+
+            <!-- Chart Container -->
+            <div class="bg-slate-950/40 p-4 rounded-xl border border-slate-800">
+                <canvas id="performanceChart" height="110"></canvas>
             </div>
         </section>
 
-        <!-- Training Calendar Status -->
-        <section class="bg-slate-800 rounded-2xl p-5 border border-slate-700 shadow-xl">
+        <!-- Training Streak Calendar -->
+        <section class="bg-slate-900 rounded-2xl p-5 border border-slate-800 shadow-xl">
             <h3 class="text-lg font-bold flex items-center gap-2 mb-3">
-                <i data-lucide="calendar" class="text-amber-400"></i> Training Streak Calendar
+                <i data-lucide="calendar" class="text-amber-400"></i> Training History & Streak Calendar
             </h3>
             <div class="grid grid-cols-7 gap-2 text-center" id="calendar-grid"></div>
         </section>
 
+        <!-- Drill Library Preview -->
+        <section class="bg-slate-900 rounded-2xl p-5 border border-slate-800 shadow-xl">
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="text-lg font-bold flex items-center gap-2">
+                    <i data-lucide="book-open" class="text-purple-400"></i> Pro Drill Library
+                </h3>
+                <span class="text-xs text-slate-400">Select & Add to Training</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800 space-y-2">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">Difficulty: Pro</span>
+                        <span class="text-xs text-slate-400">15 min</span>
+                    </div>
+                    <h4 class="font-bold text-sm text-white">Elite Cone Weaving & Agility</h4>
+                    <p class="text-xs text-slate-400">Enhance tight space control and foot frequency at high velocity.</p>
+                </div>
+                <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800 space-y-2">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded">Difficulty: Intermediate</span>
+                        <span class="text-xs text-slate-400">20 min</span>
+                    </div>
+                    <h4 class="font-bold text-sm text-white">Corner & Box Finishing</h4>
+                    <p class="text-xs text-slate-400">One-touch powerful strikes under fatigue simulation.</p>
+                </div>
+                <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800 space-y-2">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-bold text-sky-400 bg-sky-500/10 px-2 py-0.5 rounded">Difficulty: Advanced</span>
+                        <span class="text-xs text-slate-400">10 min</span>
+                    </div>
+                    <h4 class="font-bold text-sm text-white">Explosive 30m Sprints</h4>
+                    <p class="text-xs text-slate-400">Max velocity acceleration drills for wingers and strikers.</p>
+                </div>
+            </div>
+        </section>
+
         <!-- Amazon Affiliate Pro Store Section -->
-        <section class="bg-gradient-to-r from-emerald-950/40 to-slate-800 rounded-2xl p-5 border border-emerald-500/30 shadow-xl">
+        <section class="bg-gradient-to-r from-emerald-950/40 to-slate-900 rounded-2xl p-5 border border-emerald-500/30 shadow-xl">
             <div class="flex flex-col md:flex-row items-center justify-between gap-4">
                 <div class="space-y-2 text-center md:text-left">
                     <div class="inline-flex items-center gap-1.5 bg-emerald-500/20 text-emerald-400 text-xs font-semibold px-2.5 py-1 rounded-full border border-emerald-500/30">
                         <i data-lucide="shopping-bag" class="w-3.5 h-3.5"></i> Pro Recommendation Hub
                     </div>
                     <h3 class="text-xl font-bold text-white">Upgrade Your Matchday Gear</h3>
-                    <p class="text-sm text-slate-300">Explore premium football boots, agility cones, and training gear directly on Amazon through our recommended store.</p>
+                    <p class="text-sm text-slate-300">Explore premium football boots, agility cones, and GPS vest hardware directly on Amazon.</p>
                 </div>
-                <a href="https://www.amazon.in/s?k=football+equipments+boots&tag=yourtag-21" target="_blank" rel="noopener noreferrer" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold px-6 py-3 rounded-xl shadow-lg hover:shadow-emerald-500/20 transition flex items-center gap-2 whitespace-nowrap">
+                <a href="https://www.amazon.in/s?k=football+equipments+boots+gps&tag=yourtag-21" target="_blank" rel="noopener noreferrer" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold px-6 py-3 rounded-xl shadow-lg hover:shadow-emerald-500/20 transition flex items-center gap-2 whitespace-nowrap">
                     <span>Shop Amazon Store</span>
                     <i data-lucide="external-link" class="w-4 h-4"></i>
                 </a>
@@ -143,7 +237,7 @@
 
     <!-- Profile Edit Modal -->
     <div id="profile-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-slate-800 border border-slate-700 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
             <div class="flex justify-between items-center">
                 <h3 class="text-lg font-bold text-white">Edit Player Profile</h3>
                 <button onclick="closeProfileModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
@@ -151,28 +245,43 @@
             <div class="space-y-3">
                 <div>
                     <label class="text-xs text-slate-400 block mb-1">Player Name</label>
-                    <input type="text" id="input-name" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-400">
+                    <input type="text" id="input-name" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-400">
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="text-xs text-slate-400 block mb-1">Jersey Number</label>
-                        <input type="number" id="input-jersey" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-400">
+                        <input type="number" id="input-jersey" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-400">
                     </div>
                     <div>
                         <label class="text-xs text-slate-400 block mb-1">Position</label>
-                        <select id="input-pos" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-400">
-                            <option value="ST">ST</option>
-                            <option value="CM">CM</option>
-                            <option value="CAM">CAM</option>
-                            <option value="CB">CB</option>
-                            <option value="GK">GK</option>
-                            <option value="WINGER">WINGER</option>
+                        <select id="input-pos" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-400">
+                            <option value="LW">LW (Left Winger)</option>
+                            <option value="RW">RW (Right Winger)</option>
+                            <option value="ST">ST (Striker)</option>
+                            <option value="CM">CM (Central Midfielder)</option>
+                            <option value="CAM">CAM (Attacking Mid)</option>
+                            <option value="CB">CB (Center Back)</option>
+                            <option value="GK">GK (Goalkeeper)</option>
                         </select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-xs text-slate-400 block mb-1">Preferred Foot</label>
+                        <select id="input-foot" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-400">
+                            <option value="Right Foot">Right Foot</option>
+                            <option value="Left Foot">Left Foot</option>
+                            <option value="Both Feet">Both Feet</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-xs text-slate-400 block mb-1">Age Group</label>
+                        <input type="text" id="input-age" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-400" placeholder="e.g. U-19">
                     </div>
                 </div>
                 <div>
                     <label class="text-xs text-slate-400 block mb-1">Team / Academy Name</label>
-                    <input type="text" id="input-team" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-400">
+                    <input type="text" id="input-team" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-400">
                 </div>
             </div>
             <button onclick="saveProfile()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold py-2.5 rounded-xl transition">Save Changes</button>
@@ -181,15 +290,15 @@
 
     <!-- Log Activity Modal -->
     <div id="activity-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-slate-800 border border-slate-700 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
             <div class="flex justify-between items-center">
-                <h3 class="text-lg font-bold text-white">Log Today's Workout Stats</h3>
+                <h3 class="text-lg font-bold text-white">Log Performance Stats</h3>
                 <button onclick="closeActivityModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
             <div class="space-y-3">
                 <div>
                     <label class="text-xs text-slate-400 block mb-1">Select Day</label>
-                    <select id="log-day" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-sky-400">
+                    <select id="log-day" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-sky-400">
                         <option value="0">Monday</option>
                         <option value="1">Tuesday</option>
                         <option value="2">Wednesday</option>
@@ -202,25 +311,25 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="text-xs text-slate-400 block mb-1">Training Minutes</label>
-                        <input type="number" id="log-minutes" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-sky-400" placeholder="e.g. 75">
+                        <input type="number" id="log-minutes" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-sky-400" placeholder="e.g. 75">
                     </div>
                     <div>
                         <label class="text-xs text-slate-400 block mb-1">Steps</label>
-                        <input type="number" id="log-steps" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-sky-400" placeholder="e.g. 8450">
+                        <input type="number" id="log-steps" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-sky-400" placeholder="e.g. 8420">
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="text-xs text-slate-400 block mb-1">Distance (km)</label>
-                        <input type="number" step="0.1" id="log-distance" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-sky-400" placeholder="e.g. 6.2">
+                        <input type="number" step="0.1" id="log-distance" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-sky-400" placeholder="e.g. 4.7">
                     </div>
                     <div>
-                        <label class="text-xs text-slate-400 block mb-1">Calories (kcal)</label>
-                        <input type="number" id="log-calories" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-sky-400" placeholder="e.g. 680">
+                        <label class="text-xs text-slate-400 block mb-1">Sprints Count</label>
+                        <input type="number" id="log-sprints" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-sky-400" placeholder="e.g. 12">
                     </div>
                 </div>
             </div>
-            <button onclick="saveActivityLogs()" class="w-full bg-sky-500 hover:bg-sky-600 text-slate-950 font-bold py-2.5 rounded-xl transition">Update Stats & Graph</button>
+            <button onclick="saveActivityLogs()" class="w-full bg-sky-500 hover:bg-sky-600 text-slate-950 font-bold py-2.5 rounded-xl transition">Update Performance Metrics</button>
         </div>
     </div>
 
@@ -231,24 +340,32 @@
         let playerData = JSON.parse(localStorage.getItem('pro_football_profile')) || {
             name: "Krit Sehrawat",
             jersey: 10,
-            pos: "CM",
+            pos: "LW",
             team: "Academy XI",
-            foot: "Right Foot"
+            foot: "Right Foot",
+            age: "U-19",
+            xp: 1420
         };
 
         let tasksData = JSON.parse(localStorage.getItem('pro_football_tasks')) || [
-            { id: 1, title: "Ball Mastery — 20 min", status: "completed" },
-            { id: 2, title: "Passing Drills — 15 min", status: "in-progress" },
-            { id: 3, title: "Dribbling & Agility — 15 min", status: "pending" },
-            { id: 4, title: "Finishing & Shooting — 20 min", status: "pending" }
+            { id: 1, title: "Ball Mastery — 15 min", status: "completed" },
+            { id: 2, title: "1v1 Dribbling — 15 min", status: "completed" },
+            { id: 3, title: "Finishing & Shooting — 20 min", status: "in-progress" },
+            { id: 4, title: "Speed & Acceleration — 10 min", status: "pending" }
         ];
 
-        let weeklyMinutes = JSON.parse(localStorage.getItem('pro_weekly_minutes')) || [45, 60, 30, 75, 50, 90, 40];
+        // Multi-timeframe data for graphs
+        let weeklyData = JSON.parse(localStorage.getItem('pro_weekly_data')) || [45, 60, 30, 75, 50, 90, 40];
+        let monthlyData = [240, 310, 290, 350]; // 4 Weeks of month
+        let yearlyData = [1200, 1450, 1600, 1850, 2100, 2400]; // 6 Months
+        let currentTimeframe = 'weekly';
+
         let dailyStatsData = JSON.parse(localStorage.getItem('pro_daily_stats')) || {
             minutes: 75,
-            steps: 8450,
-            distance: 6.2,
-            calories: 680
+            steps: 8420,
+            distance: 4.7,
+            sprints: 12,
+            speed: 28.4
         };
 
         function updateUI() {
@@ -257,12 +374,22 @@
             document.getElementById('nav-player-name').innerText = playerData.name;
             document.getElementById('fut-jersey').innerText = playerData.jersey;
             document.getElementById('fut-pos').innerText = playerData.pos;
-            document.getElementById('fut-team').innerText = playerData.team;
+            document.getElementById('plan-pos-title').innerText = playerData.pos;
+            document.getElementById('profile-team').innerText = playerData.team;
+            document.getElementById('profile-foot').innerText = playerData.foot;
+            document.getElementById('fut-age').innerText = playerData.age;
+            document.getElementById('nav-xp').innerText = `Level 5 • ${playerData.xp} XP`;
 
             document.getElementById('disp-minutes').innerText = `${dailyStatsData.minutes} min`;
             document.getElementById('disp-steps').innerText = dailyStatsData.steps.toLocaleString();
-            document.getElementById('disp-distance').innerText = `${dailyStatsData.distance} km`;
-            document.getElementById('disp-calories').innerText = `${dailyStatsData.calories} kcal`;
+            document.getElementById('disp-sprints').innerText = `${dailyStatsData.sprints} Sprints`;
+            document.getElementById('disp-speed').innerText = `${dailyStatsData.speed} km/h`;
+
+            // USP Report Card sync
+            document.getElementById('rep-steps').innerText = dailyStatsData.steps.toLocaleString();
+            document.getElementById('rep-distance').innerText = `${dailyStatsData.distance} km`;
+            document.getElementById('rep-sprints').innerText = dailyStatsData.sprints;
+            document.getElementById('rep-time').innerText = `${dailyStatsData.minutes} min`;
 
             renderTasks();
             renderCalendar();
@@ -276,8 +403,8 @@
             tasksData.forEach(task => {
                 if (task.status === 'completed') completedCount++;
                 
-                let badgeColor = 'bg-slate-700 text-slate-300 border-slate-600';
-                let statusLabel = 'Pending ⏳';
+                let badgeColor = 'bg-slate-800 text-slate-300 border-slate-700';
+                let statusLabel = 'Not Started ⏳';
 
                 if (task.status === 'in-progress') {
                     badgeColor = 'bg-amber-500/20 text-amber-400 border-amber-500/30';
@@ -288,7 +415,7 @@
                 }
 
                 container.innerHTML += `
-                    <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-700/50 flex justify-between items-center">
+                    <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800 flex justify-between items-center">
                         <span class="text-sm font-medium ${task.status === 'completed' ? 'line-through text-slate-500' : 'text-slate-200'}">${task.title}</span>
                         <button onclick="cycleTaskStatus(${task.id})" class="text-xs font-semibold px-3 py-1.5 rounded-lg border ${badgeColor} transition">
                             ${statusLabel}
@@ -298,19 +425,21 @@
             });
 
             document.getElementById('task-progress-text').innerText = `${completedCount}/${tasksData.length} Completed`;
+            document.getElementById('rep-drills').innerText = `${completedCount}/${tasksData.length}`;
             localStorage.setItem('pro_football_tasks', JSON.stringify(tasksData));
         }
 
         function cycleTaskStatus(id) {
             tasksData = tasksData.map(task => {
                 if (task.id === id) {
-                    if (task.status === 'pending') task.status = 'in-progress';
-                    else if (task.status === 'in-progress') task.status = 'completed';
-                    else task.status = 'pending';
+                    if (task.status === 'pending') { task.status = 'in-progress'; playerData.xp += 15; }
+                    else if (task.status === 'in-progress') { task.status = 'completed'; playerData.xp += 35; }
+                    else { task.status = 'pending'; }
                 }
                 return task;
             });
-            renderTasks();
+            localStorage.setItem('pro_football_profile', JSON.stringify(playerData));
+            updateUI();
         }
 
         function renderCalendar() {
@@ -321,7 +450,7 @@
 
             days.forEach((day, index) => {
                 grid.innerHTML += `
-                    <div class="bg-slate-900/60 p-2 rounded-xl border border-slate-700/50 flex flex-col items-center">
+                    <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 flex flex-col items-center">
                         <span class="text-[10px] text-slate-400 font-semibold">${day}</span>
                         <span class="text-lg mt-1">${statuses[index]}</span>
                     </div>
@@ -333,6 +462,8 @@
             document.getElementById('input-name').value = playerData.name;
             document.getElementById('input-jersey').value = playerData.jersey;
             document.getElementById('input-pos').value = playerData.pos;
+            document.getElementById('input-foot').value = playerData.foot;
+            document.getElementById('input-age').value = playerData.age;
             document.getElementById('input-team').value = playerData.team;
             document.getElementById('profile-modal').classList.remove('hidden');
         }
@@ -341,7 +472,9 @@
         function saveProfile() {
             playerData.name = document.getElementById('input-name').value || "Player";
             playerData.jersey = document.getElementById('input-jersey').value || 10;
-            playerData.pos = document.getElementById('input-pos').value || "CM";
+            playerData.pos = document.getElementById('input-pos').value || "LW";
+            playerData.foot = document.getElementById('input-foot').value || "Right Foot";
+            playerData.age = document.getElementById('input-age').value || "U-19";
             playerData.team = document.getElementById('input-team').value || "Academy XI";
             localStorage.setItem('pro_football_profile', JSON.stringify(playerData));
             updateUI();
@@ -356,28 +489,33 @@
             const mins = parseInt(document.getElementById('log-minutes').value) || 0;
             const steps = parseInt(document.getElementById('log-steps').value) || 0;
             const dist = parseFloat(document.getElementById('log-distance').value) || 0.0;
-            const cals = parseInt(document.getElementById('log-calories').value) || 0;
+            const sprints = parseInt(document.getElementById('log-sprints').value) || 0;
 
-            dailyStatsData = { minutes: mins, steps: steps, distance: dist, calories: cals };
+            dailyStatsData = { minutes: mins, steps: steps, distance: dist, sprints: sprints, speed: 28.4 };
             localStorage.setItem('pro_daily_stats', JSON.stringify(dailyStatsData));
 
-            weeklyMinutes[dayIndex] = mins;
-            localStorage.setItem('pro_weekly_minutes', JSON.stringify(weeklyMinutes));
-            weeklyChart.data.datasets[0].data = weeklyMinutes;
-            weeklyChart.update();
+            weeklyData[dayIndex] = mins;
+            localStorage.setItem('pro_weekly_data', JSON.stringify(weeklyData));
+            
+            if(currentTimeframe === 'weekly') {
+                performanceChart.data.labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                performanceChart.data.datasets[0].data = weeklyData;
+                performanceChart.update();
+            }
 
             updateUI();
             closeActivityModal();
         }
 
-        const ctx = document.getElementById('weeklyChart').getContext('2d');
-        const weeklyChart = new Chart(ctx, {
+        // Chart.js with Timeframe Toggles (Weekly, Monthly, Yearly)
+        const ctx = document.getElementById('performanceChart').getContext('2d');
+        const performanceChart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
                 datasets: [{
                     label: 'Training Minutes',
-                    data: weeklyMinutes,
+                    data: weeklyData,
                     backgroundColor: '#38bdf8',
                     borderRadius: 6
                 }]
@@ -386,11 +524,30 @@
                 responsive: true,
                 plugins: { legend: { display: false } },
                 scales: {
-                    y: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#94a3b8' } },
+                    y: { grid: { color: 'rgba(255, 255, 255, 0.04)' }, ticks: { color: '#94a3b8' } },
                     x: { grid: { display: false }, ticks: { color: '#94a3b8' } }
                 }
             }
         });
+
+        function changeTimeframe(tf) {
+            currentTimeframe = tf;
+            document.getElementById('btn-weekly').className = tf === 'weekly' ? 'px-3 py-1.5 rounded-lg bg-sky-500 text-slate-950 transition' : 'px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition';
+            document.getElementById('btn-monthly').className = tf === 'monthly' ? 'px-3 py-1.5 rounded-lg bg-sky-500 text-slate-950 transition' : 'px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition';
+            document.getElementById('btn-yearly').className = tf === 'yearly' ? 'px-3 py-1.5 rounded-lg bg-sky-500 text-slate-950 transition' : 'px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition';
+
+            if(tf === 'weekly') {
+                performanceChart.data.labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                performanceChart.data.datasets[0].data = weeklyData;
+            } else if(tf === 'monthly') {
+                performanceChart.data.labels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+                performanceChart.data.datasets[0].data = monthlyData;
+            } else if(tf === 'yearly') {
+                performanceChart.data.labels = ['Month 1', 'Month 2', 'Month 3', 'Month 4', 'Month 5', 'Month 6'];
+                performanceChart.data.datasets[0].data = yearlyData;
+            }
+            performanceChart.update();
+        }
 
         updateUI();
     </script>
