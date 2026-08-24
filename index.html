@@ -315,7 +315,7 @@
             background: linear-gradient(90deg, #064e3b 0%, #047857 50%, #064e3b 100%);
             border: 2px solid #ffffff;
             border-radius: 8px;
-            height: 440px;
+            height: 460px;
             position: relative;
             overflow: hidden;
             box-shadow: inset 0 0 30px rgba(0,0,0,0.6);
@@ -350,7 +350,7 @@
             border-right: none;
         }
 
-        /* Player Nodes on Field (Draggable / Movable) */
+        /* Player Nodes on Field (Smooth transition for auto movement) */
         .player-node {
             position: absolute;
             width: 28px;
@@ -364,13 +364,40 @@
             align-items: center;
             cursor: grab;
             box-shadow: 0 3px 8px rgba(0,0,0,0.6);
-            transition: transform 0.1s;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
             user-select: none;
             z-index: 10;
+            transform: translate(-50%, -50%);
         }
-        .player-node:active { cursor: grabbing; transform: scale(1.15); }
+        .player-node:active { cursor: grabbing; }
         .team-home { background: var(--accent-blue); border: 2px solid #ffffff; color: #000; }
         .team-away { background: #ef4444; border: 2px solid #ffffff; color: #fff; }
+
+        /* Real Football Ball Styling */
+        .match-ball {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background: #ffffff;
+            border: 2px solid #000;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255,255,255,0.8);
+            z-index: 15;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+        }
+
+        /* SVG Tactical Lines Overlay */
+        #tacticalSvgOverlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
 
         /* Gear Hub */
         .gear-card {
@@ -432,7 +459,7 @@
 
         <!-- COACH VOICE BANNER -->
         <div class="coach-banner" id="coachBannerText">
-            🎙️ <strong>Coach's Command:</strong> "Listen up! Elite players analyze both teams on the tactical pitch and dominate every match situation."
+            🎙️ <strong>Coach's Command:</strong> "Type your match situation in the box below! Watch players & ball shift automatically with tactical directional arrows."
         </div>
 
         <!-- NAVIGATION -->
@@ -568,59 +595,78 @@
             </div>
         </div>
 
-        <!-- ================= PAGE 3: 11v11 TACTICS & MOVABLE FIELD ================= -->
+        <!-- ================= PAGE 3: 11v11 TACTICS & MOVABLE FIELD WITH BALL & ARROWS ================= -->
         <div id="page-tactics" class="page-section">
             <div class="card">
                 <div class="section-header">
-                    <h3 style="color: var(--accent-blue);">♟️ 11v11 Full Tactical Field (Both Teams + Question Analyzer)</h3>
-                    <span style="font-size: 0.75rem; color: var(--text-dim);">Drag Players & Test Match Scenarios</span>
+                    <h3 style="color: var(--accent-blue);">♟️ 11v11 Tactical Field + Ball + Auto-Position Simulator</h3>
+                    <span style="font-size: 0.75rem; color: var(--text-dim);">Ask Situation & Watch Players Move With Ball</span>
                 </div>
                 <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 0;">
-                    Here is the proper football field featuring **Home Team (Blue - 11 Players)** vs **Opponent Team (Red - 11 Players)**. You can **drag and move any player** on the field, or type a match question below to see tactical adjustments!
+                    Type any match question below (e.g., <em>"If a8 is pressing what should h8 do"</em>). The players, the **football ball**, and **tactical directional arrows** will instantly adapt on the pitch!
                 </p>
 
                 <!-- TACTICAL SITUATION QUESTION BOX -->
                 <div style="display: flex; gap: 10px; margin-bottom: 12px;">
-                    <input type="text" id="tacticalQueryInput" placeholder="e.g. Opponent pressing high on our build-up, how to break through?" style="flex:1; background: #05080f; border: 1px solid var(--card-border); color: #fff; padding: 10px; border-radius: 8px; font-size: 0.85rem;">
+                    <input type="text" id="tacticalQueryInput" placeholder="e.g. If a8 is pressing what should h8 do" style="flex:1; background: #05080f; border: 1px solid var(--card-border); color: #fff; padding: 10px; border-radius: 8px; font-size: 0.85rem;">
                     <button class="timer-btn btn-start" onclick="simulateTacticalScenario()" style="padding: 10px 16px; font-size: 0.8rem;">Run Scenario 🧠</button>
                 </div>
 
-                <!-- REALISTIC 11v11 FOOTBALL PITCH CONTAINER -->
+                <!-- REALISTIC 11v11 FOOTBALL PITCH WITH BALL & SVG ARROWS -->
                 <div class="pro-pitch" id="proPitchField">
                     <div class="pitch-halfway"></div>
                     <div class="pitch-center-circle"></div>
                     <div class="penalty-box-left"></div>
                     <div class="penalty-box-right"></div>
 
+                    <!-- SVG OVERLAY FOR DIRECTIONAL ARROWS -->
+                    <svg id="tacticalSvgOverlay">
+                        <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="6" refY="3.5" orient="auto">
+                                <polygon points="0 0, 10 3.5, 0 7" fill="#38bdf8"/>
+                            </marker>
+                            <marker id="arrowhead-red" markerWidth="10" markerHeight="7" refX="6" refY="3.5" orient="auto">
+                                <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+                            </marker>
+                        </defs>
+                        <!-- Dynamic arrow lines will be injected here via JS -->
+                        <g id="svgArrowsGroup"></g>
+                    </svg>
+
+                    <!-- THE FOOTBALL -->
+                    <div class="match-ball" id="matchBall" style="top: 50%; left: 50%;">⚽</div>
+
                     <!-- HOME TEAM (11 BLUE PLAYERS) -->
-                    <div class="player-node team-home" style="top: 48%; left: 5%;" draggable="true" ondragend="dropPlayer(event)">H1</div>
-                    <div class="player-node team-home" style="top: 15%; left: 22%;" draggable="true" ondragend="dropPlayer(event)">H2</div>
-                    <div class="player-node team-home" style="top: 38%; left: 28%;" draggable="true" ondragend="dropPlayer(event)">H3</div>
-                    <div class="player-node team-home" style="top: 62%; left: 28%;" draggable="true" ondragend="dropPlayer(event)">H4</div>
-                    <div class="player-node team-home" style="top: 85%; left: 22%;" draggable="true" ondragend="dropPlayer(event)">H5</div>
-                    <div class="player-node team-home" style="top: 30%; left: 42%;" draggable="true" ondragend="dropPlayer(event)">H6</div>
-                    <div class="player-node team-home" style="top: 70%; left: 42%;" draggable="true" ondragend="dropPlayer(event)">H7</div>
-                    <div class="player-node team-home" style="top: 50%; left: 45%;" draggable="true" ondragend="dropPlayer(event)">H8</div>
-                    <div class="player-node team-home" style="top: 15%; left: 68%;" draggable="true" ondragend="dropPlayer(event)">H9</div>
-                    <div class="player-node team-home" style="top: 50%; left: 65%;" draggable="true" ondragend="dropPlayer(event)">H10</div>
-                    <div class="player-node team-home" style="top: 85%; left: 68%;" draggable="true" ondragend="dropPlayer(event)">H11</div>
+                    <div class="player-node team-home" id="playerH1" style="top: 50%; left: 6%;">H1</div>
+                    <div class="player-node team-home" id="playerH2" style="top: 15%; left: 22%;">H2</div>
+                    <div class="player-node team-home" id="playerH3" style="top: 38%; left: 28%;">H3</div>
+                    <div class="player-node team-home" id="playerH4" style="top: 62%; left: 28%;">H4</div>
+                    <div class="player-node team-home" id="playerH5" style="top: 85%; left: 22%;">H5</div>
+                    <div class="player-node team-home" id="playerH6" style="top: 30%; left: 42%;">H6</div>
+                    <div class="player-node team-home" id="playerH7" style="top: 70%; left: 42%;">H7</div>
+                    <div class="player-node team-home" id="playerH8" style="top: 50%; left: 48%;">H8</div>
+                    <div class="player-node team-home" id="playerH9" style="top: 15%; left: 68%;">H9</div>
+                    <div class="player-node team-home" id="playerH10" style="top: 50%; left: 65%;">H10</div>
+                    <div class="player-node team-home" id="playerH11" style="top: 85%; left: 68%;">H11</div>
 
                     <!-- OPPONENT TEAM (11 RED PLAYERS) -->
-                    <div class="player-node team-away" style="top: 48%; right: 5%;" draggable="true" ondragend="dropPlayer(event)">A1</div>
-                    <div class="player-node team-away" style="top: 15%; right: 22%;" draggable="true" ondragend="dropPlayer(event)">A2</div>
-                    <div class="player-node team-away" style="top: 38%; right: 28%;" draggable="true" ondragend="dropPlayer(event)">A3</div>
-                    <div class="player-node team-away" style="top: 62%; right: 28%;" draggable="true" ondragend="dropPlayer(event)">A4</div>
-                    <div class="player-node team-away" style="top: 85%; right: 22%;" draggable="true" ondragend="dropPlayer(event)">A5</div>
-                    <div class="player-node team-away" style="top: 30%; right: 42%;" draggable="true" ondragend="dropPlayer(event)">A6</div>
-                    <div class="player-node team-away" style="top: 70%; right: 42%;" draggable="true" ondragend="dropPlayer(event)">A7</div>
-                    <div class="player-node team-away" style="top: 50%; right: 45%;" draggable="true" ondragend="dropPlayer(event)">A8</div>
-                    <div class="player-node team-away" style="top: 15%; right: 68%;" draggable="true" ondragend="dropPlayer(event)">A9</div>
-                    <div class="player-node team-away" style="top: 50%; right: 65%;" draggable="true" ondragend="dropPlayer(event)">A10</div>
-                    <div class="player-node team-away" style="top: 85%; right: 68%;" draggable="true" ondragend="dropPlayer(event)">A11</div>
+                    <div class="player-node team-away" id="playerA1" style="top: 50%; right: 6%;">A1</div>
+                    <div class="player-node team-away" id="playerA2" style="top: 15%; right: 22%;">A2</div>
+                    <div class="player-node team-away" id="playerA3" style="top: 38%; right: 28%;">A3</div>
+                    <div class="player-node team-away" id="playerA4" style="top: 62%; right: 28%;">A4</div>
+                    <div class="player-node team-away" id="playerA5" style="top: 85%; right: 22%;">A5</div>
+                    <div class="player-node team-away" id="playerA6" style="top: 30%; right: 42%;">A6</div>
+                    <div class="player-node team-away" id="playerA7" style="top: 70%; right: 42%;">A7</div>
+                    <div class="player-node team-away" id="playerA8" style="top: 50%; right: 42%;">A8</div>
+                    <div class="player-node team-away" id="playerA9" style="top: 15%; right: 68%;">A9</div>
+                    <div class="player-node team-away" id="playerA10" style="top: 50%; right: 65%;">A10</div>
+                    <div class="player-node team-away" id="playerA11" style="top: 85%; right: 68%;">A11</div>
                 </div>
 
+                <!-- STEP-BY-STEP ACTION GUIDE BELOW -->
                 <div id="tacticalScenarioFeedback" class="content-box" style="border-left-color: var(--accent-yellow); margin-top: 10px;">
-                    <strong>💡 Tactical Analysis Guide:</strong> Drag any Blue (Home) or Red (Away) player node across the field to test formations, or type your match problem above to analyze spatial dominance!
+                    <strong>🔥 Tactical Match Analysis & Execution Guide:</strong><br>
+                    Type your scenario above (e.g., <em>"If a8 is pressing what should h8 do"</em>) to see the players shift, the ball move to the correct zone, directional arrows appear, and precise instructions populate here!
                 </div>
             </div>
         </div>
@@ -706,7 +752,7 @@
 
     </div>
 
-    <!-- LOGIC SCRIPT -->
+    <!-- LOGIC SCRIPT WITH DYNAMIC POSITION, BALL & ARROW ANIMATION -->
     <script>
         window.addEventListener('DOMContentLoaded', () => {
             const savedProfile = localStorage.getItem('protrain_player_profile');
@@ -756,36 +802,111 @@
             }
         }
 
-        /* DRAG AND DROP LOGIC FOR FIELD PLAYERS */
-        function dropPlayer(event) {
-            // Allows moving players around on the football pitch canvas
-            const pitch = document.getElementById('proPitchField');
-            const rect = pitch.getBoundingClientRect();
-            let x = event.clientX - rect.left;
-            let y = event.clientY - rect.top;
-            
-            if(x > 10 && x < rect.width - 20 && y > 10 && y < rect.height - 20) {
-                event.target.style.left = (x / rect.width * 100) + '%';
-                event.target.style.top = (y / rect.height * 100) + '%';
-            }
-        }
-
-        /* TACTICAL QUESTION SIMULATOR ON FIELD */
+        /* SIMULATE TACTICAL SCENARIO WITH AUTOMATIC PLAYER MOVEMENT, BALL & ARROWS */
         function simulateTacticalScenario() {
             let query = document.getElementById('tacticalQueryInput').value.trim().toLowerCase();
             let feedbackBox = document.getElementById('tacticalScenarioFeedback');
-            
+            let svgGroup = document.getElementById('svgArrowsGroup');
+            svgGroup.innerHTML = ""; // clear previous arrows
+
             if(!query) {
-                feedbackBox.innerHTML = "⚠️ Please type a tactical match question to analyze the opponent formation!";
+                feedbackBox.innerHTML = "⚠️ Please type a match tactical question (e.g., 'If a8 is pressing what should h8 do').";
                 return;
             }
 
-            if(query.includes("press") || query.includes("high press")) {
-                feedbackBox.innerHTML = "🔥 <strong>High Press Counter Strategy:</strong> Notice the Red (Away) team pressing high. Shift your Blue fullbacks wide and drop your CDM into the center to create a 3+2 buildup diamond, exploiting the space behind their midfield!";
-            } else if(query.includes("counter") || query.includes("counter attack")) {
-                feedbackBox.innerHTML = "⚡ <strong>Counter-Attack Setup:</strong> When regaining possession, drag your wingers (H9 & H11) immediately into the opponent's vacant flanks while Red team defenders are out of shape.";
+            // Default standard positions helper
+            const setPos = (id, top, left) => {
+                let el = document.getElementById(id);
+                if(el) { el.style.top = top + "%"; el.style.left = left + "%"; }
+            };
+
+            const setBall = (top, left) => {
+                let ball = document.getElementById('matchBall');
+                if(ball) { ball.style.top = top + "%"; ball.style.left = left + "%"; }
+            };
+
+            const drawArrow = (x1, y1, x2, y2, color="#38bdf8", label="") => {
+                let pitch = document.getElementById('proPitchField');
+                let w = pitch.clientWidth;
+                let h = pitch.clientHeight;
+                let px1 = (x1/100)*w, py1 = (y1/100)*h;
+                let px2 = (x2/100)*w, py2 = (y2/100)*h;
+
+                let markerId = color === "#ef4444" ? "arrowhead-red" : "arrowhead";
+                let line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                line.setAttribute("x1", px1);
+                line.setAttribute("y1", py1);
+                line.setAttribute("x2", px2);
+                line.setAttribute("y2", py2);
+                line.setAttribute("stroke", color);
+                line.setAttribute("stroke-width", "2.5");
+                line.setAttribute("stroke-dasharray", "4,4");
+                line.setAttribute("marker-end", `url(#${markerId})`);
+                svgGroup.appendChild(line);
+
+                if(label) {
+                    let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    text.setAttribute("x", (px1+px2)/2);
+                    text.setAttribute("y", (py1+py2)/2 - 6);
+                    text.setAttribute("fill", color);
+                    text.setAttribute("font-size", "10px");
+                    text.setAttribute("font-weight", "bold");
+                    text.textContent = label;
+                    svgGroup.appendChild(text);
+                }
+            };
+
+            if (query.includes("a8") && query.includes("press") && query.includes("h8")) {
+                // Scenario: A8 is pressing H8!
+                // 1. Move A8 forward to press H8 aggressively
+                setPos('playerA8', 50, 52); 
+                // 2. Move H8 to shift quickly or lay off the ball
+                setPos('playerH8', 50, 42); 
+                // 3. Move Ball to H8
+                setBall(50, 42);
+                // 4. Move supporting teammates H6 and H7 into passing lanes
+                setPos('playerH6', 36, 45);
+                setPos('playerH7', 64, 45);
+
+                // Draw tactical arrows
+                drawArrow(50, 48, 50, 52, "#ef4444", "A8 Press");
+                drawArrow(50, 48, 50, 42, "#38bdf8", "H8 Escape & Drop");
+                drawArrow(50, 42, 36, 45, "#38bdf8", "Pass Option H6");
+                drawArrow(50, 42, 64, 45, "#38bdf8", "Pass Option H7");
+
+                feedbackBox.innerHTML = `
+                    🔥 <strong>High Press Counter Analysis (A8 vs H8):</strong><br>
+                    • <strong>Situation Visualized:</strong> Opponent midfielder <strong>A8</strong> steps up to press our central pivot <strong>H8</strong>.<br>
+                    • <strong>Movement Action:</strong> <strong>H8</strong> takes a quick touch backward/sideways to evade the immediate tackle and receives the ball.<br>
+                    • <strong>Passing Channels Opened:</strong> Because A8 committed forward, central passing lanes to <strong>H6</strong> and <strong>H7</strong> open up automatically. Play a quick 1-touch pass to bypass their press!
+                `;
+            } else if (query.includes("press") || query.includes("high press")) {
+                // General high press scenario
+                setPos('playerA8', 45, 50);
+                setPos('playerA6', 30, 45);
+                setPos('playerH8', 52, 40);
+                setBall(52, 40);
+                setPos('playerH3', 25, 32);
+                setPos('playerH4', 75, 32);
+
+                drawArrow(50, 50, 45, 50, "#ef4444", "High Press");
+                drawArrow(48, 50, 52, 40, "#38bdf8", "Drop & Recirculate");
+                drawArrow(52, 40, 25, 32, "#38bdf8", "Switch to LB/CB");
+
+                feedbackBox.innerHTML = `
+                    ⚡ <strong>General High-Press Breakthrough:</strong><br>
+                    • <strong>Movement Action:</strong> Opponent team pushes high up the pitch. Our central midfielder drops deep.<br>
+                    • <strong>Ball & Player Shift:</strong> The ball moves to safety while fullbacks widen up.<br>
+                    • <strong>Execution Guide:</strong> Circulate the ball quickly in triangles (minimum 3 passing options per player) to break their frontline pressure.
+                `;
             } else {
-                feedbackBox.innerHTML = `♟️ <strong>Tactical Analysis for "${query}":</strong> Maintain compact lines between defence and midfield. Shift your central midfielders to block central passing lanes.`;
+                // Default situational response
+                setBall(50, 48);
+                feedbackBox.innerHTML = `
+                    ♟️ <strong>Tactical Analysis for "${query}":</strong><br>
+                    • <strong>On-Field Adjustment:</strong> Players have maintained structured defensive block.<br>
+                    • <strong>Execution Guide:</strong> Maintain compact lines (maximum 30 meters between defence and attack) and use quick switching passes to dominate space.
+                `;
             }
         }
 
