@@ -34,7 +34,7 @@
         </div>
     </nav>
 
-    <!-- Main Content Container -->
+    <!-- Main Content Container with Proper Spacing -->
     <main class="flex-1 max-w-5xl w-full mx-auto p-4 space-y-6 pb-24">
 
         <!-- FUT Card Profile Preview & Readiness Bar -->
@@ -62,7 +62,6 @@
                 </div>
                 <p class="text-slate-400 text-sm">Elite training consistency builds champions. Complete your daily tasks, log match stats, and elevate your game metrics!</p>
                 
-                <!-- Readiness & Load Quick Stats -->
                 <div class="grid grid-cols-3 gap-2 pt-1">
                     <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 text-center">
                         <span class="block text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Readiness</span>
@@ -145,7 +144,6 @@
                 </div>
             </div>
 
-            <!-- Quick Metrics Grid -->
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <div class="bg-slate-950/60 p-3 rounded-xl border border-slate-800">
                     <span class="text-xs text-slate-400">Training Minutes</span>
@@ -165,13 +163,12 @@
                 </div>
             </div>
 
-            <!-- Chart Container -->
             <div class="bg-slate-950/40 p-4 rounded-xl border border-slate-800">
                 <canvas id="performanceChart" height="110"></canvas>
             </div>
         </section>
 
-        <!-- Match Mode & Log Match Section -->
+        <!-- Match Mode & Report Generator Section (Properly Spaced) -->
         <section class="bg-slate-900 rounded-2xl p-5 border border-slate-800 shadow-xl flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="space-y-1 text-center md:text-left">
                 <h3 class="text-lg font-bold text-white flex items-center gap-2 justify-center md:justify-start">
@@ -179,7 +176,7 @@
                 </h3>
                 <p class="text-xs text-slate-400">Record match goals, assists, and generate professional player evaluation reports.</p>
             </div>
-            <div class="flex gap-3">
+            <div class="flex gap-3 flex-wrap justify-center">
                 <button onclick="openMatchModal()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs px-4 py-2.5 rounded-xl transition shadow-md">
                     Log Match Stats ⚽
                 </button>
@@ -252,7 +249,7 @@
 
     </main>
 
-    <!-- Profile Edit Modal -->
+    <!-- Modals -->
     <div id="profile-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
             <div class="flex justify-between items-center">
@@ -305,7 +302,6 @@
         </div>
     </div>
 
-    <!-- Log Activity Modal -->
     <div id="activity-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
             <div class="flex justify-between items-center">
@@ -350,7 +346,6 @@
         </div>
     </div>
 
-    <!-- Match Mode Modal -->
     <div id="match-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
             <div class="flex justify-between items-center">
@@ -429,7 +424,6 @@
             document.getElementById('disp-sprints').innerText = `${dailyStatsData.sprints} Sprints`;
             document.getElementById('disp-goals').innerText = `${playerData.goals} Goals`;
 
-            // USP Report Card sync
             document.getElementById('rep-steps').innerText = dailyStatsData.steps.toLocaleString();
             document.getElementById('rep-distance').innerText = `${dailyStatsData.distance} km`;
             document.getElementById('rep-sprints').innerText = dailyStatsData.sprints;
@@ -568,7 +562,6 @@
             alert(`--- PRO PLAYER EVALUATION REPORT ---\nPlayer: ${playerData.name} (${playerData.pos})\nTeam: ${playerData.team}\nTotal Goals: ${playerData.goals}\nCurrent XP: ${playerData.xp}\nStatus: Elite Tier Ready 🚀`);
         }
 
-        // Chart.js Setup
         const ctx = document.getElementById('performanceChart').getContext('2d');
         const performanceChart = new Chart(ctx, {
             type: 'bar',
