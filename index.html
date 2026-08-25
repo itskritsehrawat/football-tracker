@@ -314,7 +314,7 @@
             background-color: #059669;
         }
 
-        /* Realistic Football Pitch with Ball */
+        /* Realistic Football Pitch with Ball & Animated Vectors */
         .football-pitch {
             position: relative;
             background-color: var(--pitch-green);
@@ -344,13 +344,9 @@
             background: radial-gradient(circle at 30% 30%, #fff 0%, #111 70%);
             border-radius: 50%;
             transform: translate(-50%, -50%);
-            box-shadow: 0 0 10px rgba(255,255,255,0.8);
-            animation: bounceBall 2s infinite ease-in-out;
-        }
-
-        @keyframes bounceBall {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); }
-            50% { transform: translate(-40%, -45%) scale(1.15); }
+            box-shadow: 0 0 12px rgba(255,255,255,0.9);
+            transition: all 0.8s ease-in-out;
+            z-index: 5;
         }
 
         .player-node {
@@ -365,13 +361,28 @@
             transform: translate(-50%, -50%);
             border: 2px solid #93c5fd;
             box-shadow: 0 4px 6px rgba(0,0,0,0.4);
-            transition: transform 0.2s;
+            transition: all 0.5s ease;
+            z-index: 4;
         }
         .player-node:hover { transform: translate(-50%, -50%) scale(1.1); z-index: 10; }
         .player-node.gk { background-color: #f59e0b; border-color: #fcd34d; }
         .player-node.dm { background-color: #ef4444; border-color: #fca5a5; }
 
-        /* Timeline & Diet cards */
+        /* Tactical Overlay Vector Instructions on Pitch */
+        #tacticalVectorOverlay {
+            position: absolute;
+            top: 15px; left: 15px; right: 15px;
+            background: rgba(3, 7, 18, 0.88);
+            border: 1px solid var(--accent-gold);
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            color: var(--accent-yellow);
+            display: none;
+            z-index: 20;
+        }
+
+        /* Routine & Diet Cards */
         .routine-card, .diet-card {
             background-color: #030712;
             border: 1px solid var(--border-color);
@@ -383,7 +394,7 @@
 
         .diet-card { border-left-color: #10b981; }
 
-        /* Graph representation for Logs */
+        /* Dynamic Graph Representation for Logs */
         .chart-container {
             background-color: #030712;
             border: 1px solid var(--border-color);
@@ -416,7 +427,7 @@
             max-width: 35px;
             background: linear-gradient(to top, #d97706, var(--accent-gold));
             border-radius: 4px 4px 0 0;
-            transition: height 0.5s ease;
+            transition: height 0.6s ease;
         }
 
         .bar-label {
@@ -480,7 +491,7 @@
     <div id="loginOverlay">
         <div class="login-card">
             <div class="login-title">🛡️ Professional Club Scouting & Dossier</div>
-            <div class="login-desc">Enter your exact player metrics. The web engine builds your elite tactical profile just like European professional club academies.</div>
+            <div class="login-desc">Enter your name and details. The web engine builds your live professional training tracker instantly.</div>
             
             <div class="form-group">
                 <label>Player Full Name</label>
@@ -512,8 +523,8 @@
             </div>
 
             <div class="form-group">
-                <label>Main Weakness / Challenge You Want to Conquer</label>
-                <input type="text" id="regGoal" class="login-input" placeholder="e.g. Panic under high defensive pressure">
+                <label>Main Weakness / Challenge</label>
+                <input type="text" id="regGoal" class="login-input" placeholder="e.g. Panic under high press">
             </div>
 
             <button class="login-btn" onclick="handleProLogin()">Initialize Elite Club Dossier ⚡</button>
@@ -524,7 +535,7 @@
     <div class="memo-banner">
         <div class="memo-content">
             <div class="memo-title">Coach's Command:</div>
-            <div class="memo-text" id="coachCommandText">"Listen up! Elite players rely on natural whole foods and professional tactical vision. Push your limits harder every second!"</div>
+            <div class="memo-text" id="coachCommandText">"Listen up! Train hard, track every second, and maintain natural discipline."</div>
         </div>
         <button class="logout-btn" onclick="handleLogout()">Switch Dossier / Logout</button>
     </div>
@@ -540,12 +551,12 @@
         <div class="nav-tab" onclick="switchTab(6)">📊 Logs</div>
     </div>
 
-    <!-- 1. Live Academy Panel (Fitness Tracker Hub) -->
+    <!-- 1. Live Academy Panel (Fitness Tracker Hub with Live Timestamp & Graphs) -->
     <div class="section-panel active">
         <div class="profile-box">
             <div>
                 <div style="font-size: 1.5rem; font-weight: 700; color: var(--text-main);" id="displayName">Player</div>
-                <div style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;" id="displayTier">Professional Tier Active • System tracks discipline second by second.</div>
+                <div style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;" id="displayTier">Professional Tier Active</div>
             </div>
             <div class="player-badge">
                 <div style="font-size: 1.8rem;" id="displayRating">89</div>
@@ -553,10 +564,16 @@
             </div>
         </div>
 
+        <!-- Live Live Timestamp and Telemetry info -->
+        <div style="background-color: #030712; border: 1px solid var(--border-color); padding: 10px 15px; border-radius: 6px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <div style="font-size: 0.85rem; color: var(--accent-yellow);" id="liveTimestampInfo">📅 Date: -- | Day: -- | Exact Sec: 0s</div>
+            <div style="font-size: 0.85rem; color: #10b981;">🟢 Live Activity Status: Standby / Ready</div>
+        </div>
+
         <!-- Live Fitness Metrics Widget -->
         <div class="fitness-stats-grid">
             <div class="stat-card">
-                <div class="stat-label">🔥 Calories Burned</div>
+                <div class="stat-label">🔥 Calories Burned (Live)</div>
                 <div class="stat-value" id="liveCalories">0 kcal</div>
             </div>
             <div class="stat-card">
@@ -569,24 +586,24 @@
             </div>
         </div>
 
-        <div class="panel-title">Pitch Training Stopwatch</div>
-        <div class="panel-desc">Record your intense training minutes. Prove your grit!</div>
+        <div class="panel-title">Pitch Training Stopwatch & Live Graph Trigger</div>
+        <div class="panel-desc">Start session to trigger live telemetry tracking and real-time graph updates.</div>
         <div style="font-size: 2rem; font-weight: 700; color: #10b981; margin-bottom: 15px;" id="stopwatchDisplay">00:00:00</div>
         <button class="amazon-btn" onclick="startTrainingTimer()">Start Training Session ⏱️</button>
     </div>
 
-    <!-- 2. Master Timeline Panel (Tough Elite Upgrade) -->
+    <!-- 2. Master Timeline Panel -->
     <div class="section-panel">
         <div class="panel-title">The Elite Daily Master Timeline (Pro Hardcore Schedule)</div>
-        <div class="panel-desc">European academy blueprint for absolute discipline. Zero compromise from dawn to night whistle:</div>
+        <div class="panel-desc">European academy blueprint for absolute discipline from dawn to night whistle:</div>
         
         <div class="routine-card">
             <strong style="color: var(--accent-gold);">☀️ 05:30 AM - Dawn Awakening & Core Activation:</strong>
-            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">500ml cold lemon water, 30 deep-breath lung capacity drills, and 20 minutes of intense hip-flexor & ankle injury-prevention mobility.</p>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">500ml cold lemon water, 30 deep-breath lung capacity drills, and 20 minutes of intense hip-flexor & ankle mobility.</p>
         </div>
         <div class="routine-card">
             <strong style="color: var(--accent-gold);">⚡ 02:00 PM - Pre-Pitch Tactical Rehearsal:</strong>
-            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">High-speed cognitive scanning visualization, resistance band lateral steps, and 1 whole banana with soaked black raisins for instant clean energy.</p>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">High-speed cognitive scanning visualization, resistance band lateral steps, and 1 whole banana with soaked black raisins.</p>
         </div>
         <div class="routine-card" style="border-left-color: #ef4444;">
             <strong style="color: #ef4444;">🛡️ 08:30 PM - Post-Training Acid Flush & Recovery:</strong>
@@ -594,42 +611,43 @@
         </div>
     </div>
 
-    <!-- 3. 11v11 Tactics & Vision Panel (Realistic with Ball & Players) -->
+    <!-- 3. 11v11 Tactics & Vision Panel (Realistic with Ball & Animated Tactical Guidance) -->
     <div class="section-panel">
         <div class="panel-title">Professional Club 11v11 Tactics & Option Creator</div>
-        <div class="panel-desc">Tactical simulation active. Tap any player position below on the pitch to inspect passing lanes and decision triggers:</div>
+        <div class="panel-desc">Pitch simulation active. Tap any player position below or ask AI to see ball movement vectors and passing instructions:</div>
         
-        <div class="football-pitch">
+        <div class="football-pitch" id="tacticalPitchBox">
+            <div id="tacticalVectorOverlay">🚀 Tactical Vector: CM is moving forward with ball → Pass to LW making vertical run!</div>
             <div class="pitch-center-line"></div>
             <div class="pitch-center-circle"></div>
-            <div class="match-ball" title="Match Ball"></div>
+            <div class="match-ball" id="pitchMatchBall" title="Match Ball"></div>
             <!-- Tactical Nodes -->
-            <div class="player-node gk" style="top: 50%; left: 8%;" onclick="alert('GK: Scan for high press, distribute to fullback or CB with open body shape.')">GK</div>
-            <div class="player-node" style="top: 25%; left: 22%;" onclick="alert('LB: Create width, check shoulder, open options for central midfielders.')">LB</div>
-            <div class="player-node" style="top: 42%; left: 28%;" onclick="alert('CB: Calm build-up, break opposition first line with vertical pass.')">CB</div>
-            <div class="player-node" style="top: 58%; left: 28%;" onclick="alert('CB: Maintain defensive line height, communicate shifts.')">CB</div>
-            <div class="player-node" style="top: 75%; left: 22%;" onclick="alert('RB: Overlap when winger cuts inside, secure flank transition.')">RB</div>
-            <div class="player-node dm" style="top: 50%; left: 45%;" onclick="alert('DM: The engine. Always offer 3 passing options, dictate tempo.')">DM</div>
-            <div class="player-node" style="top: 32%; left: 60%;" onclick="alert('CM: Exploit half-spaces, drive forward with quick one-twos.')">CM</div>
-            <div class="player-node" style="top: 68%; left: 60%;" onclick="alert('CM: Box-to-box recovery, support flank attacks.')">CM</div>
-            <div class="player-node" style="top: 18%; left: 78%;" onclick="alert('LW: 1v1 isolation, cut inside for shot or square to striker.')">LW</div>
-            <div class="player-node" style="top: 82%; left: 78%;" onclick="alert('RW: Stretch defense wide, whip crosses into corridor of uncertainty.')">RW</div>
-            <div class="player-node" style="top: 50%; left: 85%;" onclick="alert('ST: Hold up play, shield against center backs, attack near post.')">ST</div>
+            <div class="player-node gk" style="top: 50%; left: 8%;" onclick="inspectTacticalNode('GK', 'Scan for high press, distribute to fullback.')">GK</div>
+            <div class="player-node" style="top: 25%; left: 22%;" onclick="inspectTacticalNode('LB', 'Create width, check shoulder for options.')">LB</div>
+            <div class="player-node" style="top: 42%; left: 28%;" onclick="inspectTacticalNode('CB', 'Calm build-up, break opposition line.')">CB</div>
+            <div class="player-node" style="top: 58%; left: 28%;" onclick="inspectTacticalNode('CB', 'Maintain defensive line height.')">CB</div>
+            <div class="player-node" style="top: 75%; left: 22%;" onclick="inspectTacticalNode('RB', 'Overlap when winger cuts inside.')">RB</div>
+            <div class="player-node dm" style="top: 50%; left: 45%;" onclick="inspectTacticalNode('DM', 'The engine. Offer passing options, dictate tempo.')">DM</div>
+            <div class="player-node" style="top: 32%; left: 60%;" onclick="inspectTacticalNode('CM', 'Exploit half-spaces, drive forward with ball.')">CM</div>
+            <div class="player-node" style="top: 68%; left: 60%;" onclick="inspectTacticalNode('CM', 'Box-to-box recovery support.')">CM</div>
+            <div class="player-node" style="top: 18%; left: 78%;" onclick="inspectTacticalNode('LW', '1v1 isolation, cut inside for shot.')">LW</div>
+            <div class="player-node" style="top: 82%; left: 78%;" onclick="inspectTacticalNode('RW', 'Stretch defense wide, whip crosses.')">RW</div>
+            <div class="player-node" style="top: 50%; left: 85%;" onclick="inspectTacticalNode('ST', 'Hold up play, attack near post.')">ST</div>
         </div>
     </div>
 
     <!-- 4. Boots & Natural Diet Panel -->
     <div class="section-panel">
         <div class="panel-title">Smart Boot Matcher & 100% Natural Fuel Hub</div>
-        <div class="panel-desc">The web senses your position and recommends the exact boot category. Zero supplements rule enforced:</div>
+        <div class="panel-desc">The web senses your position and recommends the exact boot category:</div>
         
         <div class="routine-card" id="bootRecommendationBox">
             <strong style="color: var(--accent-gold);">⚡ Position Boot Match:</strong>
-            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">Speed Boots Recommended: Lightweight synthetic upper with aggressive blade stud configuration for explosive acceleration.</p>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">Speed Boots Recommended: Lightweight synthetic upper with aggressive blade stud configuration.</p>
         </div>
         <div class="routine-card" style="border-left-color: #ef4444;">
             <strong style="color: #ef4444;">🚫 Strict Natural Diet Rule:</strong>
-            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">Synthetic powders and unknown supplements harm developing bodies. Elite stamina is built exclusively on whole foods: fresh fruits, eggs, paneer, oats, nuts, and clean water.</p>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">Synthetic powders and unknown supplements harm developing bodies. Elite stamina is built exclusively on whole foods.</p>
         </div>
     </div>
 
@@ -653,63 +671,63 @@
             <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">
                 • Breakfast: Rolled oats with chia seeds, raw honey, and whole milk.<br>
                 • Mid-Morning: 2 boiled eggs and a handful of almonds.<br>
-                • Lunch: Grilled chicken/paneer breast, brown rice, steamed broccoli, and fresh coconut water.<br>
+                • Lunch: Grilled paneer breast, brown rice, broccoli, and fresh coconut water.<br>
                 • Pre-Workout: 1 ripe banana and natural dates.<br>
-                • Dinner: Baked fish/tofu, quinoa, and roasted asparagus.
+                • Dinner: Baked tofu, quinoa, and roasted asparagus.
             </p>
         </div>
     </div>
 
-    <!-- 6. Elite AI Q&A Panel -->
+    <!-- 6. Elite AI Q&A Panel (Connected with Live Pitch Vectors) -->
     <div class="section-panel">
-        <div class="panel-title">Elite Coach AI Q&A & Mind Reader</div>
-        <div class="panel-desc">Stuck in any match situation? Type your question below. The web engine thinks like an elite player and instantly gives you a custom drill and 100% natural diet adjustment:</div>
+        <div class="panel-title">Elite Coach AI Q&A & Match Situation Reader</div>
+        <div class="panel-desc">Type your match problem. The AI gives you a solution and instantly moves the ball & players on the 11v11 tactical pitch with directional instructions:</div>
         
-        <textarea id="aiQueryInput" class="ai-input" placeholder="e.g. My first touch under pressure is terrible and I panic when defenders rush me..."></textarea>
-        <button class="ai-btn" onclick="runAiAnalysis()">Analyze & Generate Elite Solution 🧠</button>
+        <textarea id="aiQueryInput" class="ai-input" placeholder="e.g. My first touch under high press is bad and defenders rush me..."></textarea>
+        <button class="ai-btn" onclick="runAiAnalysis()">Analyze & Animate Pitch Tactics 🧠</button>
         
         <div id="aiResponseBox" style="margin-top: 15px; color: var(--accent-yellow); font-size: 0.9rem;"></div>
     </div>
 
-    <!-- 7. Logs Panel with Visual Progress Graph -->
+    <!-- 7. Logs Panel with Live Dynamic Progress Graph -->
     <div class="section-panel">
         <div class="panel-title">Deep Performance Logs & Activity Audit</div>
-        <div class="panel-desc">System logs confirm continuous activity tracking and discipline score. Check your weekly training load progress below:</div>
+        <div class="panel-desc">Graphs update dynamically based on your training sessions. Timestamped second-by-second audit:</div>
         
         <div style="background-color: #030712; padding: 15px; border-radius: 6px; text-align: center; margin-bottom: 15px;">
-            <div style="font-size: 2rem; font-weight: 700; color: var(--accent-gold);">42 Consecutive Days</div>
-            <div style="color: var(--text-muted); font-size: 0.85rem; margin-top: 3px;">Discipline Status: Elite Professional Trajectory</div>
+            <div style="font-size: 2rem; font-weight: 700; color: var(--accent-gold);" id="logStreakDisplay">42 Consecutive Days</div>
+            <div style="color: var(--text-muted); font-size: 0.85rem; margin-top: 3px;" id="logTimestampSub">Discipline Status: Elite Professional Trajectory</div>
         </div>
 
         <div class="chart-container">
-            <div style="font-size: 0.9rem; font-weight: 600; color: var(--accent-yellow); margin-bottom: 10px;">Weekly Training Intensity & Output (Hours)</div>
-            <div class="bar-chart">
+            <div style="font-size: 0.9rem; font-weight: 600; color: var(--accent-yellow); margin-bottom: 10px;">Live Weekly Training Intensity & Activity Graph</div>
+            <div class="bar-chart" id="dynamicBarChart">
                 <div class="bar-col">
-                    <div class="bar-fill" style="height: 60%;"></div>
+                    <div class="bar-fill" id="barMon" style="height: 60%;"></div>
                     <span class="bar-label">Mon</span>
                 </div>
                 <div class="bar-col">
-                    <div class="bar-fill" style="height: 85%;"></div>
+                    <div class="bar-fill" id="barTue" style="height: 85%;"></div>
                     <span class="bar-label">Tue</span>
                 </div>
                 <div class="bar-col">
-                    <div class="bar-fill" style="height: 45%;"></div>
+                    <div class="bar-fill" id="barWed" style="height: 45%;"></div>
                     <span class="bar-label">Wed</span>
                 </div>
                 <div class="bar-col">
-                    <div class="bar-fill" style="height: 95%;"></div>
+                    <div class="bar-fill" id="barThu" style="height: 95%;"></div>
                     <span class="bar-label">Thu</span>
                 </div>
                 <div class="bar-col">
-                    <div class="bar-fill" style="height: 75%;"></div>
+                    <div class="bar-fill" id="barFri" style="height: 75%;"></div>
                     <span class="bar-label">Fri</span>
                 </div>
                 <div class="bar-col">
-                    <div class="bar-fill" style="height: 100%;"></div>
+                    <div class="bar-fill" id="barSat" style="height: 100%;"></div>
                     <span class="bar-label">Sat</span>
                 </div>
                 <div class="bar-col">
-                    <div class="bar-fill" style="height: 50%;"></div>
+                    <div class="bar-fill" id="barSun" style="height: 50%;"></div>
                     <span class="bar-label">Sun</span>
                 </div>
             </div>
@@ -737,7 +755,16 @@
                     goal: localStorage.getItem('pro_player_goal')
                 });
             }
+            updateLiveTimestampDisplay();
         };
+
+        function updateLiveTimestampDisplay() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
+            const dateStr = now.toLocaleDateString('en-US', options);
+            const dayStr = now.toLocaleDateString('en-US', { weekday: 'short' });
+            document.getElementById('liveTimestampInfo').innerText = `📅 Date: ${dateStr} | Day: ${dayStr} | Real-Time Active`;
+        }
 
         function handleProLogin() {
             const name = document.getElementById('regName').value.trim();
@@ -746,7 +773,7 @@
             const goal = document.getElementById('regGoal').value.trim();
 
             if(!name) {
-                alert('Please enter your full player name to create your dossier.');
+                alert('Please enter your full player name.');
                 return;
             }
 
@@ -770,7 +797,7 @@
             if(data.position === 'CB' || data.position === 'DM') {
                 bootText = "Control & Stability Boots Recommended: Leather or reinforced synthetic upper with conical studs for firm traction and precise passing distribution under pressure.";
             } else if(data.position === 'GK') {
-                bootText = "Goalkeeper Grip & Traction Boots: Wide soleplate stability and hybrid stud configuration for rapid lateral dives and spring-loaded jumps.";
+                bootText = "Goalkeeper Grip & Traction Boots: Wide soleplate stability and hybrid stud configuration for rapid lateral dives.";
             }
             bootBox.innerHTML = `<strong style="color: var(--accent-gold);">⚡ Position Match (${data.position}):</strong><p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">${bootText}</p>`;
         }
@@ -792,7 +819,7 @@
             panels[index].classList.add('active');
         }
 
-        // Training Stopwatch & Fitness Tracker Mock
+        // Training Stopwatch & Live Graph Telemetry
         let stopwatchInterval;
         let secondsRunning = 0;
         function startTrainingTimer() {
@@ -804,16 +831,44 @@
                 let secs = (secondsRunning % 60).toString().padStart(2, '0');
                 document.getElementById('stopwatchDisplay').innerText = `${hrs}:${mins}:${secs}`;
 
-                // Live fitness ticker simulation
+                // Live fitness ticker simulation based on seconds
                 let calculatedCalories = Math.floor(secondsRunning * 0.18);
-                let calculatedSteps = secondsRunning * 2.2;
+                let calculatedSteps = Math.floor(secondsRunning * 2.2);
                 let calculatedDist = (secondsRunning * 0.0032).toFixed(2);
 
                 document.getElementById('liveCalories').innerText = `${calculatedCalories} kcal`;
-                document.getElementById('liveSteps').innerText = `${Math.floor(calculatedSteps)} steps`;
+                document.getElementById('liveSteps').innerText = `${calculatedSteps} steps`;
                 document.getElementById('liveDistance').innerText = `${calculatedDist} km`;
+
+                // Update timestamp with exact seconds
+                const now = new Date();
+                const dayStr = now.toLocaleDateString('en-US', { weekday: 'short' });
+                document.getElementById('liveTimestampInfo').innerText = `📅 Date: ${now.toLocaleDateString()} | Day: ${dayStr} | Exact Sec: ${secondsRunning}s`;
+                document.getElementById('logTimestampSub').innerText = `Last Activity Logged at Exact Sec: ${secondsRunning}s (${dayStr})`;
+
+                // Live Dynamic Graph Bar Growth during activity
+                let activeBar = document.getElementById('barSat');
+                if(activeBar) {
+                    let currentHeight = 70 + (secondsRunning % 30);
+                    if(currentHeight > 100) currentHeight = 100;
+                    activeBar.style.height = `${currentHeight}%`;
+                }
             }, 1000);
-            alert('Training session started! Live fitness telemetry active.');
+            alert('Training session started! Live telemetry and graph activity active.');
+        }
+
+        // Inspect Tactical Node on Pitch
+        function inspectTacticalNode(pos, desc) {
+            const overlay = document.getElementById('tacticalVectorOverlay');
+            overlay.style.display = 'block';
+            overlay.innerHTML = `⚽ Position Vector (${pos}): ${desc} → <strong>Direction: Move ball into open space!</strong>`;
+            
+            // Move ball towards that position slightly for realism
+            const ball = document.getElementById('pitchMatchBall');
+            if(pos === 'LW') { ball.style.top = '20%'; ball.style.left = '75%'; }
+            else if(pos === 'ST') { ball.style.top = '50%'; ball.style.left = '80%'; }
+            else if(pos === 'CM') { ball.style.top = '35%'; ball.style.left = '55%'; }
+            else { ball.style.top = '50%'; ball.style.left = '52%'; }
         }
 
         // Diet Day Selector
@@ -825,25 +880,35 @@
                 'Mon': '• Breakfast: Rolled oats with chia seeds, raw honey, and whole milk.<br>• Mid-Morning: 2 boiled eggs and a handful of almonds.<br>• Lunch: Grilled paneer breast, brown rice, broccoli, and coconut water.',
                 'Tue': '• Breakfast: Whole wheat toast with peanut butter and banana slices.<br>• Mid-Morning: Handful of walnuts and an apple.<br>• Lunch: Lentil dal, millet rotis, curd, and cucumber salad.<br>• Dinner: Grilled tofu with quinoa and carrots.',
                 'Wed': '• Breakfast: Poha with peanuts, peas, and fresh lemon juice.<br>• Mid-Morning: Boiled sweet potato.<br>• Lunch: Chickpea curry, brown rice, and buttermilk.<br>• Dinner: Vegetable soup and roasted paneer chunks.',
-                'Thu': '• Breakfast: Upma with mixed vegetables and almonds.<br>• Mid-Morning: Fresh pomegranate seeds.<br>• Lunch: Grilled paneer wrap with whole wheat flatbread.<br>• Dinner: Steamed fish/tofu with spinach.',
-                'Fri': '• Breakfast: Egg whites (or soaked moong sprouts) with toast.<br>• Mid-Morning: Banana and walnuts.<br>• Lunch: Rajma curry with brown rice and salad.<br>• Dinner: Quinoa salad with olive oil dressing.',
+                'Thu': '• Breakfast: Upma with mixed vegetables and almonds.<br>• Mid-Morning: Fresh pomegranate seeds.<br>• Lunch: Grilled paneer wrap with whole wheat flatbread.<br>• Dinner: Steamed tofu with spinach.',
+                'Fri': '• Breakfast: Egg whites with toast.<br>• Mid-Morning: Banana and walnuts.<br>• Lunch: Rajma curry with brown rice and salad.<br>• Dinner: Quinoa salad with olive oil dressing.',
                 'Sat': '• Breakfast: Smoothie with bananas, dates, curd, and oats.<br>• Mid-Morning: Handful of roasted chana.<br>• Lunch: Paneer tikka with mint chutney and millet rotis.<br>• Dinner: Vegetable khichdi with pure ghee.',
-                'Sun': '• Breakfast: Multi-grain paratha with curd.<br>• Mid-Morning: Coconut water.<br>• Lunch: Grand recovery feast: brown rice, dal, grilled chicken/paneer.<br>• Dinner: Light vegetable soup and warm milk with turmeric.'
+                'Sun': '• Breakfast: Multi-grain paratha with curd.<br>• Mid-Morning: Coconut water.<br>• Lunch: Grand recovery feast: brown rice, dal, grilled paneer.<br>• Dinner: Light vegetable soup and warm milk with turmeric.'
             };
             document.getElementById('dietContentBox').innerHTML = `<strong>🌱 ${day} 100% Natural Pro Diet Plan:</strong><p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">${diets[day]}</p>`;
         }
 
-        // AI Q&A Analysis Mock
+        // AI Q&A with Live Pitch Animation Vectors
         function runAiAnalysis() {
             const query = document.getElementById('aiQueryInput').value.trim();
             const playerName = localStorage.getItem('pro_player_name') || 'Player';
             const playerPos = localStorage.getItem('pro_player_pos') || 'Elite';
 
             if(!query) {
-                alert('Please type your situation or question first.');
+                alert('Please type your tactical question or situation first.');
                 return;
             }
-            document.getElementById('aiResponseBox').innerHTML = `<strong>🧠 European Club AI Dossier for ${playerName} (${playerPos}):</strong><br>Analyzing query ("<em>${query}</em>"):<br>• <strong>Custom Pro Drill:</strong> 20-minute cognitive pressure-scanning drill with wall rebounds and rapid scanning before receiving.<br>• <strong>Natural Fuel Adjustment:</strong> Consume fresh pomegranate juice and raw walnuts 45 minutes prior to match simulation for optimal cognitive focus.`;
+
+            // Animate ball and overlay on pitch tab
+            const overlay = document.getElementById('tacticalVectorOverlay');
+            overlay.style.display = 'block';
+            overlay.innerHTML = `🤖 AI Tactical Vector for ${playerName} (${playerPos}): This player moves forward with ball $\\rightarrow$ Pass to CM $\\rightarrow$ Striker makes overlapping run to the right!`;
+
+            const ball = document.getElementById('pitchMatchBall');
+            ball.style.top = '45%';
+            ball.style.left = '65%';
+
+            document.getElementById('aiResponseBox').innerHTML = `<strong>🧠 European Club AI Simulation Complete:</strong><br>Query analyzed ("<em>${query}</em>"):<br>• <strong>Pitch Movement Vector:</strong> Ball shifted to midfield corridor with clear passing arrow.<br>• <strong>Custom Pro Drill:</strong> 2-touch passing under high press.<br>• <strong>Natural Fuel:</strong> Fresh coconut water & dates 30 minutes before match simulation.`;
         }
     </script>
 </body>
