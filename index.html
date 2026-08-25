@@ -361,6 +361,22 @@
             background-color: #059669;
         }
 
+        .stop-btn {
+            background-color: #ef4444;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-left: 10px;
+        }
+
+        .stop-btn:hover {
+            background-color: #dc2626;
+        }
+
         /* Realistic Football Pitch with Ball & Animated Vectors */
         .football-pitch {
             position: relative;
@@ -538,7 +554,7 @@
     <div id="loginOverlay">
         <div class="login-card">
             <div class="login-title">🛡️ Professional Club Scouting & Dossier</div>
-            <div class="login-desc">Enter your name and details. The web engine builds your live professional training tracker instantly.</div>
+            <div class="login-desc">Enter your name and details. GPS & Motion permission prompt will trigger to enable live telemetry tracking.</div>
             
             <div class="form-group">
                 <label>Player Full Name</label>
@@ -574,7 +590,7 @@
                 <input type="text" id="regGoal" class="login-input" placeholder="e.g. High pressure scanning">
             </div>
 
-            <button class="login-btn" onclick="handleProLogin()">Initialize Elite Club Dossier ⚡</button>
+            <button class="login-btn" onclick="requestGpsAndLogin()">Initialize Elite Club Dossier ⚡</button>
         </div>
     </div>
 
@@ -582,7 +598,7 @@
     <div class="memo-banner">
         <div class="memo-content">
             <div class="memo-title">Coach's Command:</div>
-            <div class="memo-text" id="coachCommandText">"Listen up! Train hard, track every second, and maintain natural discipline."</div>
+            <div class="memo-text" id="coachCommandText">"Listen up! Train hard, track every movement with GPS permission, and maintain discipline."</div>
         </div>
         <button class="logout-btn" onclick="handleLogout()">Switch Dossier / Logout</button>
     </div>
@@ -603,7 +619,7 @@
         <div class="profile-box">
             <div>
                 <div style="font-size: 1.5rem; font-weight: 700; color: var(--text-main);" id="displayName">krit</div>
-                <div style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;" id="displayTier">Professional Tier Active • Focus Goal: "high prsser"</div>
+                <div style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;" id="displayTier">Professional Tier Active • Focus Goal: "Elite Professional Mastery"</div>
             </div>
             <div class="player-badge">
                 <div style="font-size: 1.8rem;" id="displayRating">89</div>
@@ -631,16 +647,16 @@
             </div>
         </div>
 
-        <!-- Live Live Timestamp and Telemetry info -->
+        <!-- Live Timestamp and Telemetry info -->
         <div style="background-color: #030712; border: 1px solid var(--border-color); padding: 10px 15px; border-radius: 6px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-            <div style="font-size: 0.85rem; color: var(--accent-yellow);" id="liveTimestampInfo">📅 Date: Tuesday, Aug 25, 2026 | Day: Tue | Real Time Active</div>
+            <div style="font-size: 0.85rem; color: var(--accent-yellow);" id="liveTimestampInfo">📅 Date: Tuesday, Aug 25, 2026 | Day: Tue | GPS Status: Locked 📍</div>
             <div style="font-size: 0.85rem; color: #10b981;" id="themeStatusIndicator">🟢 Theme: Auto Live Dynamic</div>
         </div>
 
         <!-- Live Fitness Metrics Widget -->
         <div class="fitness-stats-grid">
             <div class="stat-card">
-                <div class="stat-label">🔥 Calories Burned (Live)</div>
+                <div class="stat-label">🔥 Calories Burned (GPS Live)</div>
                 <div class="stat-value" id="liveCalories">0 kcal</div>
             </div>
             <div class="stat-card">
@@ -648,15 +664,19 @@
                 <div class="stat-value" id="liveSteps">0 steps</div>
             </div>
             <div class="stat-card">
-                <div class="stat-label">📍 Distance Covered</div>
+                <div class="stat-label">📍 Distance Covered (GPS)</div>
                 <div class="stat-value" id="liveDistance">0.00 km</div>
             </div>
         </div>
 
         <div class="panel-title">Pitch Training Stopwatch & Live Graph Trigger</div>
-        <div class="panel-desc">Start session to trigger live telemetry tracking and real-time graph updates.</div>
+        <div class="panel-desc">Requires GPS permission. Stats only increase when movement/displacement is detected or during active physical movement.</div>
         <div style="font-size: 2rem; font-weight: 700; color: #10b981; margin-bottom: 15px;" id="stopwatchDisplay">00:00:00</div>
-        <button class="amazon-btn" onclick="startTrainingTimer()">Start Training Session ⏱️</button>
+        
+        <div>
+            <button class="amazon-btn" onclick="startTrainingTimer()">Start Training Session ⏱️</button>
+            <button class="stop-btn" onclick="stopTrainingTimer()">Stop Training Session ⏹️</button>
+        </div>
     </div>
 
     <!-- 2. Master Timeline Panel -->
@@ -807,12 +827,18 @@
             <div style="font-size: 1.1rem; font-weight: 700; color: var(--accent-gold);">"Your Game Is Hard? Make It Harder with Pro Equipment!"</div>
             <div style="color: var(--text-muted); font-size: 0.85rem; margin-top: 3px;">Explore training gear, equipment, and accessories on Amazon.</div>
         </div>
-        <!-- Direct link to Amazon Home Page / General shopping -->
+        <!-- Direct link to Amazon Home Page -->
         <a href="https://www.amazon.com" target="_blank" class="amazon-btn">Visit Amazon ↗</a>
     </div>
 
     <script>
-        // --- PROFESSIONAL CLUB DOSSIER & LIVE TIME-BASED THEME ENGINE ---
+        let gpsPermissionGranted = false;
+        let lastLat = null;
+        let lastLon = null;
+        let totalDistanceMeters = 0;
+        let totalStepsCount = 0;
+        let totalCaloriesBurned = 0;
+
         window.onload = function() {
             const savedName = localStorage.getItem('pro_player_name');
             if (savedName) {
@@ -822,6 +848,7 @@
                     tier: localStorage.getItem('pro_player_tier'),
                     goal: localStorage.getItem('pro_player_goal')
                 });
+                gpsPermissionGranted = localStorage.getItem('gps_allowed') === 'true';
             }
             applyTimeBasedProfessionalTheme();
             updateLiveTimestampDisplay();
@@ -869,10 +896,11 @@
             const options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
             const dateStr = now.toLocaleDateString('en-US', options);
             const dayStr = now.toLocaleDateString('en-US', { weekday: 'short' });
-            document.getElementById('liveTimestampInfo').innerText = `📅 Date: ${dateStr} | Day: ${dayStr} | Real-Time Active`;
+            document.getElementById('liveTimestampInfo').innerText = `📅 Date: ${dateStr} | Day: ${dayStr} | GPS Status: ${gpsPermissionGranted ? 'Active 📍' : 'Pending Permission ⚠️'}`;
         }
 
-        function handleProLogin() {
+        // Request Browser GPS Permission upon Login
+        function requestGpsAndLogin() {
             const name = document.getElementById('regName').value.trim();
             const position = document.getElementById('regPosition').value;
             const tier = document.getElementById('regTier').value;
@@ -883,6 +911,28 @@
                 return;
             }
 
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (positionData) => {
+                        gpsPermissionGranted = true;
+                        localStorage.setItem('gps_allowed', 'true');
+                        lastLat = positionData.coords.latitude;
+                        lastLon = positionData.coords.longitude;
+                        completeLogin(name, position, tier, goal);
+                    },
+                    (error) => {
+                        alert('⚠️ GPS Permission Denied or Unavailable! Without allowing location permission, live telemetry and stats cannot track movement.');
+                        gpsPermissionGranted = false;
+                        localStorage.setItem('gps_allowed', 'false');
+                    },
+                    { enableHighAccuracy: true }
+                );
+            } else {
+                alert('Geolocation is not supported by your browser.');
+            }
+        }
+
+        function completeLogin(name, position, tier, goal) {
             localStorage.setItem('pro_player_name', name);
             localStorage.setItem('pro_player_pos', position);
             localStorage.setItem('pro_player_tier', tier);
@@ -896,7 +946,7 @@
             document.getElementById('displayName').innerText = data.name;
             document.getElementById('displayTier').innerText = `${data.tier} • Focus Goal: "${data.goal || 'Elite Professional Mastery'}"`;
             document.getElementById('displayBadgePos').innerText = `${data.position} ELITE`;
-            document.getElementById('coachCommandText').innerText = `"Listen up, ${data.name}! As a top ${data.position}, rely on whole foods and professional vision. Push harder every second!"`;
+            document.getElementById('coachCommandText').innerText = `"Listen up, ${data.name}! As a top ${data.position}, rely on whole foods and professional vision. GPS tracking active!"`;
 
             const bootBox = document.getElementById('bootRecommendationBox');
             let bootText = "Speed Boots Recommended: Lightweight synthetic upper with aggressive blade stud configuration for explosive acceleration.";
@@ -925,39 +975,106 @@
             panels[index].classList.add('active');
         }
 
-        // Training Stopwatch & Live Graph Telemetry
+        // Training Stopwatch & Real GPS Movement Verification
         let stopwatchInterval;
+        let gpsWatchId = null;
         let secondsRunning = 0;
+
         function startTrainingTimer() {
-            clearInterval(stopwatchInterval);
+            if (!gpsPermissionGranted) {
+                alert('⚠️ Access Denied / Not Granted! Please grant location permission to start live tracking.');
+                requestGpsPermissionOnly();
+                return;
+            }
+
+            if (stopwatchInterval) return; // Already running
+
+            secondsRunning = 0;
+            totalDistanceMeters = 0;
+            totalStepsCount = 0;
+            totalCaloriesBurned = 0;
+
             stopwatchInterval = setInterval(() => {
                 secondsRunning++;
                 let hrs = Math.floor(secondsRunning / 3600).toString().padStart(2, '0');
                 let mins = Math.floor((secondsRunning % 3600) / 60).toString().padStart(2, '0');
                 let secs = (secondsRunning % 60).toString().padStart(2, '0');
                 document.getElementById('stopwatchDisplay').innerText = `${hrs}:${mins}:${secs}`;
-
-                let calculatedCalories = Math.floor(secondsRunning * 0.18);
-                let calculatedSteps = Math.floor(secondsRunning * 2.2);
-                let calculatedDist = (secondsRunning * 0.0032).toFixed(2);
-
-                document.getElementById('liveCalories').innerText = `${calculatedCalories} kcal`;
-                document.getElementById('liveSteps').innerText = `${calculatedSteps} steps`;
-                document.getElementById('liveDistance').innerText = `${calculatedDist} km`;
-
-                const now = new Date();
-                const dayStr = now.toLocaleDateString('en-US', { weekday: 'short' });
-                document.getElementById('liveTimestampInfo').innerText = `📅 Date: ${now.toLocaleDateString()} | Day: ${dayStr} | Exact Sec: ${secondsRunning}s`;
-                document.getElementById('logTimestampSub').innerText = `Last Activity Logged at Exact Sec: ${secondsRunning}s (${dayStr})`;
-
-                let activeBar = document.getElementById('barSat');
-                if(activeBar) {
-                    let currentHeight = 70 + (secondsRunning % 30);
-                    if(currentHeight > 100) currentHeight = 100;
-                    activeBar.style.height = `${currentHeight}%`;
-                }
             }, 1000);
-            alert('Training session started! Live telemetry and graph activity active.');
+
+            // Track actual GPS displacement using watchPosition
+            if (navigator.geolocation) {
+                gpsWatchId = navigator.geolocation.watchPosition(
+                    (pos) => {
+                        let currentLat = pos.coords.latitude;
+                        let currentLon = pos.coords.longitude;
+
+                        if (lastLat !== null && lastLon !== null) {
+                            let distanceDelta = calculateHaversineDistance(lastLat, lastLon, currentLat, currentLon);
+                            if (distanceDelta > 0.5) { // Only count if player physically moves > 0.5 meters
+                                totalDistanceMeters += distanceDelta;
+                                totalStepsCount += Math.floor(distanceDelta * 1.3); // Approximate steps per meter
+                                totalCaloriesBurned += Math.floor(distanceDelta * 0.08); // Real movement calorie burn
+                            }
+                        }
+                        lastLat = currentLat;
+                        lastLon = currentLon;
+
+                        document.getElementById('liveCalories').innerText = `${totalCaloriesBurned} kcal`;
+                        document.getElementById('liveSteps').innerText = `${totalStepsCount} steps`;
+                        document.getElementById('liveDistance').innerText = `${(totalDistanceMeters / 1000).toFixed(2)} km`;
+                    },
+                    (err) => {
+                        console.log("GPS tracking error: ", err);
+                    },
+                    { enableHighAccuracy: true }
+                );
+            }
+
+            alert('⏱️ Training Session Started! GPS Live Tracking Active. Stats will update when physical movement is detected.');
+        }
+
+        function stopTrainingTimer() {
+            if (stopwatchInterval) {
+                clearInterval(stopwatchInterval);
+                stopwatchInterval = null;
+            }
+            if (gpsWatchId !== null && navigator.geolocation) {
+                navigator.geolocation.clearWatch(gpsWatchId);
+                gpsWatchId = null;
+            }
+            alert(`⏹️ Training Session Stopped & Saved!\n• Time: ${document.getElementById('stopwatchDisplay').innerText}\n• Distance: ${(totalDistanceMeters / 1000).toFixed(2)} km\n• Steps: ${totalStepsCount}\n• Calories: ${totalCaloriesBurned} kcal`);
+        }
+
+        function requestGpsPermissionOnly() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (pos) => {
+                        gpsPermissionGranted = true;
+                        localStorage.setItem('gps_allowed', 'true');
+                        lastLat = pos.coords.latitude;
+                        lastLon = pos.coords.longitude;
+                        alert('✅ GPS Permission granted successfully! You can now tap Start Training Session.');
+                        updateLiveTimestampDisplay();
+                    },
+                    (err) => {
+                        alert('❌ Permission denied again. Cannot start live GPS tracking.');
+                    },
+                    { enableHighAccuracy: true }
+                );
+            }
+        }
+
+        // Haversine formula to calculate accurate physical distance in meters between coordinates
+        function calculateHaversineDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371e3; // Earth radius in meters
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLon/2) * Math.sin(dLon/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return R * c;
         }
 
         // Inspect Tactical Node on Pitch
