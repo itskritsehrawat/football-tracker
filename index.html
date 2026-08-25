@@ -126,6 +126,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .memo-content {
@@ -232,6 +234,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .player-badge {
@@ -241,6 +245,42 @@
             padding: 12px 18px;
             border-radius: 8px;
             text-align: center;
+        }
+
+        /* Fitness Tracking Stats Grid */
+        .fitness-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .fitness-stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .stat-card {
+            background-color: #030712;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--accent-yellow);
+            margin-top: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         /* Pro Gear Footer Card */
@@ -253,6 +293,8 @@
             justify-content: space-between;
             align-items: center;
             margin-top: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .amazon-btn {
@@ -272,15 +314,16 @@
             background-color: #059669;
         }
 
-        /* Football Pitch */
+        /* Realistic Football Pitch with Ball */
         .football-pitch {
             position: relative;
             background-color: var(--pitch-green);
             border: 2px solid #10b981;
             border-radius: 8px;
-            height: 450px;
+            height: 480px;
             width: 100%;
             overflow: hidden;
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.5);
         }
 
         .pitch-center-line {
@@ -289,9 +332,25 @@
         }
 
         .pitch-center-circle {
-            position: absolute; top: 50%; left: 50%; width: 90px; height: 90px;
+            position: absolute; top: 50%; left: 50%; width: 100px; height: 100px;
             border: 2px solid rgba(255,255,255,0.3); border-radius: 50%;
             transform: translate(-50%, -50%);
+        }
+
+        .match-ball {
+            position: absolute;
+            top: 50%; left: 52%;
+            width: 16px; height: 16px;
+            background: radial-gradient(circle at 30% 30%, #fff 0%, #111 70%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px rgba(255,255,255,0.8);
+            animation: bounceBall 2s infinite ease-in-out;
+        }
+
+        @keyframes bounceBall {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-40%, -45%) scale(1.15); }
         }
 
         .player-node {
@@ -305,9 +364,10 @@
             cursor: pointer;
             transform: translate(-50%, -50%);
             border: 2px solid #93c5fd;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.4);
+            transition: transform 0.2s;
         }
-
+        .player-node:hover { transform: translate(-50%, -50%) scale(1.1); z-index: 10; }
         .player-node.gk { background-color: #f59e0b; border-color: #fcd34d; }
         .player-node.dm { background-color: #ef4444; border-color: #fca5a5; }
 
@@ -322,6 +382,48 @@
         }
 
         .diet-card { border-left-color: #10b981; }
+
+        /* Graph representation for Logs */
+        .chart-container {
+            background-color: #030712;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 15px;
+        }
+
+        .bar-chart {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            height: 180px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+            gap: 10px;
+        }
+
+        .bar-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            height: 100%;
+            justify-content: flex-end;
+        }
+
+        .bar-fill {
+            width: 100%;
+            max-width: 35px;
+            background: linear-gradient(to top, #d97706, var(--accent-gold));
+            border-radius: 4px 4px 0 0;
+            transition: height 0.5s ease;
+        }
+
+        .bar-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
 
         /* AI Q&A */
         .ai-input {
@@ -382,7 +484,7 @@
             
             <div class="form-group">
                 <label>Player Full Name</label>
-                <input type="text" id="regName" class="login-input" placeholder="e.g. Krit Sehrawat">
+                <input type="text" id="regName" class="login-input" placeholder="Enter your name">
             </div>
 
             <div class="form-group">
@@ -438,7 +540,7 @@
         <div class="nav-tab" onclick="switchTab(6)">📊 Logs</div>
     </div>
 
-    <!-- 1. Live Academy Panel -->
+    <!-- 1. Live Academy Panel (Fitness Tracker Hub) -->
     <div class="section-panel active">
         <div class="profile-box">
             <div>
@@ -451,39 +553,56 @@
             </div>
         </div>
 
+        <!-- Live Fitness Metrics Widget -->
+        <div class="fitness-stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">🔥 Calories Burned</div>
+                <div class="stat-value" id="liveCalories">0 kcal</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">👟 Live Steps / Cadence</div>
+                <div class="stat-value" id="liveSteps">0 steps</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">📍 Distance Covered</div>
+                <div class="stat-value" id="liveDistance">0.00 km</div>
+            </div>
+        </div>
+
         <div class="panel-title">Pitch Training Stopwatch</div>
         <div class="panel-desc">Record your intense training minutes. Prove your grit!</div>
         <div style="font-size: 2rem; font-weight: 700; color: #10b981; margin-bottom: 15px;" id="stopwatchDisplay">00:00:00</div>
         <button class="amazon-btn" onclick="startTrainingTimer()">Start Training Session ⏱️</button>
     </div>
 
-    <!-- 2. Master Timeline Panel -->
+    <!-- 2. Master Timeline Panel (Tough Elite Upgrade) -->
     <div class="section-panel">
-        <div class="panel-title">The Elite Daily Master Timeline</div>
-        <div class="panel-desc">Curious about how top professionals structure their entire day? Here is the exact blueprint from sunrise to match whistle:</div>
+        <div class="panel-title">The Elite Daily Master Timeline (Pro Hardcore Schedule)</div>
+        <div class="panel-desc">European academy blueprint for absolute discipline. Zero compromise from dawn to night whistle:</div>
         
         <div class="routine-card">
-            <strong style="color: var(--accent-gold);">☀️ Morning Routine (06:00 AM - 08:00 AM):</strong>
-            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">Hydration with 500ml water and fresh lemon, 15-min hip mobility stretches, and organic oats with soaked walnuts and whole milk.</p>
+            <strong style="color: var(--accent-gold);">☀️ 05:30 AM - Dawn Awakening & Core Activation:</strong>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">500ml cold lemon water, 30 deep-breath lung capacity drills, and 20 minutes of intense hip-flexor & ankle injury-prevention mobility.</p>
         </div>
         <div class="routine-card">
-            <strong style="color: var(--accent-gold);">⚡ Pre-Training Routine (1 Hour Before Pitch):</strong>
-            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">Mental visualization of 1v1 dribbling, resistance band ankle activation, and 1 ripe banana with natural dates.</p>
+            <strong style="color: var(--accent-gold);">⚡ 02:00 PM - Pre-Pitch Tactical Rehearsal:</strong>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">High-speed cognitive scanning visualization, resistance band lateral steps, and 1 whole banana with soaked black raisins for instant clean energy.</p>
         </div>
-        <div class="routine-card">
-            <strong style="color: var(--accent-gold);">🛡️ Post-Training Routine (Immediate After Session):</strong>
-            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">Fresh coconut water with natural salt, 10 minutes deep static stretching, and grilled paneer/chicken with brown rice.</p>
+        <div class="routine-card" style="border-left-color: #ef4444;">
+            <strong style="color: #ef4444;">🛡️ 08:30 PM - Post-Training Acid Flush & Recovery:</strong>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">Ice bath immersion for 8 minutes, fresh green coconut water with pink Himalayan salt, and deep static hamstring stretching.</p>
         </div>
     </div>
 
-    <!-- 3. 11v11 Tactics & Vision Panel -->
+    <!-- 3. 11v11 Tactics & Vision Panel (Realistic with Ball & Players) -->
     <div class="section-panel">
         <div class="panel-title">Professional Club 11v11 Tactics & Option Creator</div>
-        <div class="panel-desc">Tap any player position below on the tactical pitch to reveal exact passing channels and decision guides!</div>
+        <div class="panel-desc">Tactical simulation active. Tap any player position below on the pitch to inspect passing lanes and decision triggers:</div>
         
         <div class="football-pitch">
             <div class="pitch-center-line"></div>
             <div class="pitch-center-circle"></div>
+            <div class="match-ball" title="Match Ball"></div>
             <!-- Tactical Nodes -->
             <div class="player-node gk" style="top: 50%; left: 8%;" onclick="alert('GK: Scan for high press, distribute to fullback or CB with open body shape.')">GK</div>
             <div class="player-node" style="top: 25%; left: 22%;" onclick="alert('LB: Create width, check shoulder, open options for central midfielders.')">LB</div>
@@ -506,7 +625,7 @@
         
         <div class="routine-card" id="bootRecommendationBox">
             <strong style="color: var(--accent-gold);">⚡ Position Boot Match:</strong>
-            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">Speed Boots Recommended: Lightweight synthetic upper with aggressive blade stud configuration for explosive acceleration down the flanks.</p>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">Speed Boots Recommended: Lightweight synthetic upper with aggressive blade stud configuration for explosive acceleration.</p>
         </div>
         <div class="routine-card" style="border-left-color: #ef4444;">
             <strong style="color: #ef4444;">🚫 Strict Natural Diet Rule:</strong>
@@ -552,13 +671,48 @@
         <div id="aiResponseBox" style="margin-top: 15px; color: var(--accent-yellow); font-size: 0.9rem;"></div>
     </div>
 
-    <!-- 7. Logs Panel -->
+    <!-- 7. Logs Panel with Visual Progress Graph -->
     <div class="section-panel">
         <div class="panel-title">Deep Performance Logs & Activity Audit</div>
-        <div class="panel-desc">System logs confirm continuous activity tracking and discipline score.</div>
-        <div style="background-color: #030712; padding: 20px; border-radius: 6px; text-align: center;">
-            <div style="font-size: 2.5rem; font-weight: 700; color: var(--accent-gold);">42 Consecutive Days</div>
-            <div style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">Discipline Status: Elite Professional Trajectory</div>
+        <div class="panel-desc">System logs confirm continuous activity tracking and discipline score. Check your weekly training load progress below:</div>
+        
+        <div style="background-color: #030712; padding: 15px; border-radius: 6px; text-align: center; margin-bottom: 15px;">
+            <div style="font-size: 2rem; font-weight: 700; color: var(--accent-gold);">42 Consecutive Days</div>
+            <div style="color: var(--text-muted); font-size: 0.85rem; margin-top: 3px;">Discipline Status: Elite Professional Trajectory</div>
+        </div>
+
+        <div class="chart-container">
+            <div style="font-size: 0.9rem; font-weight: 600; color: var(--accent-yellow); margin-bottom: 10px;">Weekly Training Intensity & Output (Hours)</div>
+            <div class="bar-chart">
+                <div class="bar-col">
+                    <div class="bar-fill" style="height: 60%;"></div>
+                    <span class="bar-label">Mon</span>
+                </div>
+                <div class="bar-col">
+                    <div class="bar-fill" style="height: 85%;"></div>
+                    <span class="bar-label">Tue</span>
+                </div>
+                <div class="bar-col">
+                    <div class="bar-fill" style="height: 45%;"></div>
+                    <span class="bar-label">Wed</span>
+                </div>
+                <div class="bar-col">
+                    <div class="bar-fill" style="height: 95%;"></div>
+                    <span class="bar-label">Thu</span>
+                </div>
+                <div class="bar-col">
+                    <div class="bar-fill" style="height: 75%;"></div>
+                    <span class="bar-label">Fri</span>
+                </div>
+                <div class="bar-col">
+                    <div class="bar-fill" style="height: 100%;"></div>
+                    <span class="bar-label">Sat</span>
+                </div>
+                <div class="bar-col">
+                    <div class="bar-fill" style="height: 50%;"></div>
+                    <span class="bar-label">Sun</span>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -611,7 +765,6 @@
             document.getElementById('displayBadgePos').innerText = `${data.position} Elite`;
             document.getElementById('coachCommandText').innerText = `"Listen up, ${data.name}! As a top ${data.position}, rely on whole foods and professional vision. Push harder every second!"`;
 
-            // Tailor boot recommendation based on position
             const bootBox = document.getElementById('bootRecommendationBox');
             let bootText = "Speed Boots Recommended: Lightweight synthetic upper with aggressive blade stud configuration for explosive acceleration.";
             if(data.position === 'CB' || data.position === 'DM') {
@@ -639,7 +792,7 @@
             panels[index].classList.add('active');
         }
 
-        // Training Stopwatch Mock
+        // Training Stopwatch & Fitness Tracker Mock
         let stopwatchInterval;
         let secondsRunning = 0;
         function startTrainingTimer() {
@@ -650,8 +803,17 @@
                 let mins = Math.floor((secondsRunning % 3600) / 60).toString().padStart(2, '0');
                 let secs = (secondsRunning % 60).toString().padStart(2, '0');
                 document.getElementById('stopwatchDisplay').innerText = `${hrs}:${mins}:${secs}`;
+
+                // Live fitness ticker simulation
+                let calculatedCalories = Math.floor(secondsRunning * 0.18);
+                let calculatedSteps = secondsRunning * 2.2;
+                let calculatedDist = (secondsRunning * 0.0032).toFixed(2);
+
+                document.getElementById('liveCalories').innerText = `${calculatedCalories} kcal`;
+                document.getElementById('liveSteps').innerText = `${Math.floor(calculatedSteps)} steps`;
+                document.getElementById('liveDistance').innerText = `${calculatedDist} km`;
             }, 1000);
-            alert('Training session started! Keep pushing your limits.');
+            alert('Training session started! Live fitness telemetry active.');
         }
 
         // Diet Day Selector
@@ -666,7 +828,7 @@
                 'Thu': '• Breakfast: Upma with mixed vegetables and almonds.<br>• Mid-Morning: Fresh pomegranate seeds.<br>• Lunch: Grilled paneer wrap with whole wheat flatbread.<br>• Dinner: Steamed fish/tofu with spinach.',
                 'Fri': '• Breakfast: Egg whites (or soaked moong sprouts) with toast.<br>• Mid-Morning: Banana and walnuts.<br>• Lunch: Rajma curry with brown rice and salad.<br>• Dinner: Quinoa salad with olive oil dressing.',
                 'Sat': '• Breakfast: Smoothie with bananas, dates, curd, and oats.<br>• Mid-Morning: Handful of roasted chana.<br>• Lunch: Paneer tikka with mint chutney and millet rotis.<br>• Dinner: Vegetable khichdi with pure ghee.',
-                'Sun': '• Breakfast: Multi-grain paratha with curd.<br>• Mid-Morning: Coconut water.<br>• Lunch: Grand recovery feast: brown rice, dal, grilled paneer.<br>• Dinner: Light vegetable soup and warm milk with turmeric.'
+                'Sun': '• Breakfast: Multi-grain paratha with curd.<br>• Mid-Morning: Coconut water.<br>• Lunch: Grand recovery feast: brown rice, dal, grilled chicken/paneer.<br>• Dinner: Light vegetable soup and warm milk with turmeric.'
             };
             document.getElementById('dietContentBox').innerHTML = `<strong>🌱 ${day} 100% Natural Pro Diet Plan:</strong><p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">${diets[day]}</p>`;
         }
