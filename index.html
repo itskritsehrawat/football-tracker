@@ -598,7 +598,7 @@
         <div class="nav-tab" onclick="switchTab(6)">📊 Logs</div>
     </div>
 
-    <!-- 1. Live Academy Panel (Enhanced Elite Dashboard Home) -->
+    <!-- 1. Live Academy Panel -->
     <div class="section-panel active">
         <div class="profile-box">
             <div>
@@ -678,7 +678,7 @@
         </div>
     </div>
 
-    <!-- 3. 11v11 Tactics & Vision Panel (Realistic with Ball & Animated Tactical Guidance) -->
+    <!-- 3. 11v11 Tactics & Vision Panel -->
     <div class="section-panel">
         <div class="panel-title">Professional Club 11v11 Tactics & Option Creator</div>
         <div class="panel-desc">Pitch simulation active. Tap any player position below or ask AI to see ball movement vectors and passing instructions:</div>
@@ -703,14 +703,14 @@
         </div>
     </div>
 
-    <!-- 4. Boots & Natural Diet Panel -->
+    <!-- 4. Boots & Position-Based Amazon Hub Panel -->
     <div class="section-panel">
-        <div class="panel-title">Smart Boot Matcher & 100% Natural Fuel Hub</div>
-        <div class="panel-desc">The web senses your position and recommends the exact boot category:</div>
+        <div class="panel-title">Smart Position-Based Equipment & Natural Fuel Hub</div>
+        <div class="panel-desc">Your position dictates your gear. Amazon recommendations auto-adjust for your role:</div>
         
         <div class="routine-card" id="bootRecommendationBox">
-            <strong style="color: var(--accent-gold);">⚡ Position Boot Match:</strong>
-            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">Speed Boots Recommended: Lightweight synthetic upper with aggressive blade stud configuration.</p>
+            <strong style="color: var(--accent-gold);">⚡ Position Gear Match:</strong>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">Loading customized recommendations...</p>
         </div>
         <div class="routine-card" style="border-left-color: #ef4444;">
             <strong style="color: #ef4444;">🚫 Strict Natural Diet Rule:</strong>
@@ -745,7 +745,7 @@
         </div>
     </div>
 
-    <!-- 6. Elite AI Q&A Panel (Connected with Live Pitch Vectors) -->
+    <!-- 6. Elite AI Q&A Panel -->
     <div class="section-panel">
         <div class="panel-title">Elite Coach AI Q&A & Match Situation Reader</div>
         <div class="panel-desc">Type your match problem. The AI gives you a solution and instantly moves the ball & players on the 11v11 tactical pitch with directional instructions:</div>
@@ -756,7 +756,7 @@
         <div id="aiResponseBox" style="margin-top: 15px; color: var(--accent-yellow); font-size: 0.9rem;"></div>
     </div>
 
-    <!-- 7. Logs Panel with Live Dynamic Progress Graph -->
+    <!-- 7. Logs Panel -->
     <div class="section-panel">
         <div class="panel-title">Deep Performance Logs & Activity Audit</div>
         <div class="panel-desc">Graphs update dynamically based on your training sessions. Timestamped second-by-second audit:</div>
@@ -801,18 +801,17 @@
         </div>
     </div>
 
-    <!-- Persistent Amazon Sports Section Equipment Hub -->
+    <!-- Persistent Dynamic Amazon Associate Equipment Hub (Changes based on player position) -->
     <div class="amazon-hub">
         <div>
-            <div style="font-size: 1.1rem; font-weight: 700; color: var(--accent-gold);">"Your Game Is Hard? Make It Harder with Pro Equipment!"</div>
-            <div style="color: var(--text-muted); font-size: 0.85rem; margin-top: 3px;">Equip grip socks, resistance bands, and training footballs on Amazon.</div>
+            <div style="font-size: 1.1rem; font-weight: 700; color: var(--accent-gold);" id="amazonBannerTitle">"Equip Pro Gear for Your Position!"</div>
+            <div style="color: var(--text-muted); font-size: 0.85rem; margin-top: 3px;" id="amazonBannerDesc">Get position-specific boots, gloves, and training gear on Amazon.</div>
         </div>
-        <!-- Direct link to Amazon Sports & Outdoors / Soccer Equipment section -->
-        <a href="https://www.amazon.com/s?k=soccer+grip+socks+training+resistance+bands" target="_blank" class="amazon-btn">On Amazon Sports ↗</a>
+        <a href="https://www.amazon.com/s?k=soccer+grip+socks+training+resistance+bands" target="_blank" id="amazonDynamicLink" class="amazon-btn">Shop on Amazon ↗</a>
     </div>
 
     <script>
-        // --- PROFESSIONAL CLUB DOSSIER & LIVE TIME-BASED THEME ENGINE ---
+        // --- PROFESSIONAL CLUB DOSSIER & LIVE TIME-BASED THEME & DYNAMIC AMAZON ASSOCIATE ENGINE ---
         window.onload = function() {
             const savedName = localStorage.getItem('pro_player_name');
             if (savedName) {
@@ -822,6 +821,9 @@
                     tier: localStorage.getItem('pro_player_tier'),
                     goal: localStorage.getItem('pro_player_goal')
                 });
+            } else {
+                // Default setup if first load
+                updateAmazonAffiliateLinks('LW');
             }
             applyTimeBasedProfessionalTheme();
             updateLiveTimestampDisplay();
@@ -833,28 +835,24 @@
             let themeName = "Night Tactical";
 
             if (currentHour >= 5 && currentHour < 12) {
-                // Morning Theme (Fresh, vibrant lighting)
                 root.style.setProperty('--bg-dark', '#0f172a');
                 root.style.setProperty('--card-bg', '#1e293b');
                 root.style.setProperty('--border-color', '#334155');
                 root.style.setProperty('--accent-gold', '#eab308');
                 themeName = "🌅 Morning Pro Theme";
             } else if (currentHour >= 12 && currentHour < 17) {
-                // Afternoon Theme (Sharp high-contrast daylight)
                 root.style.setProperty('--bg-dark', '#090d16');
                 root.style.setProperty('--card-bg', '#111827');
                 root.style.setProperty('--border-color', '#1f2937');
                 root.style.setProperty('--accent-gold', '#f59e0b');
                 themeName = "☀️ Afternoon Matchday Theme";
             } else if (currentHour >= 17 && currentHour < 21) {
-                // Evening Theme (Floodlight twilight stadium glow)
                 root.style.setProperty('--bg-dark', '#0c0a1d');
                 root.style.setProperty('--card-bg', '#171430');
                 root.style.setProperty('--border-color', '#2c2552');
                 root.style.setProperty('--accent-gold', '#fbbf24');
                 themeName = "🌆 Evening Floodlight Theme";
             } else {
-                // Night Theme (Deep focused tactical mode)
                 root.style.setProperty('--bg-dark', '#05070b');
                 root.style.setProperty('--card-bg', '#0d111a');
                 root.style.setProperty('--border-color', '#161e2e');
@@ -902,14 +900,44 @@
             document.getElementById('displayBadgePos').innerText = `${data.position} ELITE`;
             document.getElementById('coachCommandText').innerText = `"Listen up, ${data.name}! As a top ${data.position}, rely on whole foods and professional vision. Push harder every second!"`;
 
+            // Update Dynamic Amazon Affiliate Links & Equipment based on Position
+            updateAmazonAffiliateLinks(data.position);
+        }
+
+        function updateAmazonAffiliateLinks(pos) {
             const bootBox = document.getElementById('bootRecommendationBox');
-            let bootText = "Speed Boots Recommended: Lightweight synthetic upper with aggressive blade stud configuration for explosive acceleration.";
-            if(data.position === 'CB' || data.position === 'DM') {
-                bootText = "Control & Stability Boots Recommended: Leather or reinforced synthetic upper with conical studs for firm traction and precise passing distribution under pressure.";
-            } else if(data.position === 'GK') {
-                bootText = "Goalkeeper Grip & Traction Boots: Wide soleplate stability and hybrid stud configuration for rapid lateral dives.";
+            const bannerTitle = document.getElementById('amazonBannerTitle');
+            const bannerDesc = document.getElementById('amazonBannerDesc');
+            const amazonLink = document.getElementById('amazonDynamicLink');
+
+            let bootText = "";
+            let searchQuery = "";
+            let gearTitle = "";
+            let gearDesc = "";
+
+            if(pos === 'GK') {
+                bootText = "Goalkeeper Grip & Traction Boots: Wide soleplate stability with hybrid stud configuration for rapid lateral dives and goal protection.";
+                searchQuery = "soccer+goalkeeper+gloves+grip+socks";
+                gearTitle = "🛡️ Goalkeeper Essential Kit on Amazon";
+                gearDesc = "Pro Goalkeeper Gloves, Grip Socks & Agility Training Gear.";
+            } else if(pos === 'CB' || pos === 'DM') {
+                bootText = "Control & Stability Boots Recommended: Leather or reinforced synthetic upper with conical studs for firm traction and precise passing distribution.";
+                searchQuery = "soccer+control+boots+shinguards+resistance+bands";
+                gearTitle = "🛡️ Defender & Midfield Gear on Amazon";
+                gearDesc = "Defensive Shin Guards, Control Boots & Resistance Bands.";
+            } else {
+                // For Wingers (LW, RW) & Strikers (ST)
+                bootText = "Speed Boots Recommended: Lightweight synthetic upper with aggressive blade stud configuration for explosive acceleration and sharp cuts.";
+                searchQuery = "soccer+speed+boots+grip+socks+agility+ladder";
+                gearTitle = "⚡ Winger & Striker Speed Gear on Amazon";
+                gearDesc = "Speed Football Boots, Anti-Slip Grip Socks & Agility Training Equipment.";
             }
-            bootBox.innerHTML = `<strong style="color: var(--accent-gold);">⚡ Position Match (${data.position}):</strong><p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">${bootText}</p>`;
+
+            bootBox.innerHTML = `<strong style="color: var(--accent-gold);">⚡ Position Match (${pos}) & Amazon Gear:</strong><p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">${bootText}</p>`;
+            bannerTitle.innerText = gearTitle;
+            bannerDesc.innerText = gearDesc;
+            // NOTE: You can replace &tag=yourtag-20 with your actual Amazon Associate Tracking ID when ready!
+            amazonLink.href = `https://www.amazon.com/s?k=${searchQuery}`;
         }
 
         function handleLogout() {
