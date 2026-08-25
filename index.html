@@ -30,6 +30,7 @@
             color: var(--text-main);
             padding: 20px;
             min-height: 100vh;
+            transition: background 0.5s ease;
         }
 
         /* Professional Club Dossier Login Overlay */
@@ -633,7 +634,7 @@
         <!-- Live Live Timestamp and Telemetry info -->
         <div style="background-color: #030712; border: 1px solid var(--border-color); padding: 10px 15px; border-radius: 6px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
             <div style="font-size: 0.85rem; color: var(--accent-yellow);" id="liveTimestampInfo">📅 Date: Tuesday, Aug 25, 2026 | Day: Tue | Real Time Active</div>
-            <div style="font-size: 0.85rem; color: #10b981;">🟢 Live Activity Status: Standby / Ready</div>
+            <div style="font-size: 0.85rem; color: #10b981;" id="themeStatusIndicator">🟢 Theme: Auto Live Dynamic</div>
         </div>
 
         <!-- Live Fitness Metrics Widget -->
@@ -800,17 +801,18 @@
         </div>
     </div>
 
-    <!-- Persistent Amazon Pro Gear Recommendation Hub -->
+    <!-- Persistent Amazon Sports Section Equipment Hub -->
     <div class="amazon-hub">
         <div>
             <div style="font-size: 1.1rem; font-weight: 700; color: var(--accent-gold);">"Your Game Is Hard? Make It Harder with Pro Equipment!"</div>
             <div style="color: var(--text-muted); font-size: 0.85rem; margin-top: 3px;">Equip grip socks, resistance bands, and training footballs on Amazon.</div>
         </div>
-        <a href="https://www.amazon.com" target="_blank" class="amazon-btn">On Amazon ↗</a>
+        <!-- Direct link to Amazon Sports & Outdoors / Soccer Equipment section -->
+        <a href="https://www.amazon.com/s?k=soccer+grip+socks+training+resistance+bands" target="_blank" class="amazon-btn">On Amazon Sports ↗</a>
     </div>
 
     <script>
-        // --- PROFESSIONAL CLUB DOSSIER SYSTEM ---
+        // --- PROFESSIONAL CLUB DOSSIER & LIVE TIME-BASED THEME ENGINE ---
         window.onload = function() {
             const savedName = localStorage.getItem('pro_player_name');
             if (savedName) {
@@ -821,8 +823,50 @@
                     goal: localStorage.getItem('pro_player_goal')
                 });
             }
+            applyTimeBasedProfessionalTheme();
             updateLiveTimestampDisplay();
         };
+
+        function applyTimeBasedProfessionalTheme() {
+            const currentHour = new Date().getHours();
+            const root = document.documentElement;
+            let themeName = "Night Tactical";
+
+            if (currentHour >= 5 && currentHour < 12) {
+                // Morning Theme (Fresh, vibrant lighting)
+                root.style.setProperty('--bg-dark', '#0f172a');
+                root.style.setProperty('--card-bg', '#1e293b');
+                root.style.setProperty('--border-color', '#334155');
+                root.style.setProperty('--accent-gold', '#eab308');
+                themeName = "🌅 Morning Pro Theme";
+            } else if (currentHour >= 12 && currentHour < 17) {
+                // Afternoon Theme (Sharp high-contrast daylight)
+                root.style.setProperty('--bg-dark', '#090d16');
+                root.style.setProperty('--card-bg', '#111827');
+                root.style.setProperty('--border-color', '#1f2937');
+                root.style.setProperty('--accent-gold', '#f59e0b');
+                themeName = "☀️ Afternoon Matchday Theme";
+            } else if (currentHour >= 17 && currentHour < 21) {
+                // Evening Theme (Floodlight twilight stadium glow)
+                root.style.setProperty('--bg-dark', '#0c0a1d');
+                root.style.setProperty('--card-bg', '#171430');
+                root.style.setProperty('--border-color', '#2c2552');
+                root.style.setProperty('--accent-gold', '#fbbf24');
+                themeName = "🌆 Evening Floodlight Theme";
+            } else {
+                // Night Theme (Deep focused tactical mode)
+                root.style.setProperty('--bg-dark', '#05070b');
+                root.style.setProperty('--card-bg', '#0d111a');
+                root.style.setProperty('--border-color', '#161e2e');
+                root.style.setProperty('--accent-gold', '#f59e0b');
+                themeName = "🌙 Night Tactical Theme";
+            }
+
+            const indicator = document.getElementById('themeStatusIndicator');
+            if(indicator) {
+                indicator.innerText = `🟢 Theme: ${themeName}`;
+            }
+        }
 
         function updateLiveTimestampDisplay() {
             const now = new Date();
@@ -897,7 +941,6 @@
                 let secs = (secondsRunning % 60).toString().padStart(2, '0');
                 document.getElementById('stopwatchDisplay').innerText = `${hrs}:${mins}:${secs}`;
 
-                // Live fitness ticker simulation based on seconds
                 let calculatedCalories = Math.floor(secondsRunning * 0.18);
                 let calculatedSteps = Math.floor(secondsRunning * 2.2);
                 let calculatedDist = (secondsRunning * 0.0032).toFixed(2);
@@ -906,13 +949,11 @@
                 document.getElementById('liveSteps').innerText = `${calculatedSteps} steps`;
                 document.getElementById('liveDistance').innerText = `${calculatedDist} km`;
 
-                // Update timestamp with exact seconds
                 const now = new Date();
                 const dayStr = now.toLocaleDateString('en-US', { weekday: 'short' });
                 document.getElementById('liveTimestampInfo').innerText = `📅 Date: ${now.toLocaleDateString()} | Day: ${dayStr} | Exact Sec: ${secondsRunning}s`;
                 document.getElementById('logTimestampSub').innerText = `Last Activity Logged at Exact Sec: ${secondsRunning}s (${dayStr})`;
 
-                // Live Dynamic Graph Bar Growth during activity
                 let activeBar = document.getElementById('barSat');
                 if(activeBar) {
                     let currentHeight = 70 + (secondsRunning % 30);
@@ -929,7 +970,6 @@
             overlay.style.display = 'block';
             overlay.innerHTML = `⚽ Position Vector (${pos}): ${desc} → <strong>Direction: Move ball into open space!</strong>`;
             
-            // Move ball towards that position slightly for realism
             const ball = document.getElementById('pitchMatchBall');
             if(pos === 'LW') { ball.style.top = '20%'; ball.style.left = '75%'; }
             else if(pos === 'ST') { ball.style.top = '50%'; ball.style.left = '80%'; }
@@ -965,7 +1005,6 @@
                 return;
             }
 
-            // Animate ball and overlay on pitch tab
             const overlay = document.getElementById('tacticalVectorOverlay');
             overlay.style.display = 'block';
             overlay.innerHTML = `🤖 AI Tactical Vector for ${playerName} (${playerPos}): This player moves forward with ball $\\rightarrow$ Pass to CM $\\rightarrow$ Striker makes overlapping run to the right!`;
