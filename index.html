@@ -224,7 +224,7 @@
             margin-bottom: 20px;
         }
 
-        /* Profile Header Box */
+        /* Profile Header Box with Quick Stats Badge */
         .profile-box {
             background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
             border: 1px solid var(--border-color);
@@ -239,12 +239,49 @@
         }
 
         .player-badge {
-            background-color: var(--accent-gold);
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
             color: #000;
             font-weight: 800;
-            padding: 12px 18px;
-            border-radius: 8px;
+            padding: 12px 20px;
+            border-radius: 10px;
             text-align: center;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+        }
+
+        /* Quick Action Dashboard Grid */
+        .quick-actions-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .quick-actions-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .action-chip {
+            background-color: #030712;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .action-chip:hover {
+            border-color: var(--accent-gold);
+            background-color: #111827;
+        }
+
+        .action-chip-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent-yellow);
+            margin-top: 4px;
         }
 
         /* Fitness Tracking Stats Grid */
@@ -267,6 +304,15 @@
             border-radius: 8px;
             padding: 15px;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 4px; height: 100%;
+            background-color: var(--accent-gold);
         }
 
         .stat-value {
@@ -524,7 +570,7 @@
 
             <div class="form-group">
                 <label>Main Weakness / Challenge</label>
-                <input type="text" id="regGoal" class="login-input" placeholder="e.g. Panic under high press">
+                <input type="text" id="regGoal" class="login-input" placeholder="e.g. High pressure scanning">
             </div>
 
             <button class="login-btn" onclick="handleProLogin()">Initialize Elite Club Dossier ⚡</button>
@@ -551,22 +597,42 @@
         <div class="nav-tab" onclick="switchTab(6)">📊 Logs</div>
     </div>
 
-    <!-- 1. Live Academy Panel (Fitness Tracker Hub with Live Timestamp & Graphs) -->
+    <!-- 1. Live Academy Panel (Enhanced Elite Dashboard Home) -->
     <div class="section-panel active">
         <div class="profile-box">
             <div>
-                <div style="font-size: 1.5rem; font-weight: 700; color: var(--text-main);" id="displayName">Player</div>
-                <div style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;" id="displayTier">Professional Tier Active</div>
+                <div style="font-size: 1.5rem; font-weight: 700; color: var(--text-main);" id="displayName">krit</div>
+                <div style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;" id="displayTier">Professional Tier Active • Focus Goal: "high prsser"</div>
             </div>
             <div class="player-badge">
                 <div style="font-size: 1.8rem;" id="displayRating">89</div>
-                <div style="font-size: 0.75rem; text-transform: uppercase;" id="displayBadgePos">LW Elite</div>
+                <div style="font-size: 0.75rem; text-transform: uppercase;" id="displayBadgePos">LW ELITE</div>
+            </div>
+        </div>
+
+        <!-- Quick Action Shortcuts Dashboard Bar -->
+        <div class="quick-actions-grid">
+            <div class="action-chip" onclick="switchTab(1)">
+                <div style="font-size: 1.2rem;">⏰</div>
+                <div class="action-chip-title">Master Timeline</div>
+            </div>
+            <div class="action-chip" onclick="switchTab(2)">
+                <div style="font-size: 1.2rem;">⚽</div>
+                <div class="action-chip-title">Tactics & Vision</div>
+            </div>
+            <div class="action-chip" onclick="switchTab(4)">
+                <div style="font-size: 1.2rem;">🍲</div>
+                <div class="action-chip-title">Natural Diet</div>
+            </div>
+            <div class="action-chip" onclick="switchTab(6)">
+                <div style="font-size: 1.2rem;">📊</div>
+                <div class="action-chip-title">Activity Logs</div>
             </div>
         </div>
 
         <!-- Live Live Timestamp and Telemetry info -->
         <div style="background-color: #030712; border: 1px solid var(--border-color); padding: 10px 15px; border-radius: 6px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-            <div style="font-size: 0.85rem; color: var(--accent-yellow);" id="liveTimestampInfo">📅 Date: -- | Day: -- | Exact Sec: 0s</div>
+            <div style="font-size: 0.85rem; color: var(--accent-yellow);" id="liveTimestampInfo">📅 Date: Tuesday, Aug 25, 2026 | Day: Tue | Real Time Active</div>
             <div style="font-size: 0.85rem; color: #10b981;">🟢 Live Activity Status: Standby / Ready</div>
         </div>
 
@@ -789,7 +855,7 @@
             document.getElementById('loginOverlay').style.display = 'none';
             document.getElementById('displayName').innerText = data.name;
             document.getElementById('displayTier').innerText = `${data.tier} • Focus Goal: "${data.goal || 'Elite Professional Mastery'}"`;
-            document.getElementById('displayBadgePos').innerText = `${data.position} Elite`;
+            document.getElementById('displayBadgePos').innerText = `${data.position} ELITE`;
             document.getElementById('coachCommandText').innerText = `"Listen up, ${data.name}! As a top ${data.position}, rely on whole foods and professional vision. Push harder every second!"`;
 
             const bootBox = document.getElementById('bootRecommendationBox');
