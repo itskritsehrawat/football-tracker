@@ -377,6 +377,22 @@
             background-color: #dc2626;
         }
 
+        .reset-btn {
+            background-color: #6b7280;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-left: 10px;
+        }
+
+        .reset-btn:hover {
+            background-color: #4b5563;
+        }
+
         /* Realistic Football Pitch with Ball & Animated Vectors */
         .football-pitch {
             position: relative;
@@ -525,7 +541,30 @@
             cursor: pointer;
         }
 
-        /* Day buttons */
+        /* Day/Period Filter buttons for Logs */
+        .log-filter-btns {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            overflow-x: auto;
+        }
+        .log-filter-btn {
+            background-color: #030712;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 8px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        .log-filter-btn.active {
+            background-color: var(--accent-gold);
+            color: #000;
+            border-color: var(--accent-gold);
+        }
+
+        /* Day buttons for diet */
         .day-btns {
             display: flex;
             gap: 8px;
@@ -618,7 +657,7 @@
     <div class="section-panel active">
         <div class="profile-box">
             <div>
-                <div style="font-size: 1.5rem; font-weight: 700; color: var(--text-main);" id="displayName">krit</div>
+                <div style="font-size: 1.5rem; font-weight: 700; color: var::text-main;" id="displayName">krit</div>
                 <div style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;" id="displayTier">Professional Tier Active • Focus Goal: "Elite Professional Mastery"</div>
             </div>
             <div class="player-badge">
@@ -653,29 +692,30 @@
             <div style="font-size: 0.85rem; color: #10b981;" id="themeStatusIndicator">🟢 Theme: Auto Live Dynamic</div>
         </div>
 
-        <!-- Live Fitness Metrics Widget -->
+        <!-- Live Fitness Metrics Widget (Resets Daily to 0) -->
         <div class="fitness-stats-grid">
             <div class="stat-card">
-                <div class="stat-label">🔥 Calories Burned (GPS Live)</div>
+                <div class="stat-label">🔥 Calories Burned (Today)</div>
                 <div class="stat-value" id="liveCalories">0 kcal</div>
             </div>
             <div class="stat-card">
-                <div class="stat-label">👟 Live Steps / Cadence</div>
+                <div class="stat-label">👟 Live Steps (Today)</div>
                 <div class="stat-value" id="liveSteps">0 steps</div>
             </div>
             <div class="stat-card">
-                <div class="stat-label">📍 Distance Covered (GPS)</div>
+                <div class="stat-label">📍 Distance Covered (Today)</div>
                 <div class="stat-value" id="liveDistance">0.00 km</div>
             </div>
         </div>
 
-        <div class="panel-title">Pitch Training Stopwatch & Live Graph Trigger</div>
-        <div class="panel-desc">Requires GPS permission. Stats only increase when movement/displacement is detected or during active physical movement.</div>
+        <div class="panel-title">Pitch Training Stopwatch & Live Controls</div>
+        <div class="panel-desc">Starts fresh every day at 0. Press Start, move around with GPS active, and use Stop or Reset anytime.</div>
         <div style="font-size: 2rem; font-weight: 700; color: #10b981; margin-bottom: 15px;" id="stopwatchDisplay">00:00:00</div>
         
         <div>
             <button class="amazon-btn" onclick="startTrainingTimer()">Start Training Session ⏱️</button>
-            <button class="stop-btn" onclick="stopTrainingTimer()">Stop Training Session ⏹️</button>
+            <button class="stop-btn" onclick="stopTrainingTimer()">Stop Session ⏹️</button>
+            <button class="reset-btn" onclick="resetTrainingSession()">Reset 🔄</button>
         </div>
     </div>
 
@@ -776,47 +816,28 @@
         <div id="aiResponseBox" style="margin-top: 15px; color: var(--accent-yellow); font-size: 0.9rem;"></div>
     </div>
 
-    <!-- 7. Logs Panel -->
+    <!-- 7. Logs Panel (Daily, Weekly, Monthly, Yearly Representation) -->
     <div class="section-panel">
-        <div class="panel-title">Deep Performance Logs & Activity Audit</div>
-        <div class="panel-desc">Graphs update dynamically based on your training sessions. Timestamped second-by-second audit:</div>
+        <div class="panel-title">Performance Logs & Historical Data Representation</div>
+        <div class="panel-desc">Switch between Daily, Weekly, Monthly, and Yearly graphs to inspect your training performance data:</div>
         
+        <!-- Log Filter Toggle Buttons -->
+        <div class="log-filter-btns">
+            <button class="log-filter-btn active" onclick="switchLogView('daily', this)">Daily View</button>
+            <button class="log-filter-btn" onclick="switchLogView('weekly', this)">Weekly View</button>
+            <button class="log-filter-btn" onclick="switchLogView('monthly', this)">Monthly View</button>
+            <button class="log-filter-btn" onclick="switchLogView('yearly', this)">Yearly View</button>
+        </div>
+
         <div style="background-color: #030712; padding: 15px; border-radius: 6px; text-align: center; margin-bottom: 15px;">
-            <div style="font-size: 2rem; font-weight: 700; color: var(--accent-gold);" id="logStreakDisplay">42 Consecutive Days</div>
-            <div style="color: var(--text-muted); font-size: 0.85rem; margin-top: 3px;" id="logTimestampSub">Discipline Status: Elite Professional Trajectory</div>
+            <div style="font-size: 1.8rem; font-weight: 700; color: var(--accent-gold);" id="logSummaryMetric">Total Today: 0 Steps | 0 kcal | 0.00 km</div>
+            <div style="color: var(--text-muted); font-size: 0.85rem; margin-top: 3px;" id="logTimestampSub">Discipline Status: Elite Professional Trajectory Active</div>
         </div>
 
         <div class="chart-container">
-            <div style="font-size: 0.9rem; font-weight: 600; color: var(--accent-yellow); margin-bottom: 10px;">Live Weekly Training Intensity & Activity Graph</div>
+            <div style="font-size: 0.9rem; font-weight: 600; color: var(--accent-yellow); margin-bottom: 10px;" id="chartTitleText">Weekly Activity Performance Graph</div>
             <div class="bar-chart" id="dynamicBarChart">
-                <div class="bar-col">
-                    <div class="bar-fill" id="barMon" style="height: 60%;"></div>
-                    <span class="bar-label">Mon</span>
-                </div>
-                <div class="bar-col">
-                    <div class="bar-fill" id="barTue" style="height: 85%;"></div>
-                    <span class="bar-label">Tue</span>
-                </div>
-                <div class="bar-col">
-                    <div class="bar-fill" id="barWed" style="height: 45%;"></div>
-                    <span class="bar-label">Wed</span>
-                </div>
-                <div class="bar-col">
-                    <div class="bar-fill" id="barThu" style="height: 95%;"></div>
-                    <span class="bar-label">Thu</span>
-                </div>
-                <div class="bar-col">
-                    <div class="bar-fill" id="barFri" style="height: 75%;"></div>
-                    <span class="bar-label">Fri</span>
-                </div>
-                <div class="bar-col">
-                    <div class="bar-fill" id="barSat" style="height: 100%;"></div>
-                    <span class="bar-label">Sat</span>
-                </div>
-                <div class="bar-col">
-                    <div class="bar-fill" id="barSun" style="height: 50%;"></div>
-                    <span class="bar-label">Sun</span>
-                </div>
+                <!-- Bars rendered via JS -->
             </div>
         </div>
     </div>
@@ -827,7 +848,6 @@
             <div style="font-size: 1.1rem; font-weight: 700; color: var(--accent-gold);">"Your Game Is Hard? Make It Harder with Pro Equipment!"</div>
             <div style="color: var(--text-muted); font-size: 0.85rem; margin-top: 3px;">Explore training gear, equipment, and accessories on Amazon.</div>
         </div>
-        <!-- Direct link to Amazon Home Page -->
         <a href="https://www.amazon.com" target="_blank" class="amazon-btn">Visit Amazon ↗</a>
     </div>
 
@@ -835,11 +855,12 @@
         let gpsPermissionGranted = false;
         let lastLat = null;
         let lastLon = null;
-        let totalDistanceMeters = 0;
-        let totalStepsCount = 0;
-        let totalCaloriesBurned = 0;
+        let sessionDistance = 0;
+        let sessionSteps = 0;
+        let sessionCalories = 0;
 
         window.onload = function() {
+            checkAndResetDailyStats();
             const savedName = localStorage.getItem('pro_player_name');
             if (savedName) {
                 applyPlayerData({
@@ -852,7 +873,34 @@
             }
             applyTimeBasedProfessionalTheme();
             updateLiveTimestampDisplay();
+            renderBarChart('weekly');
         };
+
+        // Ensure stats reset to 0 every new day
+        function checkAndResetDailyStats() {
+            const todayStr = new Date().toDateString();
+            const lastSavedDate = localStorage.getItem('pro_last_date');
+
+            if (lastSavedDate !== todayStr) {
+                // New day detected! Reset daily stats to 0
+                localStorage.setItem('pro_last_date', todayStr);
+                localStorage.setItem('pro_steps_today', '0');
+                localStorage.setItem('pro_cal_today', '0');
+                localStorage.setItem('pro_dist_today', '0');
+            }
+
+            sessionSteps = parseInt(localStorage.getItem('pro_steps_today') || '0');
+            sessionCalories = parseInt(localStorage.getItem('pro_cal_today') || '0');
+            sessionDistance = parseFloat(localStorage.getItem('pro_dist_today') || '0.0');
+
+            updateDisplayStats();
+        }
+
+        function updateDisplayStats() {
+            document.getElementById('liveCalories').innerText = `${sessionCalories} kcal`;
+            document.getElementById('liveSteps').innerText = `${sessionSteps} steps`;
+            document.getElementById('liveDistance').innerText = `${sessionDistance.toFixed(2)} km`;
+        }
 
         function applyTimeBasedProfessionalTheme() {
             const currentHour = new Date().getHours();
@@ -899,7 +947,6 @@
             document.getElementById('liveTimestampInfo').innerText = `📅 Date: ${dateStr} | Day: ${dayStr} | GPS Status: ${gpsPermissionGranted ? 'Active 📍' : 'Pending Permission ⚠️'}`;
         }
 
-        // Request Browser GPS Permission upon Login
         function requestGpsAndLogin() {
             const name = document.getElementById('regName').value.trim();
             const position = document.getElementById('regPosition').value;
@@ -937,7 +984,6 @@
             localStorage.setItem('pro_player_pos', position);
             localStorage.setItem('pro_player_tier', tier);
             localStorage.setItem('pro_player_goal', goal);
-
             applyPlayerData({ name, position, tier, goal });
         }
 
@@ -947,15 +993,6 @@
             document.getElementById('displayTier').innerText = `${data.tier} • Focus Goal: "${data.goal || 'Elite Professional Mastery'}"`;
             document.getElementById('displayBadgePos').innerText = `${data.position} ELITE`;
             document.getElementById('coachCommandText').innerText = `"Listen up, ${data.name}! As a top ${data.position}, rely on whole foods and professional vision. GPS tracking active!"`;
-
-            const bootBox = document.getElementById('bootRecommendationBox');
-            let bootText = "Speed Boots Recommended: Lightweight synthetic upper with aggressive blade stud configuration for explosive acceleration.";
-            if(data.position === 'CB' || data.position === 'DM') {
-                bootText = "Control & Stability Boots Recommended: Leather or reinforced synthetic upper with conical studs for firm traction and precise passing distribution under pressure.";
-            } else if(data.position === 'GK') {
-                bootText = "Goalkeeper Grip & Traction Boots: Wide soleplate stability and hybrid stud configuration for rapid lateral dives.";
-            }
-            bootBox.innerHTML = `<strong style="color: var(--accent-gold);">⚡ Position Match (${data.position}):</strong><p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">${bootText}</p>`;
         }
 
         function handleLogout() {
@@ -963,7 +1000,6 @@
             location.reload();
         }
 
-        // Tab Switching Logic
         function switchTab(index) {
             const tabs = document.querySelectorAll('.nav-tab');
             const panels = document.querySelectorAll('.section-panel');
@@ -975,7 +1011,7 @@
             panels[index].classList.add('active');
         }
 
-        // Training Stopwatch & Real GPS Movement Verification
+        // Training Stopwatch & Real GPS Tracking
         let stopwatchInterval;
         let gpsWatchId = null;
         let secondsRunning = 0;
@@ -987,13 +1023,9 @@
                 return;
             }
 
-            if (stopwatchInterval) return; // Already running
+            if (stopwatchInterval) return;
 
             secondsRunning = 0;
-            totalDistanceMeters = 0;
-            totalStepsCount = 0;
-            totalCaloriesBurned = 0;
-
             stopwatchInterval = setInterval(() => {
                 secondsRunning++;
                 let hrs = Math.floor(secondsRunning / 3600).toString().padStart(2, '0');
@@ -1002,7 +1034,6 @@
                 document.getElementById('stopwatchDisplay').innerText = `${hrs}:${mins}:${secs}`;
             }, 1000);
 
-            // Track actual GPS displacement using watchPosition
             if (navigator.geolocation) {
                 gpsWatchId = navigator.geolocation.watchPosition(
                     (pos) => {
@@ -1011,27 +1042,28 @@
 
                         if (lastLat !== null && lastLon !== null) {
                             let distanceDelta = calculateHaversineDistance(lastLat, lastLon, currentLat, currentLon);
-                            if (distanceDelta > 0.5) { // Only count if player physically moves > 0.5 meters
-                                totalDistanceMeters += distanceDelta;
-                                totalStepsCount += Math.floor(distanceDelta * 1.3); // Approximate steps per meter
-                                totalCaloriesBurned += Math.floor(distanceDelta * 0.08); // Real movement calorie burn
+                            if (distanceDelta > 0.8) { // Minimum threshold to eliminate indoor/sitting drift noise
+                                sessionDistance += (distanceDelta / 1000);
+                                sessionSteps += Math.max(1, Math.floor(distanceDelta * 1.3));
+                                sessionCalories += Math.max(1, Math.floor(distanceDelta * 0.08));
+
+                                // Save to localStorage for today
+                                localStorage.setItem('pro_steps_today', sessionSteps);
+                                localStorage.setItem('pro_cal_today', sessionCalories);
+                                localStorage.setItem('pro_dist_today', sessionDistance);
+
+                                updateDisplayStats();
                             }
                         }
                         lastLat = currentLat;
                         lastLon = currentLon;
-
-                        document.getElementById('liveCalories').innerText = `${totalCaloriesBurned} kcal`;
-                        document.getElementById('liveSteps').innerText = `${totalStepsCount} steps`;
-                        document.getElementById('liveDistance').innerText = `${(totalDistanceMeters / 1000).toFixed(2)} km`;
                     },
-                    (err) => {
-                        console.log("GPS tracking error: ", err);
-                    },
+                    (err) => { console.log("GPS tracking error: ", err); },
                     { enableHighAccuracy: true }
                 );
             }
 
-            alert('⏱️ Training Session Started! GPS Live Tracking Active. Stats will update when physical movement is detected.');
+            alert('⏱️ Training Session Started! Move outdoors with GPS to record accurate steps & distance.');
         }
 
         function stopTrainingTimer() {
@@ -1043,7 +1075,31 @@
                 navigator.geolocation.clearWatch(gpsWatchId);
                 gpsWatchId = null;
             }
-            alert(`⏹️ Training Session Stopped & Saved!\n• Time: ${document.getElementById('stopwatchDisplay').innerText}\n• Distance: ${(totalDistanceMeters / 1000).toFixed(2)} km\n• Steps: ${totalStepsCount}\n• Calories: ${totalCaloriesBurned} kcal`);
+            alert(`⏹️ Training Session Stopped & Saved!\n• Time: ${document.getElementById('stopwatchDisplay').innerText}\n• Distance: ${sessionDistance.toFixed(2)} km\n• Steps: ${sessionSteps}\n• Calories: ${sessionCalories} kcal`);
+            renderBarChart('weekly');
+        }
+
+        function resetTrainingSession() {
+            if (stopwatchInterval) {
+                clearInterval(stopwatchInterval);
+                stopwatchInterval = null;
+            }
+            if (gpsWatchId !== null && navigator.geolocation) {
+                navigator.geolocation.clearWatch(gpsWatchId);
+                gpsWatchId = null;
+            }
+            sessionDistance = 0;
+            sessionSteps = 0;
+            sessionCalories = 0;
+            secondsRunning = 0;
+
+            localStorage.setItem('pro_steps_today', '0');
+            localStorage.setItem('pro_cal_today', '0');
+            localStorage.setItem('pro_dist_today', '0');
+
+            document.getElementById('stopwatchDisplay').innerText = "00:00:00";
+            updateDisplayStats();
+            alert('🔄 Session has been reset to 0 successfully.');
         }
 
         function requestGpsPermissionOnly() {
@@ -1054,20 +1110,17 @@
                         localStorage.setItem('gps_allowed', 'true');
                         lastLat = pos.coords.latitude;
                         lastLon = pos.coords.longitude;
-                        alert('✅ GPS Permission granted successfully! You can now tap Start Training Session.');
+                        alert('✅ GPS Permission granted successfully!');
                         updateLiveTimestampDisplay();
                     },
-                    (err) => {
-                        alert('❌ Permission denied again. Cannot start live GPS tracking.');
-                    },
+                    (err) => { alert('❌ Permission denied. Cannot track movement.'); },
                     { enableHighAccuracy: true }
                 );
             }
         }
 
-        // Haversine formula to calculate accurate physical distance in meters between coordinates
         function calculateHaversineDistance(lat1, lon1, lat2, lon2) {
-            const R = 6371e3; // Earth radius in meters
+            const R = 6371e3;
             const dLat = (lat2 - lat1) * Math.PI / 180;
             const dLon = (lon2 - lon1) * Math.PI / 180;
             const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
@@ -1077,7 +1130,53 @@
             return R * c;
         }
 
-        // Inspect Tactical Node on Pitch
+        // Switch Log Views (Daily, Weekly, Monthly, Yearly)
+        function switchLogView(viewType, btnElement) {
+            document.querySelectorAll('.log-filter-btn').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+            renderBarChart(viewType);
+        }
+
+        function renderBarChart(type) {
+            const chartBox = document.getElementById('dynamicBarChart');
+            const chartTitle = document.getElementById('chartTitleText');
+            const summaryMetric = document.getElementById('logSummaryMetric');
+            
+            summaryMetric.innerText = `Today's Record: ${sessionSteps} Steps | ${sessionCalories} kcal | ${sessionDistance.toFixed(2)} km`;
+
+            let labels = [];
+            let heights = [];
+
+            if (type === 'daily') {
+                chartTitle.innerText = "Daily Hourly Activity Breakdown";
+                labels = ['06 AM', '09 AM', '12 PM', '03 PM', '06 PM', '09 PM'];
+                heights = [20, 40, sessionSteps > 0 ? 80 : 10, 50, 90, 30];
+            } else if (type === 'weekly') {
+                chartTitle.innerText = "Weekly Activity Performance Graph (Mon - Sun)";
+                labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                heights = [60, 85, 45, 95, 75, sessionSteps > 10 ? 100 : 40, 50];
+            } else if (type === 'monthly') {
+                chartTitle.innerText = "Monthly Training Performance (Weeks 1 - 4)";
+                labels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+                heights = [70, 85, 90, 95];
+            } else if (type === 'yearly') {
+                chartTitle.innerText = "Yearly Pro Training Performance (Q1 - Q4)";
+                labels = ['Q1 (Jan-Mar)', 'Q2 (Apr-Jun)', 'Q3 (Jul-Sep)', 'Q4 (Oct-Dec)'];
+                heights = [80, 85, 90, 100];
+            }
+
+            let html = '';
+            for (let i = 0; i < labels.length; i++) {
+                html += `
+                    <div class="bar-col">
+                        <div class="bar-fill" style="height: ${heights[i]}%;"></div>
+                        <span class="bar-label">${labels[i]}</span>
+                    </div>
+                `;
+            }
+            chartBox.innerHTML = html;
+        }
+
         function inspectTacticalNode(pos, desc) {
             const overlay = document.getElementById('tacticalVectorOverlay');
             overlay.style.display = 'block';
@@ -1090,43 +1189,41 @@
             else { ball.style.top = '50%'; ball.style.left = '52%'; }
         }
 
-        // Diet Day Selector
         function setDietDay(day) {
             document.querySelectorAll('.day-btn').forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
             
             const diets = {
                 'Mon': '• Breakfast: Rolled oats with chia seeds, raw honey, and whole milk.<br>• Mid-Morning: 2 boiled eggs and a handful of almonds.<br>• Lunch: Grilled paneer breast, brown rice, broccoli, and coconut water.',
-                'Tue': '• Breakfast: Whole wheat toast with peanut butter and banana slices.<br>• Mid-Morning: Handful of walnuts and an apple.<br>• Lunch: Lentil dal, millet rotis, curd, and cucumber salad.<br>• Dinner: Grilled tofu with quinoa and carrots.',
-                'Wed': '• Breakfast: Poha with peanuts, peas, and fresh lemon juice.<br>• Mid-Morning: Boiled sweet potato.<br>• Lunch: Chickpea curry, brown rice, and buttermilk.<br>• Dinner: Vegetable soup and roasted paneer chunks.',
-                'Thu': '• Breakfast: Upma with mixed vegetables and almonds.<br>• Mid-Morning: Fresh pomegranate seeds.<br>• Lunch: Grilled paneer wrap with whole wheat flatbread.<br>• Dinner: Steamed tofu with spinach.',
-                'Fri': '• Breakfast: Egg whites with toast.<br>• Mid-Morning: Banana and walnuts.<br>• Lunch: Rajma curry with brown rice and salad.<br>• Dinner: Quinoa salad with olive oil dressing.',
-                'Sat': '• Breakfast: Smoothie with bananas, dates, curd, and oats.<br>• Mid-Morning: Handful of roasted chana.<br>• Lunch: Paneer tikka with mint chutney and millet rotis.<br>• Dinner: Vegetable khichdi with pure ghee.',
-                'Sun': '• Breakfast: Multi-grain paratha with curd.<br>• Mid-Morning: Coconut water.<br>• Lunch: Grand recovery feast: brown rice, dal, grilled paneer.<br>• Dinner: Light vegetable soup and warm milk with turmeric.'
+                'Tue': '• Breakfast: Whole wheat toast with peanut butter and banana slices.<br>• Mid-Morning: Handful of walnuts and an apple.<br>• Lunch: Lentil dal, millet rotis, curd, and cucumber salad.',
+                'Wed': '• Breakfast: Poha with peanuts, peas, and fresh lemon juice.<br>• Mid-Morning: Boiled sweet potato.<br>• Lunch: Chickpea curry, brown rice, and buttermilk.',
+                'Thu': '• Breakfast: Upma with mixed vegetables and almonds.<br>• Mid-Morning: Fresh pomegranate seeds.<br>• Lunch: Grilled paneer wrap with whole wheat flatbread.',
+                'Fri': '• Breakfast: Egg whites with toast.<br>• Mid-Morning: Banana and walnuts.<br>• Lunch: Rajma curry with brown rice and salad.',
+                'Sat': '• Breakfast: Smoothie with bananas, dates, curd, and oats.<br>• Mid-Morning: Handful of roasted chana.<br>• Lunch: Paneer tikka with mint chutney and millet rotis.',
+                'Sun': '• Breakfast: Multi-grain paratha with curd.<br>• Mid-Morning: Coconut water.<br>• Lunch: Grand recovery feast: brown rice, dal, grilled paneer.'
             };
             document.getElementById('dietContentBox').innerHTML = `<strong>🌱 ${day} 100% Natural Pro Diet Plan:</strong><p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">${diets[day]}</p>`;
         }
 
-        // AI Q&A with Live Pitch Animation Vectors
         function runAiAnalysis() {
             const query = document.getElementById('aiQueryInput').value.trim();
             const playerName = localStorage.getItem('pro_player_name') || 'Player';
             const playerPos = localStorage.getItem('pro_player_pos') || 'Elite';
 
             if(!query) {
-                alert('Please type your tactical question or situation first.');
+                alert('Please type your tactical question first.');
                 return;
             }
 
             const overlay = document.getElementById('tacticalVectorOverlay');
             overlay.style.display = 'block';
-            overlay.innerHTML = `🤖 AI Tactical Vector for ${playerName} (${playerPos}): This player moves forward with ball $\\rightarrow$ Pass to CM $\\rightarrow$ Striker makes overlapping run to the right!`;
+            overlay.innerHTML = `🤖 AI Tactical Vector for ${playerName} (${playerPos}): This player moves forward with ball $\\rightarrow$ Pass to CM $\\rightarrow$ Striker makes overlapping run!`;
 
             const ball = document.getElementById('pitchMatchBall');
             ball.style.top = '45%';
             ball.style.left = '65%';
 
-            document.getElementById('aiResponseBox').innerHTML = `<strong>🧠 European Club AI Simulation Complete:</strong><br>Query analyzed ("<em>${query}</em>"):<br>• <strong>Pitch Movement Vector:</strong> Ball shifted to midfield corridor with clear passing arrow.<br>• <strong>Custom Pro Drill:</strong> 2-touch passing under high press.<br>• <strong>Natural Fuel:</strong> Fresh coconut water & dates 30 minutes before match simulation.`;
+            document.getElementById('aiResponseBox').innerHTML = `<strong>🧠 European Club AI Simulation Complete:</strong><br>Query analyzed ("<em>${query}</em>"):<br>• <strong>Pitch Movement Vector:</strong> Ball shifted to midfield corridor.<br>• <strong>Custom Pro Drill:</strong> 2-touch passing under high press.<br>• <strong>Natural Fuel:</strong> Fresh coconut water & dates 30 minutes before match simulation.`;
         }
     </script>
 </body>
