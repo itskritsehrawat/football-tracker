@@ -3,1038 +3,685 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PRO-TRAIN FC | Elite Club Academy & Coach Portal</title>
-    <!-- Chart.js CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Elite Football Coaching & Tactical Hub</title>
     <style>
         :root {
-            --bg-dark: #06090f;
-            --card-bg: #0d131f;
-            --card-border: #1a2332;
-            --accent-green: #10b981;
-            --accent-blue: #38bdf8;
-            --accent-yellow: #eab308;
-            --accent-orange: #f97316;
-            --accent-purple: #8b5cf6;
-            --text-white: #f8fafc;
-            --text-dim: #94a3b8;
+            --bg-dark: #0b0f19;
+            --card-bg: #111827;
+            --accent-gold: #f59e0b;
+            --accent-yellow: #fbbf24;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --border-color: #1f2937;
+            --pitch-green: #064e3b;
+            --pitch-line: #059669;
+            --cyan-accent: #38bdf8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-dark);
-            color: var(--text-white);
-            margin: 0;
+            color: var(--text-main);
             padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Professional Club Dossier Login Overlay */
+        #loginOverlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(11, 15, 25, 0.98);
             display: flex;
             justify-content: center;
-        }
-
-        .dashboard {
-            width: 100%;
-            max-width: 1000px;
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-        }
-
-        .card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 12px;
+            align-items: center;
+            z-index: 9999;
             padding: 20px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
         }
 
-        .section-header {
+        .login-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--accent-gold);
+            padding: 30px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+        }
+
+        .login-title {
+            color: var(--accent-gold);
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .login-desc {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--accent-yellow);
+            margin-bottom: 4px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .login-input, .login-select {
+            width: 100%;
+            background-color: #030712;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 10px 14px;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        .login-input:focus, .login-select:focus {
+            border-color: var(--accent-gold);
+        }
+
+        .login-btn {
+            width: 100%;
+            background-color: var(--accent-gold);
+            color: #000;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            background-color: var(--accent-yellow);
+        }
+
+        /* Coach's Command Banner */
+        .memo-banner {
+            background-color: rgba(245, 158, 11, 0.05);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
         }
 
-        .section-header h3 {
-            margin: 0;
-            font-size: 1rem;
+        .memo-content {
             display: flex;
+            gap: 10px;
             align-items: center;
-            gap: 8px;
         }
 
-        /* Registration Screen Overlay */
-        #registrationModal {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(3, 5, 8, 0.98);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
+        .memo-title {
+            color: var(--accent-gold);
+            font-weight: 700;
+            font-size: 0.95rem;
         }
 
-        .reg-box {
-            background: var(--card-bg);
-            border: 2px solid var(--accent-yellow);
-            padding: 30px;
-            border-radius: 16px;
-            width: 360px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            box-shadow: 0 0 40px rgba(234, 179, 8, 0.2);
-        }
-
-        .reg-box input, .reg-box select {
-            background: #05080f;
-            border: 1px solid var(--card-border);
-            color: #fff;
-            padding: 12px;
-            border-radius: 8px;
+        .memo-text {
+            color: var(--text-muted);
             font-size: 0.9rem;
         }
 
-        /* Coach Voice Banner */
-        .coach-banner {
-            background: linear-gradient(135deg, #1b1603, #0d131f);
-            border-left: 4px solid var(--accent-yellow);
-            padding: 14px 18px;
-            border-radius: 8px;
-            font-size: 0.88rem;
-            line-height: 1.5;
-            color: #fef08a;
+        .logout-btn {
+            background: transparent;
+            border: 1px solid #ef4444;
+            color: #ef4444;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .logout-btn:hover {
+            background-color: #ef4444;
+            color: #fff;
         }
 
         /* Navigation Tabs */
-        .page-nav {
+        .nav-container {
             display: flex;
-            gap: 4px;
-            background: #05080f;
-            padding: 8px;
-            border-radius: 10px;
-            border: 1px solid var(--card-border);
+            gap: 10px;
             overflow-x: auto;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            scrollbar-width: thin;
         }
 
         .nav-tab {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: var(--text-dim);
-            padding: 10px 6px;
-            font-weight: 700;
-            font-size: 0.64rem;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 10px 18px;
             border-radius: 6px;
             cursor: pointer;
-            transition: 0.2s;
-            text-align: center;
             white-space: nowrap;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .nav-tab:hover {
+            border-color: var(--accent-gold);
         }
 
         .nav-tab.active {
-            background: var(--accent-blue);
-            color: #000;
+            background-color: #1e293b;
+            border-color: var(--accent-gold);
+            color: var(--accent-yellow);
         }
 
-        .page-section {
+        /* Content Sections */
+        .section-panel {
             display: none;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .page-section.active {
-            display: flex;
-        }
-
-        /* Profile Header */
-        .profile-card {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .fut-card {
-            background: linear-gradient(135deg, #2b2206, #000);
-            border: 2px solid #eab308;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
             border-radius: 10px;
-            width: 110px;
-            height: 140px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            box-shadow: 0 0 15px rgba(234, 179, 8, 0.2);
-            flex-shrink: 0;
+            padding: 25px;
+            margin-bottom: 20px;
         }
 
-        .fut-card .rating {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: #eab308;
-            line-height: 1;
+        .section-panel.active {
+            display: block;
         }
 
-        .fut-card .pos {
-            font-size: 0.8rem;
-            color: #eab308;
-            font-weight: 600;
-            position: absolute;
-            top: 10px;
-            right: 12px;
-        }
-
-        .badge {
-            background: rgba(16, 185, 129, 0.15);
-            color: var(--accent-green);
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-
-        /* Stopwatch Widget */
-        .stopwatch-box {
-            background: linear-gradient(135deg, #05080f, #04241a);
-            border: 1px solid var(--accent-green);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .timer-display {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--accent-green);
-            font-family: monospace;
-        }
-
-        .timer-btn {
-            padding: 10px 20px;
-            border-radius: 8px;
+        .panel-title {
+            font-size: 1.2rem;
             font-weight: 700;
-            cursor: pointer;
-            border: none;
+            margin-bottom: 10px;
+            color: var(--text-main);
         }
 
-        .btn-start { background: var(--accent-green); color: #000; }
-        .btn-stop { background: #ef4444; color: #fff; }
-        .btn-reset { background: #334155; color: #f8fafc; font-size: 0.75rem; padding: 6px 12px; border-radius: 6px; cursor: pointer; border: none; }
-
-        /* Summary Grid */
-        .summary-grid {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 10px;
-        }
-
-        .sum-item {
-            background: #05080f;
-            padding: 12px 8px;
-            border-radius: 8px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-        }
-
-        .sum-item div {
-            font-size: 0.7rem;
-            color: var(--text-dim);
-            margin-bottom: 6px;
-        }
-
-        .sum-item span {
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
-
-        /* Sub-Tabs */
-        .sub-tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-        }
-
-        .sub-btn {
-            background: #05080f;
-            border: 1px solid var(--card-border);
-            color: var(--text-dim);
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .sub-btn.active {
-            background: var(--accent-orange);
-            color: #000;
-            border-color: var(--accent-orange);
-        }
-
-        .content-box {
-            background: #05080f;
-            padding: 16px;
-            border-radius: 8px;
-            border-left: 4px solid var(--accent-blue);
-            font-size: 0.88rem;
-            line-height: 1.6;
-        }
-
-        /* Tasks */
-        .plan-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .plan-item {
-            background: #05080f;
-            padding: 12px 16px;
-            border-radius: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .panel-desc {
+            color: var(--text-muted);
             font-size: 0.9rem;
+            margin-bottom: 20px;
         }
 
-        .status-btn {
-            font-size: 0.75rem;
-            padding: 5px 12px;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            border: none;
-        }
-
-        .status-completed { background: rgba(16, 185, 129, 0.2); color: var(--accent-green); }
-        .status-progress { background: rgba(234, 179, 8, 0.2); color: var(--accent-yellow); }
-        .status-notstarted { background: rgba(148, 163, 184, 0.1); color: var(--text-dim); }
-
-        /* Tactical Board Styling */
-        .pitch-container {
-            background: linear-gradient(180deg, #064e3b 0%, #022c22 100%);
-            border: 2px solid var(--accent-green);
+        /* Profile Header Box */
+        .profile-box {
+            background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+            border: 1px solid var(--border-color);
             border-radius: 10px;
-            height: 320px;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .pitch-line-center {
-            position: absolute;
-            width: 100%;
-            height: 2px;
-            background: rgba(255, 255, 255, 0.3);
-        }
-        .pitch-circle {
-            position: absolute;
-            width: 80px;
-            height: 80px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-        }
-        .player-node {
-            position: absolute;
-            width: 24px;
-            height: 24px;
-            background: var(--accent-blue);
-            border: 2px solid #fff;
-            border-radius: 50%;
-            font-size: 0.6rem;
-            font-weight: 800;
-            color: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.5);
-            transition: 0.2s;
-        }
-        .player-node:hover { transform: scale(1.2); background: var(--accent-yellow); }
-
-        /* Gear Hub */
-        .gear-card {
-            background: linear-gradient(90deg, #0d131f 0%, #064e3b 100%);
+            padding: 20px;
+            margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .shop-btn {
-            background: var(--accent-green);
+        .player-badge {
+            background-color: var(--accent-gold);
             color: #000;
-            text-decoration: none;
-            padding: 10px 18px;
+            font-weight: 800;
+            padding: 12px 18px;
             border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: 700;
             text-align: center;
+        }
+
+        /* Pro Gear Footer Card */
+        .amazon-hub {
+            background: linear-gradient(135deg, #064e3b 0%, #111827 100%);
+            border: 1px solid #059669;
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .amazon-btn {
+            background-color: #10b981;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.2s;
             white-space: nowrap;
         }
 
-        @media(max-width: 768px) {
-            .summary-grid { grid-template-columns: repeat(3, 1fr); }
-            .gear-card { flex-direction: column; align-items: flex-start; gap: 12px; }
+        .amazon-btn:hover {
+            background-color: #059669;
+        }
+
+        /* Football Pitch */
+        .football-pitch {
+            position: relative;
+            background-color: var(--pitch-green);
+            border: 2px solid #10b981;
+            border-radius: 8px;
+            height: 450px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .pitch-center-line {
+            position: absolute; top: 0; bottom: 0; left: 50%; width: 2px;
+            background-color: rgba(255,255,255,0.3); transform: translateX(-50%);
+        }
+
+        .pitch-center-circle {
+            position: absolute; top: 50%; left: 50%; width: 90px; height: 90px;
+            border: 2px solid rgba(255,255,255,0.3); border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .player-node {
+            position: absolute;
+            background-color: #3b82f6;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            cursor: pointer;
+            transform: translate(-50%, -50%);
+            border: 2px solid #93c5fd;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .player-node.gk { background-color: #f59e0b; border-color: #fcd34d; }
+        .player-node.dm { background-color: #ef4444; border-color: #fca5a5; }
+
+        /* Timeline & Diet cards */
+        .routine-card, .diet-card {
+            background-color: #030712;
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--accent-gold);
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+
+        .diet-card { border-left-color: #10b981; }
+
+        /* AI Q&A */
+        .ai-input {
+            width: 100%;
+            background-color: #030712;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 15px;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            resize: none;
+            height: 100px;
+            outline: none;
+        }
+        .ai-input:focus { border-color: var(--cyan-accent); }
+
+        .ai-btn {
+            background-color: var(--cyan-accent);
+            color: #030712;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* Day buttons */
+        .day-btns {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            overflow-x: auto;
+        }
+        .day-btn {
+            background-color: #030712;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 8px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .day-btn.active {
+            background-color: var(--accent-gold);
+            color: #000;
+            border-color: var(--accent-gold);
         }
     </style>
 </head>
 <body>
 
-    <!-- REGISTRATION / SETUP MODAL -->
-    <div id="registrationModal" style="display:none;">
-        <div class="reg-box">
-            <h2 style="margin:0; color:var(--accent-yellow); font-size:1.3rem;">⚽ PRO-TRAIN FC ACADEMY</h2>
-            <p style="margin:0; font-size:0.8rem; color:var(--text-dim);">Enter your credentials. Coach is watching your discipline. Push your limits to elite level!</p>
-            <label style="font-size:0.75rem; color:var(--text-dim);">Player Name:</label>
-            <input type="text" id="regName" placeholder="e.g. Krit Sehrawat">
-            <label style="font-size:0.75rem; color:var(--text-dim);">Age:</label>
-            <input type="number" id="regAge" placeholder="e.g. 17" value="17">
-            <label style="font-size:0.75rem; color:var(--text-dim);">Primary Position:</label>
-            <select id="regPos" onchange="updateBootRecommendation()">
-                <option value="LW">Left Winger (LW - Speed Boot)</option>
-                <option value="RW">Right Winger (RW - Speed Boot)</option>
-                <option value="ST">Striker (ST - Finishing Boot)</option>
-                <option value="CM">Central Midfielder (CM - Control Boot)</option>
-                <option value="CB">Center Back (CB - Power Boot)</option>
-                <option value="GK">Goalkeeper (GK - Grip Boot)</option>
-            </select>
-            <label style="font-size:0.75rem; color:var(--text-dim);">Starting Tier Level:</label>
-            <select id="regTier">
-                <option value="Beginner Tier">🌱 Beginner Tier (Foundation Base)</option>
-                <option value="Professional Tier">⚡ Professional Tier (Academy Standard)</option>
-                <option value="Elite Academy Tier">🔥 Elite Academy Tier (Pro First Team)</option>
-            </select>
-            <button class="timer-btn btn-start" style="margin-top:10px;" onclick="saveRegistration()">Step Into The Pitch 🚀</button>
+    <!-- Professional Club Dossier Login Overlay -->
+    <div id="loginOverlay">
+        <div class="login-card">
+            <div class="login-title">🛡️ Professional Club Scouting & Dossier</div>
+            <div class="login-desc">Enter your exact player metrics. The web engine builds your elite tactical profile just like European professional club academies.</div>
+            
+            <div class="form-group">
+                <label>Player Full Name</label>
+                <input type="text" id="regName" class="login-input" placeholder="e.g. Krit Sehrawat">
+            </div>
+
+            <div class="form-group">
+                <label>Primary Playing Position</label>
+                <select id="regPosition" class="login-select">
+                    <option value="LW">Left Winger (LW)</option>
+                    <option value="RW">Right Winger (RW)</option>
+                    <option value="ST">Striker (ST)</option>
+                    <option value="CM">Central Midfielder (CM)</option>
+                    <option value="DM">Defensive Midfielder (DM)</option>
+                    <option value="CB">Center Back (CB)</option>
+                    <option value="LB">Left Back (LB)</option>
+                    <option value="RB">Right Back (RB)</option>
+                    <option value="GK">Goalkeeper (GK)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Current Tier / Level</label>
+                <select id="regTier" class="login-select">
+                    <option value="Professional Tier">Professional Academy Tier</option>
+                    <option value="Elite Pro Prospect">Elite Pro Prospect</option>
+                    <option value="Under-19 Academy">U-19 Academy Squad</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Main Weakness / Challenge You Want to Conquer</label>
+                <input type="text" id="regGoal" class="login-input" placeholder="e.g. Panic under high defensive pressure">
+            </div>
+
+            <button class="login-btn" onclick="handleProLogin()">Initialize Elite Club Dossier ⚡</button>
         </div>
     </div>
 
-    <div class="dashboard">
-
-        <!-- COACH VOICE BANNER -->
-        <div class="coach-banner" id="coachBannerText">
-            🎙️ <strong>Coach's Command:</strong> "Listen up! Elite players eat natural food, master every tactical option on the pitch, and leave zero room for excuses."
+    <!-- Coach's Command Header Banner -->
+    <div class="memo-banner">
+        <div class="memo-content">
+            <div class="memo-title">Coach's Command:</div>
+            <div class="memo-text" id="coachCommandText">"Listen up! Elite players rely on natural whole foods and professional tactical vision. Push your limits harder every second!"</div>
         </div>
+        <button class="logout-btn" onclick="handleLogout()">Switch Dossier / Logout</button>
+    </div>
 
-        <!-- NAVIGATION -->
-        <div class="page-nav">
-            <button class="nav-tab active" onclick="switchPage('dashboard', this)">⚡ Live Academy</button>
-            <button class="nav-tab" onclick="switchPage('timeline', this)">🕒 Master Timeline</button>
-            <button class="nav-tab" onclick="switchPage('tactics', this)">♟️ 11v11 Tactics & Vision</button>
-            <button class="nav-tab" onclick="switchPage('gearstore', this)">👟 Boots & Natural Diet</button>
-            <button class="nav-tab" onclick="switchPage('diet', this)">🥗 Natural Diet Plan</button>
-            <button class="nav-tab" onclick="switchPage('aiqa', this)">🧠 Elite AI Q&A</button>
-            <button class="nav-tab" onclick="switchPage('analytics', this)">📈 Logs</button>
-        </div>
+    <!-- Navigation Tabs -->
+    <div class="nav-container">
+        <div class="nav-tab active" onclick="switchTab(0)">⚡ Live Academy</div>
+        <div class="nav-tab" onclick="switchTab(1)">⏰ Master Timeline</div>
+        <div class="nav-tab" onclick="switchTab(2)">⚽ 11v11 Tactics & Vision</div>
+        <div class="nav-tab" onclick="switchTab(3)">👟 Boots & Natural Diet</div>
+        <div class="nav-tab" onclick="switchTab(4)">🍲 Natural Diet Plan</div>
+        <div class="nav-tab" onclick="switchTab(5)">🤖 Elite AI Q&A</div>
+        <div class="nav-tab" onclick="switchTab(6)">📊 Logs</div>
+    </div>
 
-        <!-- ================= PAGE 1: LIVE DASHBOARD ================= -->
-        <div id="page-dashboard" class="page-section active">
-
-            <!-- Profile Header -->
-            <div class="card profile-card">
-                <div class="fut-card">
-                    <span class="pos" id="displayPos">LW</span>
-                    <span class="rating" id="displayRating">89</span>
-                    <div style="font-size: 2rem; margin: 6px 0;">⚽</div>
-                    <div style="font-size: 0.75rem; font-weight:700; text-align:center; padding:0 4px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:100%;" id="displayName">Player</div>
-                </div>
-                <div style="flex-grow: 1;">
-                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px; flex-wrap: wrap;">
-                        <h2 style="margin: 0; font-size: 1.4rem;" id="displayNameHeader">Player</h2>
-                        <span class="badge" id="displayContract">Professional Tier</span>
-                        <button class="btn-reset" onclick="confirmResetData()" title="Reset Career Profile">🔄 Reset Profile</button>
-                        <span style="font-size: 0.75rem; color: var(--text-dim); margin-left: auto;" id="liveClock">Loading...</span>
-                    </div>
-                    <p style="color: var(--text-dim); font-size: 0.85rem; margin: 0 0 12px 0;">System actively tracks your discipline. Discover what elite players do every second of the day.</p>
-                    <div style="display: flex; gap: 10px;">
-                        <div style="background: #05080f; padding: 8px; border-radius: 6px; flex:1; text-align:center;">
-                            <span style="font-size:0.65rem; color:var(--text-dim); display:block;">YEARLY AUDIT</span>
-                            <span style="font-size:0.85rem; color:var(--accent-yellow); font-weight:700;" id="auditStatusLabel">Day 42 / 365 Active</span>
-                        </div>
-                        <div style="background: #05080f; padding: 8px; border-radius: 6px; flex:1; text-align:center;">
-                            <span style="font-size:0.65rem; color:var(--text-dim); display:block;">BOOT MATCH SENSE</span>
-                            <span style="font-size:0.85rem; color:var(--accent-green); font-weight:700;" id="quickBootSense">Speed Boots Optimal ⚡</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- LIVE TRAINING STOPWATCH -->
-            <div class="card stopwatch-box">
-                <div>
-                    <div style="font-size: 0.75rem; color: var(--accent-green); font-weight: 700; margin-bottom: 4px;">⏱️ PITCH TRAINING STOPWATCH</div>
-                    <div class="timer-display" id="stopwatchTime">00:00:00</div>
-                    <div style="font-size: 0.75rem; color: var(--text-dim);" id="sessionStatus">Record your intense training minutes. Prove your grit!</div>
-                </div>
-                <div>
-                    <button class="timer-btn btn-start" id="startStopBtn" onclick="toggleStopwatch()">Start Training</button>
-                </div>
-            </div>
-
-            <!-- Today's Report Grid -->
-            <div class="card">
-                <div class="section-header">
-                    <h3 style="color: var(--accent-green);">⚡ DAILY ACTIVITY TRACKING</h3>
-                    <span style="font-size: 0.75rem; color: var(--text-dim);" id="dateStampText">Live Monitored</span>
-                </div>
-                <div class="summary-grid">
-                    <div class="sum-item"><div>👟 Steps</div><span>10,420</span></div>
-                    <div class="sum-item"><div>📍 Distance</div><span>6.2 km</span></div>
-                    <div class="sum-item"><div>⚡ Sprints</div><span>22</span></div>
-                    <div class="sum-item"><div>⏱️ Active Time</div><span>105 min</span></div>
-                    <div class="sum-item"><div>⚽ Drills</div><span id="statDrillsCount">2/4</span></div>
-                    <div class="sum-item"><div>🔥 Discipline</div><span>Elite</span></div>
-                </div>
-            </div>
-
-            <!-- Smart Training Tasks -->
-            <div class="card">
-                <div class="section-header">
-                    <h3 style="color: var(--text-white);">📋 Today's Unique Hardcore Drills</h3>
-                    <span class="badge" id="planBadge">2/4 Completed</span>
-                </div>
-                <div class="plan-list" id="trainingPlanList">
-                    <div class="plan-item">
-                        <span id="taskText0">Dynamic Technical Mastery — 25 min</span>
-                        <button class="status-btn status-completed" onclick="toggleTask(0)">Completed ✓</button>
-                    </div>
-                    <div class="plan-item">
-                        <span id="taskText1">Explosive Agility Circuit — 20 min</span>
-                        <button class="status-btn status-completed" onclick="toggleTask(1)">Completed ✓</button>
-                    </div>
-                    <div class="plan-item">
-                        <span id="taskText2">High-Velocity Sprint Bursts — 15 min</span>
-                        <button class="status-btn status-progress" onclick="toggleTask(2)">In Progress ⏳</button>
-                    </div>
-                    <div class="plan-item">
-                        <span id="taskText3">Position-Specific Match Pressure Drill — 30 min</span>
-                        <button class="status-btn status-notstarted" onclick="toggleTask(3)">Not Started ⏳</button>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- ================= PAGE 2: MASTER TIMELINE (CURISOTY & ROUTINES) ================= -->
-        <div id="page-timeline" class="page-section">
-            <div class="card">
-                <div class="section-header">
-                    <h3 style="color: var(--accent-yellow);">🕒 The Elite Daily Master Timeline</h3>
-                    <span style="font-size: 0.75rem; color: var(--text-dim);">What Do Elite Players Do Every Moment?</span>
-                </div>
-                <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 0;">
-                    Curious about how top professionals structure their entire day? Here is the exact curiosity-driven blueprint from sunrise to match whistle:
-                </p>
-
-                <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 10px;">
-                    <div class="content-box" style="border-left-color: var(--accent-yellow);">
-                        <strong>🌅 Morning Routine (06:00 AM - 08:00 AM):</strong><br>
-                        • Hydration immediately with 500ml water and fresh lemon.<br>
-                        • 15-minute spine mobility and hip opening stretches before breakfast.<br>
-                        • Natural breakfast: Organic oats, real honey, soaked walnuts, and boiled eggs.
-                    </div>
-                    <div class="content-box" style="border-left-color: var(--accent-blue);">
-                        <strong>⚡ Pre-Training Routine (1 Hour Before Pitch):</strong><br>
-                        • Mental visualization of 1v1 dribbling and defensive breaking passes.<br>
-                        • Activation work: Resistance band ankle stability and dynamic leg swings.<br>
-                        • Natural quick energy: 1 ripe banana and a handful of dates.
-                    </div>
-                    <div class="content-box" style="border-left-color: var(--accent-green);">
-                        <strong>⚽ Post-Training Routine (Immediate After Session):</strong><br>
-                        • Rapid replenishment with fresh coconut water and natural salt.<br>
-                        • 10 minutes of deep static stretching to prevent muscle tightness.<br>
-                        • Recovery meal: Grilled chicken or paneer with steamed rice and vegetables.
-                    </div>
-                    <div class="content-box" style="border-left-color: var(--accent-orange);">
-                        <strong>🏆 Match Day Protocol (Before & After Whistle):</strong><br>
-                        • <em>Pre-Match:</em> Deep scanning focus, calm breathing, no chaotic distractions, wearing position-matched precision boots.<br>
-                        • <em>Post-Match:</em> Tactical self-audit of every turnover and successful pass, ice water bath, and restorative whole-food nutrition.
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ================= PAGE 3: TACTICS & VISION 11v11 ================= -->
-        <div id="page-tactics" class="page-section">
-            <div class="card">
-                <div class="section-header">
-                    <h3 style="color: var(--accent-blue);">♟️ Professional Club 11v11 Tactics & Option Creator</h3>
-                    <span style="font-size: 0.75rem; color: var(--text-dim);">Master Every Match Situation</span>
-                </div>
-                <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 0;">
-                    Professional clubs don't just kick the ball; they create numerical advantages and master passing options. Tap a player position below on the tactical pitch to reveal exact passing channels and decision guides!
-                </p>
-
-                <!-- Tactical Interactive Field -->
-                <div class="pitch-container" id="tacticalPitch">
-                    <div class="pitch-line-center"></div>
-                    <div class="pitch-circle"></div>
-                    <!-- 11 Players Opponent & Teammate Simulation Nodes -->
-                    <div class="player-node" style="top: 20%; left: 48%; background: var(--accent-yellow);" onclick="showTacticalAdvice('GK')">GK</div>
-                    <div class="player-node" style="top: 40%; left: 20%;" onclick="showTacticalAdvice('LB')">LB</div>
-                    <div class="player-node" style="top: 35%; left: 38%;" onclick="showTacticalAdvice('CB1')">CB</div>
-                    <div class="player-node" style="top: 35%; left: 58%;" onclick="showTacticalAdvice('CB2')">CB</div>
-                    <div class="player-node" style="top: 40%; left: 78%;" onclick="showTacticalAdvice('RB')">RB</div>
-                    <div class="player-node" style="top: 55%; left: 35%;" onclick="showTacticalAdvice('CM1')">CM</div>
-                    <div class="player-node" style="top: 60%; left: 50%; background: var(--accent-orange);" onclick="showTacticalAdvice('CDM')">DM</div>
-                    <div class="player-node" style="top: 55%; left: 65%;" onclick="showTacticalAdvice('CM2')">CM</div>
-                    <div class="player-node" style="top: 75%; left: 20%;" onclick="showTacticalAdvice('LW')">LW</div>
-                    <div class="player-node" style="top: 80%; left: 50%; background: var(--accent-green);" onclick="showTacticalAdvice('ST')">ST</div>
-                    <div class="player-node" style="top: 75%; left: 80%;" onclick="showTacticalAdvice('RW')">RW</div>
-                </div>
-
-                <div id="tacticalAdviceBox" class="content-box" style="border-left-color: var(--accent-yellow); margin-top: 10px;">
-                    <strong>👆 Tap any player node above</strong> on the 11v11 tactical pitch to view professional passing options, spatial awareness guides, and pressure-handling instructions.
-                </div>
-            </div>
-        </div>
-
-        <!-- ================= PAGE 4: BOOTS & NATURAL DIET HUB ================= -->
-        <div id="page-gearstore" class="page-section">
-            <div class="card">
-                <div class="section-header">
-                    <h3 style="color: var(--accent-green);">👟 Smart Boot Matcher & Natural Fuel Hub</h3>
-                    <span style="font-size: 0.75rem; color: var(--text-dim);">Tailored Gear Sense</span>
-                </div>
-                <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 0;">
-                    The web senses your position and recommends the exact boot category you should wear. When you are ready to upgrade your arsenal, use our curated link below to explore authentic professional gear on Amazon!
-                </p>
-
-                <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 10px;">
-                    <div class="content-box" style="border-left-color: var(--accent-yellow);">
-                        <strong>🎯 Your Position Boot Match:</strong><br>
-                        <span id="dynamicBootSuggestionText">Analyzing player profile...</span>
-                    </div>
-                    <div class="content-box" style="border-left-color: var(--accent-green);">
-                        <strong>🚫 100% Natural Diet Rule (No Dangerous Supplements):</strong><br>
-                        Synthetic powders and unknown supplements can harm developing bodies. Elite stamina and strength are built exclusively on whole foods: fresh fruits, eggs, paneer, oats, nuts, and clean water.
-                    </div>
-                </div>
-
-                <!-- AMAZON GEAR RECOMMENDATION HUB -->
-                <div class="card gear-card" style="margin-top: 15px;">
-                    <div>
-                        <div style="font-size: 0.75rem; color: var(--accent-green); font-weight: 700; margin-bottom: 4px;">🛍️ PRO GEAR & NATURAL NUTRITION HUB</div>
-                        <h3 style="margin: 0 0 4px 0; font-size: 1.1rem;">"Make Your Training Harder with Pro Equipment!"</h3>
-                        <p style="margin: 0; font-size: 0.8rem; color: var(--text-dim);">Explore football grip socks, agility ladders, and professional training boots on Amazon.</p>
-                    </div>
-                    <a href="https://www.amazon.in/s?k=football+grip+socks+training+boots" target="_blank" class="shop-btn">On Amazon ↗</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- ================= PAGE 5: FULL DAY NATURAL DIET ================= -->
-        <div id="page-diet" class="page-section">
-            <div class="card">
-                <div class="section-header">
-                    <h3 style="color: var(--accent-orange);">🥗 Full-Day 100% Natural Pro Nutrition Plan</h3>
-                    <span style="font-size: 0.75rem; color: var(--text-dim);">Zero Supplements | Pure Real Food</span>
-                </div>
-                
-                <div class="sub-tabs">
-                    <button class="sub-btn active" onclick="switchDietTab('monday', this)">Mon</button>
-                    <button class="sub-btn" onclick="switchDietTab('tuesday', this)">Tue</button>
-                    <button class="sub-btn" onclick="switchDietTab('wednesday', this)">Wed</button>
-                    <button class="sub-btn" onclick="switchDietTab('thursday', this)">Thu</button>
-                    <button class="sub-btn" onclick="switchDietTab('friday', this)">Fri</button>
-                    <button class="sub-btn" onclick="switchDietTab('saturday', this)">Sat</button>
-                    <button class="sub-btn" onclick="switchDietTab('sunday', this)">Sun</button>
-                </div>
-
-                <div id="fulldiet-box" class="content-box" style="border-left-color: var(--accent-orange); font-size: 0.85rem; line-height: 1.7;">
-                    Loading natural nutrition plan...
-                </div>
-            </div>
-        </div>
-
-        <!-- ================= PAGE 6: ELITE AI Q&A & MIND READER ================= -->
-        <div id="page-aiqa" class="page-section">
-            <div class="card">
-                <div class="section-header">
-                    <h3 style="color: var(--accent-blue);">🧠 Elite Coach AI Q&A & Mind Reader</h3>
-                    <span style="font-size: 0.75rem; color: var(--text-dim);">Stuck? Ask your question</span>
-                </div>
-                <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 0;">
-                    If you are stuck in any situation (bad first touch, losing stamina, feeling nervous), type your question below. The web engine thinks like an elite player and instantly gives you a custom drill and 100% natural diet adjustment!
-                </p>
-
-                <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
-                    <textarea id="playerQuestionInput" rows="3" placeholder="e.g. My first touch under pressure is terrible and I panic when defenders rush me..." style="background: #05080f; border: 1px solid var(--card-border); color: #fff; padding: 12px; border-radius: 8px; font-size: 0.9rem; resize: vertical;"></textarea>
-                    <button class="timer-btn btn-start" onclick="processPlayerQuestion()" style="align-self: flex-start;">Analyze & Generate Elite Solution 🚀</button>
-                </div>
-
-                <div id="aiResponseContainer" style="display: none; margin-top: 15px; flex-direction: column; gap: 10px;">
-                    <div class="content-box" style="border-left-color: var(--accent-yellow);">
-                        <strong>🎯 Coach's Mind Analysis:</strong><br>
-                        <span id="aiMindsetAnswer"></span>
-                    </div>
-                    <div class="content-box" style="border-left-color: var(--accent-green);">
-                        <strong>⚽ Custom Drill For Your Problem:</strong><br>
-                        <span id="aiCustomDrill"></span>
-                    </div>
-                    <div class="content-box" style="border-left-color: var(--accent-orange);">
-                        <strong>🥗 Natural Whole-Food Recovery Adjustment:</strong><br>
-                        <span id="aiCustomDiet"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ================= PAGE 7: ANALYTICS ================= -->
-        <div id="page-analytics" class="page-section">
-            <div class="card">
-                <div class="section-header">
-                    <h3 style="color: var(--accent-blue);">📈 Deep Performance Logs & 1-Year Audit</h3>
-                    <div style="display: flex; gap: 6px;">
-                        <button class="sub-btn active" onclick="switchChart('weekly', this)" style="padding: 4px 10px;">Weekly</button>
-                        <button class="sub-btn" onclick="switchChart('monthly', this)" style="padding: 4px 10px;">Monthly</button>
-                        <button class="sub-btn" onclick="switchChart('yearly', this)" style="padding: 4px 10px;">Yearly Audit</button>
-                    </div>
-                </div>
-                <div style="height: 250px; width: 100%;">
-                    <canvas id="deepPerformanceChart"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <!-- AMAZON GEAR RECOMMENDATION HUB -->
-        <div class="card gear-card">
+    <!-- 1. Live Academy Panel -->
+    <div class="section-panel active">
+        <div class="profile-box">
             <div>
-                <div style="font-size: 0.75rem; color: var(--accent-green); font-weight: 700; margin-bottom: 4px;">🛍️ PRO GEAR RECOMMENDATION HUB</div>
-                <h3 style="margin: 0 0 4px 0; font-size: 1.1rem;">"Your Game Is Hard? Make It Harder with Pro Equipment!"</h3>
-                <p style="margin: 0; font-size: 0.8rem; color: var(--text-dim);">Equip grip socks, resistance bands, and training footballs from Amazon.</p>
+                <div style="font-size: 1.5rem; font-weight: 700; color: var(--text-main);" id="displayName">Player</div>
+                <div style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;" id="displayTier">Professional Tier Active • System tracks discipline second by second.</div>
             </div>
-            <a href="https://www.amazon.in/s?k=football+grip+socks+training+equipment" target="_blank" class="shop-btn">On Amazon ↗</a>
+            <div class="player-badge">
+                <div style="font-size: 1.8rem;" id="displayRating">89</div>
+                <div style="font-size: 0.75rem; text-transform: uppercase;" id="displayBadgePos">LW Elite</div>
+            </div>
         </div>
 
+        <div class="panel-title">Pitch Training Stopwatch</div>
+        <div class="panel-desc">Record your intense training minutes. Prove your grit!</div>
+        <div style="font-size: 2rem; font-weight: 700; color: #10b981; margin-bottom: 15px;" id="stopwatchDisplay">00:00:00</div>
+        <button class="amazon-btn" onclick="startTrainingTimer()">Start Training Session ⏱️</button>
     </div>
 
-    <!-- LOGIC SCRIPT -->
+    <!-- 2. Master Timeline Panel -->
+    <div class="section-panel">
+        <div class="panel-title">The Elite Daily Master Timeline</div>
+        <div class="panel-desc">Curious about how top professionals structure their entire day? Here is the exact blueprint from sunrise to match whistle:</div>
+        
+        <div class="routine-card">
+            <strong style="color: var(--accent-gold);">☀️ Morning Routine (06:00 AM - 08:00 AM):</strong>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">Hydration with 500ml water and fresh lemon, 15-min hip mobility stretches, and organic oats with soaked walnuts and whole milk.</p>
+        </div>
+        <div class="routine-card">
+            <strong style="color: var(--accent-gold);">⚡ Pre-Training Routine (1 Hour Before Pitch):</strong>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">Mental visualization of 1v1 dribbling, resistance band ankle activation, and 1 ripe banana with natural dates.</p>
+        </div>
+        <div class="routine-card">
+            <strong style="color: var(--accent-gold);">🛡️ Post-Training Routine (Immediate After Session):</strong>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">Fresh coconut water with natural salt, 10 minutes deep static stretching, and grilled paneer/chicken with brown rice.</p>
+        </div>
+    </div>
+
+    <!-- 3. 11v11 Tactics & Vision Panel -->
+    <div class="section-panel">
+        <div class="panel-title">Professional Club 11v11 Tactics & Option Creator</div>
+        <div class="panel-desc">Tap any player position below on the tactical pitch to reveal exact passing channels and decision guides!</div>
+        
+        <div class="football-pitch">
+            <div class="pitch-center-line"></div>
+            <div class="pitch-center-circle"></div>
+            <!-- Tactical Nodes -->
+            <div class="player-node gk" style="top: 50%; left: 8%;" onclick="alert('GK: Scan for high press, distribute to fullback or CB with open body shape.')">GK</div>
+            <div class="player-node" style="top: 25%; left: 22%;" onclick="alert('LB: Create width, check shoulder, open options for central midfielders.')">LB</div>
+            <div class="player-node" style="top: 42%; left: 28%;" onclick="alert('CB: Calm build-up, break opposition first line with vertical pass.')">CB</div>
+            <div class="player-node" style="top: 58%; left: 28%;" onclick="alert('CB: Maintain defensive line height, communicate shifts.')">CB</div>
+            <div class="player-node" style="top: 75%; left: 22%;" onclick="alert('RB: Overlap when winger cuts inside, secure flank transition.')">RB</div>
+            <div class="player-node dm" style="top: 50%; left: 45%;" onclick="alert('DM: The engine. Always offer 3 passing options, dictate tempo.')">DM</div>
+            <div class="player-node" style="top: 32%; left: 60%;" onclick="alert('CM: Exploit half-spaces, drive forward with quick one-twos.')">CM</div>
+            <div class="player-node" style="top: 68%; left: 60%;" onclick="alert('CM: Box-to-box recovery, support flank attacks.')">CM</div>
+            <div class="player-node" style="top: 18%; left: 78%;" onclick="alert('LW: 1v1 isolation, cut inside for shot or square to striker.')">LW</div>
+            <div class="player-node" style="top: 82%; left: 78%;" onclick="alert('RW: Stretch defense wide, whip crosses into corridor of uncertainty.')">RW</div>
+            <div class="player-node" style="top: 50%; left: 85%;" onclick="alert('ST: Hold up play, shield against center backs, attack near post.')">ST</div>
+        </div>
+    </div>
+
+    <!-- 4. Boots & Natural Diet Panel -->
+    <div class="section-panel">
+        <div class="panel-title">Smart Boot Matcher & 100% Natural Fuel Hub</div>
+        <div class="panel-desc">The web senses your position and recommends the exact boot category. Zero supplements rule enforced:</div>
+        
+        <div class="routine-card" id="bootRecommendationBox">
+            <strong style="color: var(--accent-gold);">⚡ Position Boot Match:</strong>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">Speed Boots Recommended: Lightweight synthetic upper with aggressive blade stud configuration for explosive acceleration down the flanks.</p>
+        </div>
+        <div class="routine-card" style="border-left-color: #ef4444;">
+            <strong style="color: #ef4444;">🚫 Strict Natural Diet Rule:</strong>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">Synthetic powders and unknown supplements harm developing bodies. Elite stamina is built exclusively on whole foods: fresh fruits, eggs, paneer, oats, nuts, and clean water.</p>
+        </div>
+    </div>
+
+    <!-- 5. Natural Diet Plan Panel -->
+    <div class="section-panel">
+        <div class="panel-title">Full-Day 100% Natural Pro Nutrition Plan</div>
+        <div class="panel-desc">Select day to view tailored whole-food schedule:</div>
+        
+        <div class="day-btns">
+            <button class="day-btn active" onclick="setDietDay('Mon')">Mon</button>
+            <button class="day-btn" onclick="setDietDay('Tue')">Tue</button>
+            <button class="day-btn" onclick="setDietDay('Wed')">Wed</button>
+            <button class="day-btn" onclick="setDietDay('Thu')">Thu</button>
+            <button class="day-btn" onclick="setDietDay('Fri')">Fri</button>
+            <button class="day-btn" onclick="setDietDay('Sat')">Sat</button>
+            <button class="day-btn" onclick="setDietDay('Sun')">Sun</button>
+        </div>
+
+        <div class="diet-card" id="dietContentBox">
+            <strong>🌱 Monday 100% Natural Pro Diet Plan:</strong>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">
+                • Breakfast: Rolled oats with chia seeds, raw honey, and whole milk.<br>
+                • Mid-Morning: 2 boiled eggs and a handful of almonds.<br>
+                • Lunch: Grilled chicken/paneer breast, brown rice, steamed broccoli, and fresh coconut water.<br>
+                • Pre-Workout: 1 ripe banana and natural dates.<br>
+                • Dinner: Baked fish/tofu, quinoa, and roasted asparagus.
+            </p>
+        </div>
+    </div>
+
+    <!-- 6. Elite AI Q&A Panel -->
+    <div class="section-panel">
+        <div class="panel-title">Elite Coach AI Q&A & Mind Reader</div>
+        <div class="panel-desc">Stuck in any match situation? Type your question below. The web engine thinks like an elite player and instantly gives you a custom drill and 100% natural diet adjustment:</div>
+        
+        <textarea id="aiQueryInput" class="ai-input" placeholder="e.g. My first touch under pressure is terrible and I panic when defenders rush me..."></textarea>
+        <button class="ai-btn" onclick="runAiAnalysis()">Analyze & Generate Elite Solution 🧠</button>
+        
+        <div id="aiResponseBox" style="margin-top: 15px; color: var(--accent-yellow); font-size: 0.9rem;"></div>
+    </div>
+
+    <!-- 7. Logs Panel -->
+    <div class="section-panel">
+        <div class="panel-title">Deep Performance Logs & Activity Audit</div>
+        <div class="panel-desc">System logs confirm continuous activity tracking and discipline score.</div>
+        <div style="background-color: #030712; padding: 20px; border-radius: 6px; text-align: center;">
+            <div style="font-size: 2.5rem; font-weight: 700; color: var(--accent-gold);">42 Consecutive Days</div>
+            <div style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">Discipline Status: Elite Professional Trajectory</div>
+        </div>
+    </div>
+
+    <!-- Persistent Amazon Pro Gear Recommendation Hub -->
+    <div class="amazon-hub">
+        <div>
+            <div style="font-size: 1.1rem; font-weight: 700; color: var(--accent-gold);">"Your Game Is Hard? Make It Harder with Pro Equipment!"</div>
+            <div style="color: var(--text-muted); font-size: 0.85rem; margin-top: 3px;">Equip grip socks, resistance bands, and training footballs on Amazon.</div>
+        </div>
+        <a href="https://www.amazon.com" target="_blank" class="amazon-btn">On Amazon ↗</a>
+    </div>
+
     <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedProfile = localStorage.getItem('protrain_player_profile');
-            if (savedProfile) {
-                let data = JSON.parse(savedProfile);
-                applyProfileData(data.name, data.age, data.pos, data.tier);
-                document.getElementById('registrationModal').style.display = 'none';
-            } else {
-                document.getElementById('registrationModal').style.display = 'flex';
-            }
-            loadDailyData();
-            loadFullDayDiet('monday');
-            updateBootRecommendation();
-        });
-
-        function saveRegistration() {
-            let name = document.getElementById('regName').value.trim() || "Krit Sehrawat";
-            let age = document.getElementById('regAge').value || "17";
-            let pos = document.getElementById('regPos').value;
-            let tier = document.getElementById('regTier').value;
-
-            let profileData = { name, age, pos, tier };
-            localStorage.setItem('protrain_player_profile', JSON.stringify(profileData));
-
-            applyProfileData(name, age, pos, tier);
-            document.getElementById('registrationModal').style.display = 'none';
-        }
-
-        function applyProfileData(name, age, pos, tier) {
-            document.getElementById('displayName').innerText = name;
-            document.getElementById('displayNameHeader').innerText = name;
-            document.getElementById('displayPos').innerText = pos;
-            document.getElementById('displayContract').innerText = tier;
-
-            let quote = `"Listen up, ${name}! Elite players rely on natural whole foods and professional tactical vision. Push your limits harder every second!"`;
-            document.getElementById('coachBannerText').innerHTML = `🎙️ <strong>Coach's Command:</strong> ${quote}`;
-            updateBootRecommendation();
-        }
-
-        function updateBootRecommendation() {
-            let pos = document.getElementById('regPos') ? document.getElementById('regPos').value : "LW";
-            let bootText = "";
-            let senseText = "";
-
-            if(pos === "LW" || pos === "RW") {
-                bootText = "⚡ <strong>Speed Boots Recommended:</strong> Lightweight synthetic upper with aggressive blade stud configuration for explosive acceleration down the flanks.";
-                senseText = "Speed Boots Optimal ⚡";
-            } else if(pos === "ST") {
-                bootText = "🔥 <strong>Striking & Power Boots Recommended:</strong> Cushioned strike-zone texture for venomous shooting power and sharp cutting grip.";
-                senseText = "Striking Boots Optimal 🔥";
-            } else if(pos === "CM" || pos === "CDM") {
-                bootText = "🎯 <strong>Control & Passing Boots Recommended:</strong> Conical stud layout for 360-degree pivoting and enhanced touch friction on the ball.";
-                senseText = "Control Boots Optimal 🎯";
-            } else if(pos === "CB") {
-                bootText = "🛡️ <strong>Defender Armor Boots Recommended:</strong> Reinforced heel structure and heavy-duty stability for robust tackling and aerial duels.";
-                senseText = "Armor Boots Optimal 🛡️";
-            } else {
-                bootText = "🧤 <strong>Goalkeeper Stability Boots Recommended:</strong> Maximum traction soleplate for explosive lateral dives and goalmouth stability.";
-                senseText = "GK Traction Optimal 🧤";
-            }
-
-            if(document.getElementById('dynamicBootSuggestionText')) {
-                document.getElementById('dynamicBootSuggestionText').innerHTML = bootText;
-                document.getElementById('quickBootSense').innerText = senseText;
-            }
-        }
-
-        function confirmResetData() {
-            let confirmation1 = confirm("⚠️ Coach Warning: Are you sure you want to reset your career profile?");
-            if (confirmation1) {
-                let confirmation2 = confirm("🚨 FINAL CONFIRMATION: This will erase your academy logs. Proceed?");
-                if (confirmation2) {
-                    localStorage.removeItem('protrain_player_profile');
-                    location.reload();
-                }
-            }
-        }
-
-        const daysData = {
-            1: {
-                name: "Monday",
-                schedule: "06:00 AM - Core & Agility | 05:00 PM - 90 Minutes Hardcore Passing",
-                drill: "The 400-Touch Wall Rebounder Challenge: Zero loose touches allowed.",
-                dietDesc: "Natural Fuel: Rolled oats with raw honey, grilled chicken/paneer with brown rice, and fresh coconut water.",
-                tasks: ["Wall Rebounder One-Touch (400 Reps)", "Cone Weaving Agility Sprints", "Max Velocity 30m Accelerations", "Weak Foot Passing Under Fatigue"]
-            },
-            2: {
-                name: "Tuesday",
-                schedule: "06:30 AM - 7km Endurance Run | 04:30 PM - Tight Space Dribbling",
-                drill: "Cone Minefield: Weave through 25 tight cones at full velocity.",
-                dietDesc: "Natural Fuel: Avocado sourdough toast, salmon/tofu quinoa bowl, and clean electrolytes.",
-                tasks: ["7km Endurance Pace Run", "Tight Space Sole-Roll Dribbling", "Direction Change Cutting Drills", "Core Stability Plank Holds"]
-            },
-            3: {
-                name: "Wednesday",
-                schedule: "07:00 AM - Active Recovery | 05:00 PM - Finishing Under Fatigue",
-                drill: "Exhaustion Volleys: 60 powerful strikes following high-speed sprints.",
-                dietDesc: "Natural Fuel: Buckwheat pancakes, turkey/sprouts salad, and fresh orange juice.",
-                tasks: ["Dynamic Mobility & Hip Openers", "Exhaustion Finishing Volleys", "1v1 Defending Pressure Duels", "Mental Visualization Study"]
-            },
-            4: {
-                name: "Thursday",
-                schedule: "06:00 AM - Explosive Acceleration | 05:30 PM - Tactical Scanning",
-                drill: "Blind Spot Scanning: Scan over both shoulders before receiving every ball.",
-                dietDesc: "Natural Fuel: Peanut butter banana smoothie, lean beef/lentil pasta.",
-                tasks: ["Explosive Resistance Sprints", "Shoulder-Check Scanning Drills", "First-Touch Receiving Under Press", "Agility Ladder Footwork"]
-            },
-            5: {
-                name: "Friday",
-                schedule: "07:00 AM - Ball Mastery | 04:00 PM - Pre-Match Tactical Briefing",
-                drill: "2,500 Touches Challenge: Restricted space ball manipulation with zero errors.",
-                dietDesc: "Natural Fuel: Massive whole-wheat pasta portion, grilled fish/paneer, and fresh fruit juice.",
-                tasks: ["2500 Touches Ball Mastery", "Tactical Shape Positioning", "Set-Piece Delivery Practice", "Match Readiness Review"]
-            },
-            6: {
-                name: "Saturday",
-                schedule: "MATCHDAY: 09:00 AM Warmup | 11:00 AM Official Competitive Match",
-                drill: "Match Execution: Dominate physical duels, high pressing intensity, zero errors.",
-                dietDesc: "Natural Fuel: Ripe bananas, natural honey toast, and post-match chicken soup.",
-                tasks: ["Pre-Match Activation Routine", "90-Min Match Performance", "GPS Data & Sprint Analysis", "Post-Match Ice Bath & Recovery"]
-            },
-            0: {
-                name: "Sunday",
-                schedule: "REST & RECOVERY: Tactical video analysis and mental preparation",
-                drill: "Match IQ Study: Analyze top professional players in your specific position.",
-                dietDesc: "Natural Fuel: Antioxidant berries, green tea, mixed nuts, and warm vegetable broth.",
-                tasks: ["Tactical Video Review", "Passive Stretching & Foam Rolling", "Mental Focus & Goal Setting", "Hydration & Mineral Balance"]
+        // --- PROFESSIONAL CLUB DOSSIER SYSTEM ---
+        window.onload = function() {
+            const savedName = localStorage.getItem('pro_player_name');
+            if (savedName) {
+                applyPlayerData({
+                    name: savedName,
+                    position: localStorage.getItem('pro_player_pos'),
+                    tier: localStorage.getItem('pro_player_tier'),
+                    goal: localStorage.getItem('pro_player_goal')
+                });
             }
         };
 
-        function loadDailyData() {
-            const todayIndex = new Date().getDay();
-            const currentDay = daysData[todayIndex] || daysData[1];
+        function handleProLogin() {
+            const name = document.getElementById('regName').value.trim();
+            const position = document.getElementById('regPosition').value;
+            const tier = document.getElementById('regTier').value;
+            const goal = document.getElementById('regGoal').value.trim();
 
-            if(document.getElementById('currentDayNameLabel')) {
-                document.getElementById('currentDayNameLabel').innerText = currentDay.name + " Mission";
-                document.getElementById('dailyScheduleText').innerText = currentDay.schedule;
-                document.getElementById('dailyDrillText').innerText = currentDay.drill;
-                document.getElementById('dailyDietText').innerText = currentDay.dietDesc;
-
-                for(let i=0; i<4; i++) {
-                    document.getElementById('taskText' + i).innerText = currentDay.tasks[i] + " — 20 min";
-                }
-            }
-        }
-
-        const fullDiets = {
-            monday: "<strong>🌱 Monday 100% Natural Pro Diet Plan:</strong><br>• <em>Breakfast:</em> Rolled oats with chia seeds, raw honey, and real whole milk.<br>• <em>Mid-Morning:</em> 2 boiled eggs and a handful of almonds.<br>• <em>Lunch:</em> Grilled chicken/paneer breast, brown rice, steamed broccoli, and fresh coconut water.<br>• <em>Pre-Workout:</em> 1 ripe banana and natural dates.<br>• <em>Post-Workout:</em> Real fruit smoothie with curd and honey.<br>• <em>Dinner:</em> Baked fish/tofu, quinoa, and roasted asparagus.",
-            tuesday: "<strong>⚡ Tuesday 100% Natural Pro Diet Plan:</strong><br>• <em>Breakfast:</em> Avocado sourdough toast with 3 egg whites and 1 whole egg.<br>• <em>Mid-Morning:</em> Fresh pomegranate bowl.<br>• <em>Lunch:</em> Lean turkey/lentil mince bowl with sweet potato mash and spinach.<br>• <em>Pre-Workout:</em> Fresh beetroot juice shot.<br>• <em>Post-Workout:</em> Coconut water and soaked raisins.<br>• <em>Dinner:</em> Grilled paneer strips with mixed bell peppers and olive oil dressing.",
-            wednesday: "<strong>🔥 Wednesday 100% Natural Pro Diet Plan:</strong><br>• <em>Breakfast:</em> Peanut butter banana smoothie with real milk.<br>• <em>Mid-Morning:</em> Cottage cheese with sliced cucumbers.<br>• <em>Lunch:</em> Quinoa chicken/tofu salad with walnuts and lemon dressing.<br>• <em>Pre-Workout:</em> Rice cakes with raw honey.<br>• <em>Post-Workout:</em> Fresh orange juice.<br>• <em>Dinner:</em> White fish fillet with roasted baby potatoes and zucchini.",
-            thursday: "<strong>⚡ Thursday 100% Natural Pro Diet Plan:</strong><br>• <em>Breakfast:</em> Scrambled eggs on whole grain toast with cherry tomatoes.<br>• <em>Mid-Morning:</em> Mixed walnuts and dark chocolate.<br>• <em>Lunch:</em> Grilled prawn/paneer bowl with brown rice and avocado.<br>• <em>Pre-Workout:</em> Apple slices with almond butter.<br>• <em>Post-Workout:</em> Whole milk and dates.<br>• <em>Dinner:</em> Lean chicken/lentil soup with side green salad.",
-            friday: "<strong>🔥 Friday Natural Carb-Loading Plan:</strong><br>• <em>Breakfast:</em> Pancakes made with oats, banana, and egg whites.<br>• <em>Mid-Morning:</em> Greek yogurt with organic honey.<br>• <em>Lunch:</em> Large portion of whole-grain pasta with lean minced chicken/paneer and fresh tomato sauce.<br>• <em>Pre-Workout:</em> Fresh fruit juice.<br>• <em>Post-Workout:</em> Coconut water.<br>• <i>Dinner:</i> Baked fish with sweet potato fries and steamed greens.",
-            saturday: "<strong>⚽ Saturday Matchday Natural Fuel Plan:</strong><br>• <em>Breakfast:</em> White toast with honey, scrambled egg whites, and fresh orange juice.<br>• <em>Pre-Match (2 hrs prior):</em> Easily digestible white rice with lean chicken/paneer.<br>• <em>During Match:</em> Fresh coconut water and diluted fresh fruit juice at halftime.<br>• <em>Post-Match:</em> Real fruit recovery shake and warm vegetable soup.<br>• <em>Dinner:</em> Grilled salmon/paneer with quinoa and roasted root veggies.",
-            sunday: "<strong>🛡️ Sunday Recovery & Repair Diet Plan:</strong><br>• <em>Breakfast:</em> Omelet with spinach, mushrooms, and cheese.<br>• <em>Mid-Morning:</em> Green tea and mixed almonds.<br>• <i>Lunch:</i> Warm bone broth or lentil soup with carrots.<br>• <i>Evening Snack:</i> Chamomile tea with pumpkin seeds.<br>• <i>Dinner:</i> Baked white fish/tofu with steamed broccoli and olive oil."
-        };
-
-        function loadFullDayDiet(dayKey) {
-            document.getElementById('fulldiet-box').innerHTML = fullDiets[dayKey];
-        }
-
-        function switchDietTab(dayKey, btnElement) {
-            document.querySelectorAll('#page-diet .sub-btn').forEach(b => b.classList.remove('active'));
-            btnElement.classList.add('active');
-            loadFullDayDiet(dayKey);
-        }
-
-        function showTacticalAdvice(nodeKey) {
-            let adviceBox = document.getElementById('tacticalAdviceBox');
-            let info = "";
-
-            if(nodeKey === 'GK') {
-                info = "<strong>🧤 Goalkeeper Build-Up Situation:</strong> You have 2 short central passing options (CBs) and 2 wide fullback options. <em>Pro Rule:</em> Never play blind long balls under high press; draw the striker in, then break the press with a sharp flat pass to the CDM.";
-            } else if(nodeKey === 'ST') {
-                info = "<strong>⚽ Striker Option Creator:</strong> You are marked by 2 Center Backs. <em>Pro Rule:</em> Drop deep to drag one CB out of position, creating an instant vacant channel for your oncoming Winger (LW/RW) to exploit!";
-            } else if(nodeKey === 'CDM') {
-                info = "<strong>🎯 Central Defensive Midfield (The Engine):</strong> You have 360-degree scanning responsibility. You have 3 passing options at all times. <em>Pro Rule:</em> Receive on your half-turn, scan over your shoulder before touching, and switch play instantly to the weak side.";
-            } else if(nodeKey === 'LW' || nodeKey === 'RW') {
-                info = "<strong>⚡ Winger 1v1 Isolation Situation:</strong> You are isolated against the fullback. <em>Pro Rule:</em> Create two options—either drive down the outside line for a cutback cross or cut inside for a curling shot. Keep your body feint unpredictable.";
-            } else {
-                info = "<strong>♟️ Defensive / Midfield Unit Strategy:</strong> Maintain compact lines (maximum 30 meters between defence and attack). When the opponent presses, circulate ball quickly in triangles (3 passing options minimum per player).";
-            }
-            adviceBox.innerHTML = info;
-        }
-
-        function processPlayerQuestion() {
-            let query = document.getElementById('playerQuestionInput').value.trim();
-            if(!query) {
-                alert("Please type your question or problem first, player!");
+            if(!name) {
+                alert('Please enter your full player name to create your dossier.');
                 return;
             }
 
-            let lowerQ = query.toLowerCase();
-            let mindAns = "";
-            let drillAns = "";
-            let dietAns = "";
+            localStorage.setItem('pro_player_name', name);
+            localStorage.setItem('pro_player_pos', position);
+            localStorage.setItem('pro_player_tier', tier);
+            localStorage.setItem('pro_player_goal', goal);
 
-            if(lowerQ.includes("first touch") || lowerQ.includes("touch") || lowerQ.includes("panic")) {
-                mindAns = "Elite players don't panic under pressure; they scan before receiving and cushion the ball into space with soft ankles.";
-                drillAns = "The 300-Wall Rebounder Blind Test: Have someone throw balls at random angles. Control and pass back in under 0.8 seconds.";
-                dietAns = "Natural Recovery: Increase magnesium-rich foods like bananas, spinach, and pumpkin seeds to calm neuromuscular tension.";
-            } else if(lowerQ.includes("stamina") || lowerQ.includes("tired") || lowerQ.includes("fatigue")) {
-                mindAns = "Stamina is built when your brain tells you to stop, but your elite discipline forces you to execute 5 more high-speed sprints.";
-                drillAns = "High-Intensity Interval Shuttle Runs: 30 seconds sprint, 15 seconds walking rest for 12 consecutive rounds.";
-                dietAns = "Natural Fuel: Drink fresh beetroot juice 90 minutes before training for natural stamina enhancement without supplements.";
-            } else {
-                mindAns = "Coach analysis: Every elite player faces this mental barrier. Attack your weakness relentlessly with professional discipline.";
-                drillAns = "Custom Elite Agility & Technical Circuit: 20 minutes of high-speed cone weaving and sudden reaction sprints.";
-                dietAns = "100% Whole Food Nutrition: Lean chicken/paneer, complex slow-release brown rice, fresh fruits, and strict 3L water hydration.";
+            applyPlayerData({ name, position, tier, goal });
+        }
+
+        function applyPlayerData(data) {
+            document.getElementById('loginOverlay').style.display = 'none';
+            document.getElementById('displayName').innerText = data.name;
+            document.getElementById('displayTier').innerText = `${data.tier} • Focus Goal: "${data.goal || 'Elite Professional Mastery'}"`;
+            document.getElementById('displayBadgePos').innerText = `${data.position} Elite`;
+            document.getElementById('coachCommandText').innerText = `"Listen up, ${data.name}! As a top ${data.position}, rely on whole foods and professional vision. Push harder every second!"`;
+
+            // Tailor boot recommendation based on position
+            const bootBox = document.getElementById('bootRecommendationBox');
+            let bootText = "Speed Boots Recommended: Lightweight synthetic upper with aggressive blade stud configuration for explosive acceleration.";
+            if(data.position === 'CB' || data.position === 'DM') {
+                bootText = "Control & Stability Boots Recommended: Leather or reinforced synthetic upper with conical studs for firm traction and precise passing distribution under pressure.";
+            } else if(data.position === 'GK') {
+                bootText = "Goalkeeper Grip & Traction Boots: Wide soleplate stability and hybrid stud configuration for rapid lateral dives and spring-loaded jumps.";
             }
-
-            document.getElementById('aiMindsetAnswer').innerText = mindAns;
-            document.getElementById('aiCustomDrill').innerText = drillAns;
-            document.getElementById('aiCustomDiet').innerText = dietAns;
-            document.getElementById('aiResponseContainer').style.display = 'flex';
+            bootBox.innerHTML = `<strong style="color: var(--accent-gold);">⚡ Position Match (${data.position}):</strong><p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">${bootText}</p>`;
         }
 
-        function updateClock() {
-            const now = new Date();
-            const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-            if(document.getElementById('liveClock')) {
-                document.getElementById('liveClock').innerText = now.toLocaleDateString('en-US', options);
-            }
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
-
-        function switchPage(pageId, btnElement) {
-            document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
-            document.querySelectorAll('.page-nav .nav-tab').forEach(tab => tab.classList.remove('active'));
-            
-            document.getElementById('page-' + pageId).classList.add('active');
-            btnElement.classList.add('active');
+        function handleLogout() {
+            localStorage.clear();
+            location.reload();
         }
 
+        // Tab Switching Logic
+        function switchTab(index) {
+            const tabs = document.querySelectorAll('.nav-tab');
+            const panels = document.querySelectorAll('.section-panel');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            panels.forEach(panel => panel.classList.remove('active'));
+
+            tabs[index].classList.add('active');
+            panels[index].classList.add('active');
+        }
+
+        // Training Stopwatch Mock
         let stopwatchInterval;
-        let secondsElapsed = 0;
-        let isRunning = false;
-
-        function toggleStopwatch() {
-            let btn = document.getElementById('startStopBtn');
-            let statusText = document.getElementById('sessionStatus');
-
-            if(!isRunning) {
-                isRunning = true;
-                btn.innerText = "End Session";
-                btn.className = "timer-btn btn-stop";
-                statusText.innerText = "Coach is logging your active pitch minutes. Go hard!";
-                stopwatchInterval = setInterval(() => {
-                    secondsElapsed++;
-                    let hrs = Math.floor(secondsElapsed / 3600).toString().padStart(2, '0');
-                    let mins = Math.floor((secondsElapsed % 3600) / 60).toString().padStart(2, '0');
-                    let secs = (secondsElapsed % 60).toString().padStart(2, '0');
-                    document.getElementById('stopwatchTime').innerText = `${hrs}:${mins}:${secs}`;
-                }, 1000);
-            } else {
-                isRunning = false;
-                clearInterval(stopwatchInterval);
-                btn.innerText = "Start Training";
-                btn.className = "timer-btn btn-start";
-                statusText.innerText = `Session logged successfully. Keep building that wall!`;
-                alert(`Coach note: Excellent session! You recorded ${Math.floor(secondsElapsed/60)} minutes of rigorous training today. Keep pushing! 🚀`);
-            }
+        let secondsRunning = 0;
+        function startTrainingTimer() {
+            clearInterval(stopwatchInterval);
+            stopwatchInterval = setInterval(() => {
+                secondsRunning++;
+                let hrs = Math.floor(secondsRunning / 3600).toString().padStart(2, '0');
+                let mins = Math.floor((secondsRunning % 3600) / 60).toString().padStart(2, '0');
+                let secs = (secondsRunning % 60).toString().padStart(2, '0');
+                document.getElementById('stopwatchDisplay').innerText = `${hrs}:${mins}:${secs}`;
+            }, 1000);
+            alert('Training session started! Keep pushing your limits.');
         }
 
-        let tasks = [{ status: "completed" }, { status: "completed" }, { status: "progress" }, { status: "notstarted" }];
-        function toggleTask(index) {
-            let current = tasks[index].status;
-            let next = current === "notstarted" ? "progress" : current === "progress" ? "completed" : "notstarted";
-            tasks[index].status = next;
-            updateTaskUI();
+        // Diet Day Selector
+        function setDietDay(day) {
+            document.querySelectorAll('.day-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const diets = {
+                'Mon': '• Breakfast: Rolled oats with chia seeds, raw honey, and whole milk.<br>• Mid-Morning: 2 boiled eggs and a handful of almonds.<br>• Lunch: Grilled paneer breast, brown rice, broccoli, and coconut water.',
+                'Tue': '• Breakfast: Whole wheat toast with peanut butter and banana slices.<br>• Mid-Morning: Handful of walnuts and an apple.<br>• Lunch: Lentil dal, millet rotis, curd, and cucumber salad.<br>• Dinner: Grilled tofu with quinoa and carrots.',
+                'Wed': '• Breakfast: Poha with peanuts, peas, and fresh lemon juice.<br>• Mid-Morning: Boiled sweet potato.<br>• Lunch: Chickpea curry, brown rice, and buttermilk.<br>• Dinner: Vegetable soup and roasted paneer chunks.',
+                'Thu': '• Breakfast: Upma with mixed vegetables and almonds.<br>• Mid-Morning: Fresh pomegranate seeds.<br>• Lunch: Grilled paneer wrap with whole wheat flatbread.<br>• Dinner: Steamed fish/tofu with spinach.',
+                'Fri': '• Breakfast: Egg whites (or soaked moong sprouts) with toast.<br>• Mid-Morning: Banana and walnuts.<br>• Lunch: Rajma curry with brown rice and salad.<br>• Dinner: Quinoa salad with olive oil dressing.',
+                'Sat': '• Breakfast: Smoothie with bananas, dates, curd, and oats.<br>• Mid-Morning: Handful of roasted chana.<br>• Lunch: Paneer tikka with mint chutney and millet rotis.<br>• Dinner: Vegetable khichdi with pure ghee.',
+                'Sun': '• Breakfast: Multi-grain paratha with curd.<br>• Mid-Morning: Coconut water.<br>• Lunch: Grand recovery feast: brown rice, dal, grilled paneer.<br>• Dinner: Light vegetable soup and warm milk with turmeric.'
+            };
+            document.getElementById('dietContentBox').innerHTML = `<strong>🌱 ${day} 100% Natural Pro Diet Plan:</strong><p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">${diets[day]}</p>`;
         }
 
-        function updateTaskUI() {
-            let container = document.getElementById("trainingPlanList");
-            let items = container.getElementsByClassName("plan-item");
-            let completedCount = 0;
-            tasks.forEach((t, i) => {
-                let btn = items[i].querySelector("button");
-                btn.className = `status-btn status-${t.status}`;
-                if(t.status === "completed") { btn.innerText = "Completed ✓"; completedCount++; }
-                else if(t.status === "progress") { btn.innerText = "In Progress ⏳"; }
-                else { btn.innerText = "Not Started ⏳"; }
-            });
-            document.getElementById("statDrillsCount").innerText = `${completedCount}/4`;
-            document.getElementById("planBadge").innerText = `${completedCount}/4 Completed`;
-        }
+        // AI Q&A Analysis Mock
+        function runAiAnalysis() {
+            const query = document.getElementById('aiQueryInput').value.trim();
+            const playerName = localStorage.getItem('pro_player_name') || 'Player';
+            const playerPos = localStorage.getItem('pro_player_pos') || 'Elite';
 
-        const ctx = document.getElementById('deepPerformanceChart').getContext('2d');
-        let deepChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                datasets: [{
-                    label: 'Training Volume (Mins)',
-                    data: [60, 90, 75, 110, 85, 130, 50],
-                    backgroundColor: '#38bdf8',
-                    borderRadius: 6
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: {
-                    x: { grid: { display: false }, ticks: { color: '#94a3b8' } },
-                    y: { grid: { color: '#1a2332' }, ticks: { color: '#94a3b8' } }
-                }
+            if(!query) {
+                alert('Please type your situation or question first.');
+                return;
             }
-        });
-
-        function switchChart(timeframe, btnElement) {
-            document.querySelectorAll('#page-analytics .sub-btn').forEach(b => b.classList.remove('active'));
-            btnElement.classList.add('active');
-            if(timeframe === 'weekly') {
-                deepChart.data.labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-                deepChart.data.datasets[0].data = [60, 90, 75, 110, 85, 130, 50];
-            } else if(timeframe === 'monthly') {
-                deepChart.data.labels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
-                deepChart.data.datasets[0].data = [420, 480, 510, 550];
-            } else if(timeframe === 'yearly') {
-                deepChart.data.labels = ['Q1 Audit', 'Q2 Audit', 'Q3 Audit', 'Q4 Final Evaluation'];
-                deepChart.data.datasets[0].data = [1800, 2100, 2400, 2900];
-            }
-            deepChart.update();
+            document.getElementById('aiResponseBox').innerHTML = `<strong>🧠 European Club AI Dossier for ${playerName} (${playerPos}):</strong><br>Analyzing query ("<em>${query}</em>"):<br>• <strong>Custom Pro Drill:</strong> 20-minute cognitive pressure-scanning drill with wall rebounds and rapid scanning before receiving.<br>• <strong>Natural Fuel Adjustment:</strong> Consume fresh pomegranate juice and raw walnuts 45 minutes prior to match simulation for optimal cognitive focus.`;
         }
     </script>
 </body>
